@@ -3,9 +3,9 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 $this->breadcrumbs=array(
 	UserModule::t("Login"),
 );
-?>
 
-<h1><?php echo UserModule::t("Login"); ?></h1>
+Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/signin.css');
+?>
 
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -15,23 +15,24 @@ $this->breadcrumbs=array(
 
 <?php endif; ?>
 
-<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>
+<!--<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>-->
 
 <div class="form">
-<?php echo CHtml::beginForm(); ?>
+    
+<?php echo CHtml::beginForm(null, null, array('class'=>'form-signin', 'role'=>'form')); ?>
 
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	
+	<!--<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>-->
+	<h2 class="form-signin-heading text-center"><?php echo UserModule::t("Login"); ?></h2>
 	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
-		<?php echo CHtml::activeTextField($model,'username') ?>
+		<?php echo CHtml::activeTextField($model,'username',array('class'=>'form-control','required'=>"", 'autofocus'=>"")) ?>
 	</div>
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'password'); ?>
-		<?php echo CHtml::activePasswordField($model,'password') ?>
+		<?php echo CHtml::activePasswordField($model,'password',array('class'=>'form-control','required'=>"")) ?>
 	</div>
 	
 	<div class="row">
@@ -46,7 +47,7 @@ $this->breadcrumbs=array(
 	</div>
 
 	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
+		<?php echo CHtml::submitButton(UserModule::t("Login"), array('class'=>'btn btn-lg btn-primary btn-block')); ?>
 	</div>
 	
 <?php echo CHtml::endForm(); ?>

@@ -4,57 +4,88 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="language" content="en">
-
-	<!-- blueprint CSS framework -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection">
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print">
-	<!--[if lt IE 8]>
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection">
-	<![endif]-->
-
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css">
-
+        
+        <!-- Bootstrap framework -->
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap-select.min.css">
+        <!-- End Bootstrap framework -->
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
+        
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
-
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand" href="#"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+        </div>
+        <div class="navbar-collapse collapse">
+            <?php
+            $this->widget('zii.widgets.CMenu', array(
+                'htmlOptions' => array('class' => 'nav navbar-nav navbar-right'),
+                'items' => array(
+                    array('label' => 'Dashboard', 'url' => array('/site/index'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Users', 'url' => array('/user'), 'visible' => !Yii::app()->user->isGuest), 
+                    array('label' => Yii::t('app', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
+                    array('label' => Yii::t('app', 'Rights'), 'url' => array('/rights'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => Yii::t('app', 'Logout') . ' (' . Yii::app()->user->name . ')', 'url' => array('/user/logout'), 'visible' => !Yii::app()->user->isGuest)
+                ,
+                ),
+            ));
+            ?>
+<!--            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>-->
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+        <?php if (isset($this->breadcrumbs)): ?>
+            <?php
+            $this->widget('zii.widgets.CBreadcrumbs', array(
+                'htmlOptions' => array('class' => 'breadcrumb'),
+                'links' => $this->breadcrumbs,
+                'tagName'=>'ol', // will change the container to ul
+                'activeLinkTemplate'=>'<li><a href="{url}">{label}</a></li>',
+                'inactiveLinkTemplate' => '<li><span>{label}</span></li>',
+                'separator' => '',
+                
+            ));
+            ?><!-- breadcrumbs -->
+        <?php endif ?>
 
-<div class="container" id="page">
+        <?php echo $content; ?>
 
-	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-	</div><!-- header -->
+        <div class="clear"></div>
 
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),array('label'=>Yii::t('app','Login'), 'url'=>array('/user/login'),'visible'=>Yii::app()->user->isGuest),
-                                array('label'=>Yii::t('app','Rights'), 'url'=>array('/rights')),
-                                array('label'=>Yii::t('app','Logout').' ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
-                            ,
-			),
-		)); ?>
-	</div><!-- mainmenu -->
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
+        <div id="footer">
+        </div><!-- footer -->
+</div>
 
-	<?php echo $content; ?>
+<!-- JQuery -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>
+<!-- End JQuery -->
 
-	<div class="clear"></div>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
 
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
-	</div><!-- footer -->
-
-</div><!-- page -->
+<!-- Bootstrap framework -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap-select.min.js"></script>
+<!-- End Bootstrap framework -->
 
 </body>
 </html>

@@ -35,5 +35,13 @@ class LoginController extends Controller
 		$lastVisit->lastvisit_at = date('Y-m-d H:i:s');
 		$lastVisit->save();
 	}
-
+        
+        /**
+         * Kill redirect loop. Because Yii-Rights filter in global controller 
+         * @return null
+         */
+        public function filters()
+        {
+            return null;
+        }
 }

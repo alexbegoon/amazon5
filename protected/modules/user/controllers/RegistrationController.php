@@ -77,4 +77,13 @@ class RegistrationController extends Controller
             $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
         }
 	}
+        
+        /**
+         * Kill redirect loop. Because Yii-Rights filter in global controller 
+         * @return null
+         */
+        public function filters()
+        {
+            return null;
+        }
 }

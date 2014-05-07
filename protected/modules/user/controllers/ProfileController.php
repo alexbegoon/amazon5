@@ -102,4 +102,13 @@ class ProfileController extends Controller
 		}
 		return $this->_model;
 	}
+        
+        /**
+         * Kill redirect loop. Because Yii-Rights filter in global controller 
+         * @return null
+         */
+        public function filters()
+        {
+            return null;
+        }
 }

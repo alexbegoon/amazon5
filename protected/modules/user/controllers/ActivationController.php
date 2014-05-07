@@ -27,5 +27,14 @@ class ActivationController extends Controller
 			$this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
 		}
 	}
+        
+        /**
+         * Kill redirect loop. Because Yii-Rights filter in global controller 
+         * @return null
+         */
+        public function filters()
+        {
+            return null;
+        }
 
 }
