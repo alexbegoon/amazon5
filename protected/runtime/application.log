@@ -123,3 +123,967 @@ REQUEST_URI=/
 in /var/www/vhosts/amazoni5.amazonibuyin.com/httpdocs/protected/views/layouts/main.php (51)
 in /var/www/vhosts/amazoni5.amazonibuyin.com/httpdocs/protected/views/layouts/column1.php (6)
 in /var/www/vhosts/amazoni5.amazonibuyin.com/httpdocs/protected/controllers/SiteController.php (32)
+2014/05/07 15:46:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.amzni5_users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `amzni5_users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\components\UserIdentity.php (25)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\components\UserIdentity.php (25)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\UserLogin.php (52)
+2014/05/07 15:46:29 [error] [exception.CDbException] exception 'CDbException' with message 'The table "{{users}}" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(212): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\user\components\UserIdentity.php(25): CActiveRecord->__call('notsafe', Array)
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\user\components\UserIdentity.php(25): User->notsafe()
+#4 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\UserLogin.php(52): UserIdentity->authenticate()
+#5 C:\xampp\htdocs\work\yii\framework\validators\CInlineValidator.php(42): UserLogin->authenticate('password', Array)
+#6 C:\xampp\htdocs\work\yii\framework\validators\CValidator.php(213): CInlineValidator->validateAttribute(Object(UserLogin), 'password')
+#7 C:\xampp\htdocs\work\yii\framework\base\CModel.php(159): CValidator->validate(Object(UserLogin), NULL)
+#8 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(19): CModel->validate()
+#9 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#14 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#15 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/user/login
+---
+2014/05/07 15:57:25 [error] [system.db.CDbCommand] CDbCommand::fetchColumn() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthItem' doesn't exist. The SQL statement executed was: SELECT COUNT(*) FROM AuthItem.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RInstaller.php (180)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\InstallController.php (43)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:00:26 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:00:26 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:05:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php (27)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php (22)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:05:41 [error] [exception.CDbException] exception 'CDbException' with message 'The table "users" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(661): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(392): CActiveRecord->getTableSchema()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(47): CJoinElement->__construct(Object(CActiveFinder), Object(User))
+#4 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(912): CActiveFinder->__construct(Object(User), Array)
+#5 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1607): CActiveRecord->getActiveFinder(Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(228): CActiveRecord->count(Object(CDbCriteria))
+#7 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(224): CActiveDataProvider->calculateTotalItemCount()
+#8 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(178): CDataProvider->getTotalItemCount()
+#9 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(168): CActiveDataProvider->fetchData()
+#10 C:\xampp\htdocs\work\yii\framework\zii\widgets\CBaseListView.php(125): CDataProvider->getData()
+#11 C:\xampp\htdocs\work\yii\framework\zii\widgets\grid\CGridView.php(339): CBaseListView->init()
+#12 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(147): CGridView->init()
+#13 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(180): CBaseController->createWidget('zii.widgets.gri...', Array)
+#14 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(27): CBaseController->widget('zii.widgets.gri...', Array)
+#15 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#16 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#18 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#19 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#20 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#21 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#23 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#25 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#26 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:06:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:06:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/l".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/l')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/l
+---
+2014/05/07 16:07:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/logine".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/logine')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/logine
+---
+2014/05/07 16:20:39 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:20:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:20:40 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:20:40 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:20:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:20:48 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:20:55 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php (27)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php (22)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:20:55 [error] [exception.CDbException] exception 'CDbException' with message 'The table "users" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(661): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(392): CActiveRecord->getTableSchema()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(47): CJoinElement->__construct(Object(CActiveFinder), Object(User))
+#4 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(912): CActiveFinder->__construct(Object(User), Array)
+#5 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1607): CActiveRecord->getActiveFinder(Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(228): CActiveRecord->count(Object(CDbCriteria))
+#7 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(224): CActiveDataProvider->calculateTotalItemCount()
+#8 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(178): CDataProvider->getTotalItemCount()
+#9 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(168): CActiveDataProvider->fetchData()
+#10 C:\xampp\htdocs\work\yii\framework\zii\widgets\CBaseListView.php(125): CDataProvider->getData()
+#11 C:\xampp\htdocs\work\yii\framework\zii\widgets\grid\CGridView.php(339): CBaseListView->init()
+#12 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(147): CGridView->init()
+#13 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(180): CBaseController->createWidget('zii.widgets.gri...', Array)
+#14 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(27): CBaseController->widget('zii.widgets.gri...', Array)
+#15 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#16 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#18 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#19 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#20 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#21 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#23 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#25 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#26 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:21:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "users".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('users')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/users
+---
+2014/05/07 16:21:11 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php (27)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php (22)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:21:11 [error] [exception.CDbException] exception 'CDbException' with message 'The table "users" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(661): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(392): CActiveRecord->getTableSchema()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(47): CJoinElement->__construct(Object(CActiveFinder), Object(User))
+#4 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(912): CActiveFinder->__construct(Object(User), Array)
+#5 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1607): CActiveRecord->getActiveFinder(Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(228): CActiveRecord->count(Object(CDbCriteria))
+#7 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(224): CActiveDataProvider->calculateTotalItemCount()
+#8 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(178): CDataProvider->getTotalItemCount()
+#9 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(168): CActiveDataProvider->fetchData()
+#10 C:\xampp\htdocs\work\yii\framework\zii\widgets\CBaseListView.php(125): CDataProvider->getData()
+#11 C:\xampp\htdocs\work\yii\framework\zii\widgets\grid\CGridView.php(339): CBaseListView->init()
+#12 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(147): CGridView->init()
+#13 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(180): CBaseController->createWidget('zii.widgets.gri...', Array)
+#14 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(27): CBaseController->widget('zii.widgets.gri...', Array)
+#15 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#16 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#18 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#19 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#20 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#21 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#23 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#25 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#26 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:21:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:21:15 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:29:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "users".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('users')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/users
+---
+2014/05/07 16:29:56 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php (27)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php (22)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:29:56 [error] [exception.CDbException] exception 'CDbException' with message 'The table "users" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(661): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(392): CActiveRecord->getTableSchema()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(47): CJoinElement->__construct(Object(CActiveFinder), Object(User))
+#4 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(912): CActiveFinder->__construct(Object(User), Array)
+#5 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1607): CActiveRecord->getActiveFinder(Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(228): CActiveRecord->count(Object(CDbCriteria))
+#7 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(224): CActiveDataProvider->calculateTotalItemCount()
+#8 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(178): CDataProvider->getTotalItemCount()
+#9 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(168): CActiveDataProvider->fetchData()
+#10 C:\xampp\htdocs\work\yii\framework\zii\widgets\CBaseListView.php(125): CDataProvider->getData()
+#11 C:\xampp\htdocs\work\yii\framework\zii\widgets\grid\CGridView.php(339): CBaseListView->init()
+#12 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(147): CGridView->init()
+#13 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(180): CBaseController->createWidget('zii.widgets.gri...', Array)
+#14 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(27): CBaseController->widget('zii.widgets.gri...', Array)
+#15 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#16 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#18 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#19 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#20 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#21 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#23 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#25 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#26 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:29:57 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.users' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `users`.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php (27)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php (22)
+in C:\xampp\htdocs\work\amazoni5\index.php (13)
+2014/05/07 16:29:57 [error] [exception.CDbException] exception 'CDbException' with message 'The table "users" for active record class "User" cannot be found in the database.' in C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php:2383
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(User))
+#1 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(661): CActiveRecord->getMetaData()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(392): CActiveRecord->getTableSchema()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveFinder.php(47): CJoinElement->__construct(Object(CActiveFinder), Object(User))
+#4 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(912): CActiveFinder->__construct(Object(User), Array)
+#5 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1607): CActiveRecord->getActiveFinder(Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(228): CActiveRecord->count(Object(CDbCriteria))
+#7 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(224): CActiveDataProvider->calculateTotalItemCount()
+#8 C:\xampp\htdocs\work\yii\framework\web\CActiveDataProvider.php(178): CDataProvider->getTotalItemCount()
+#9 C:\xampp\htdocs\work\yii\framework\web\CDataProvider.php(168): CActiveDataProvider->fetchData()
+#10 C:\xampp\htdocs\work\yii\framework\zii\widgets\CBaseListView.php(125): CDataProvider->getData()
+#11 C:\xampp\htdocs\work\yii\framework\zii\widgets\grid\CGridView.php(339): CBaseListView->init()
+#12 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(147): CGridView->init()
+#13 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(180): CBaseController->createWidget('zii.widgets.gri...', Array)
+#14 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(27): CBaseController->widget('zii.widgets.gri...', Array)
+#15 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#16 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#18 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#19 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#20 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#21 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#23 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#25 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#26 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:30:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:30:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:30:48 [error] [exception.CException] exception 'CException' with message 'Property "UserModule.tablePrefix" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\base\CModule.php(513): CComponent->__set('tablePrefix', 'amzni5_')
+#1 C:\xampp\htdocs\work\yii\framework\base\CModule.php(86): CModule->configure(Array)
+#2 C:\xampp\htdocs\work\yii\framework\YiiBase.php(206): CModule->__construct('user', NULL, Array)
+#3 C:\xampp\htdocs\work\yii\framework\base\CModule.php(282): YiiBase::createComponent('user.UserModule', 'user', NULL, Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(337): CModule->getModule('user')
+#5 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(276): CWebApplication->createController('user')
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#7 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:30:48 [error] [exception.CException] exception 'CException' with message 'Property "UserModule.tablePrefix" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\base\CModule.php(513): CComponent->__set('tablePrefix', 'amzni5_')
+#1 C:\xampp\htdocs\work\yii\framework\base\CModule.php(86): CModule->configure(Array)
+#2 C:\xampp\htdocs\work\yii\framework\YiiBase.php(206): CModule->__construct('user', NULL, Array)
+#3 C:\xampp\htdocs\work\yii\framework\base\CModule.php(282): YiiBase::createComponent('user.UserModule', 'user', NULL, Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(337): CModule->getModule('user')
+#5 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(276): CWebApplication->createController('user')
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#7 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/work/amazoni5/index.php/user
+---
+2014/05/07 16:34:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "rigts".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rigts')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/rigts
+---
+2014/05/07 16:34:58 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:34:58 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:34:58 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:34:58 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.AuthAssignment' doesn't exist. The SQL statement executed was: SELECT * FROM AuthAssignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM A...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:35:53 [error] [exception.CException] exception 'CException' with message 'Property "RightsModule.assignmentTable" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\base\CModule.php(513): CComponent->__set('assignmentTable', 'test')
+#1 C:\xampp\htdocs\work\yii\framework\base\CModule.php(86): CModule->configure(Array)
+#2 C:\xampp\htdocs\work\yii\framework\YiiBase.php(206): CModule->__construct('rights', NULL, Array)
+#3 C:\xampp\htdocs\work\yii\framework\base\CModule.php(282): YiiBase::createComponent('rights.RightsMo...', 'rights', NULL, Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(337): CModule->getModule('rights')
+#5 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(276): CWebApplication->createController('rights')
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#7 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:35:56 [error] [exception.CException] exception 'CException' with message 'Property "RightsModule.assignmentTable" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\base\CModule.php(513): CComponent->__set('assignmentTable', 'test')
+#1 C:\xampp\htdocs\work\yii\framework\base\CModule.php(86): CModule->configure(Array)
+#2 C:\xampp\htdocs\work\yii\framework\YiiBase.php(206): CModule->__construct('rights', NULL, Array)
+#3 C:\xampp\htdocs\work\yii\framework\base\CModule.php(282): YiiBase::createComponent('rights.RightsMo...', 'rights', NULL, Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(337): CModule->getModule('rights')
+#5 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(276): CWebApplication->createController('rights')
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#7 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:35:57 [error] [exception.CException] exception 'CException' with message 'Property "RightsModule.assignmentTable" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\base\CModule.php(513): CComponent->__set('assignmentTable', 'test')
+#1 C:\xampp\htdocs\work\yii\framework\base\CModule.php(86): CModule->configure(Array)
+#2 C:\xampp\htdocs\work\yii\framework\YiiBase.php(206): CModule->__construct('rights', NULL, Array)
+#3 C:\xampp\htdocs\work\yii\framework\base\CModule.php(282): YiiBase::createComponent('rights.RightsMo...', 'rights', NULL, Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(337): CModule->getModule('rights')
+#5 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(276): CWebApplication->createController('rights')
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#7 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:37:03 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:43:37 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\InstallController.php(61): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): InstallController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights/install')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights/install
+---
+2014/05/07 16:44:05 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\InstallController.php(61): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): InstallController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:44:06 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\InstallController.php(61): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): InstallController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:46:14 [error] [exception.CException] exception 'CException' with message 'RWebUser and its behaviors do not have a method or closure named "updateSession".' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:266
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): CComponent->__call('updateSession', Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): RWebUser->updateSession()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1129): User->afterSave()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(809): CActiveRecord->update(NULL)
+#4 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(36): CActiveRecord->save()
+#5 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(20): LoginController->lastViset()
+#6 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#11 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#12 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/user/login
+---
+2014/05/07 16:50:21 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\InstallController.php(61): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): InstallController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights/install')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights/install
+---
+2014/05/07 16:52:00 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.authassignment' doesn't exist. The SQL statement executed was: SELECT * FROM authassignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:52:00 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.authassignment' doesn't exist. The SQL statement executed was: SELECT * FROM authassignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM a...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:52:01 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.authassignment' doesn't exist. The SQL statement executed was: SELECT * FROM authassignment WHERE itemname=:itemname.
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php (247)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php (285)
+in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php (51)
+2014/05/07 16:52:01 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'amazoni5.authassignment' doesn't exist. The SQL statement executed was: SELECT * FROM authassignment WHERE itemname=:itemname' in C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RDbAuthManager.php(247): CDbCommand->queryAll('SELECT * FROM a...')
+#2 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php(285): RDbAuthManager->getAssignmentsByItemName('Admin')
+#3 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#6 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#11 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 16:55:33 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+---
+2014/05/07 17:03:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "rights".' in C:\xampp\htdocs\work\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CController.php(270): CController->missingAction('rights')
+#1 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('rights')
+#2 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/rights')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/work/amazoni5/index.php/site/rights
+---
+2014/05/07 17:04:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "users".' in C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('users')
+#1 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/work/amazoni5/index.php/users
+---
+2014/05/07 17:07:02 [error] [exception.CException] exception 'CException' with message 'RWebUser and its behaviors do not have a method or closure named "updateSession".' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:266
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): CComponent->__call('updateSession', Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): RWebUser->updateSession()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1129): User->afterSave()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(809): CActiveRecord->update(NULL)
+#4 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(36): CActiveRecord->save()
+#5 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(20): LoginController->lastViset()
+#6 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#11 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#12 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:14:10 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in C:\xampp\htdocs\work\amazoni5\protected\modules\rights\components\RAuthorizer.php:305
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AssignmentController.php(51): RAuthorizer->getSuperusers()
+#1 C:\xampp\htdocs\work\yii\framework\web\CController.php(1144): AssignmentController->accessRules()
+#2 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#5 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#7 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights')
+#8 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:16:20 [error] [exception.CException] exception 'CException' with message 'Property "WebUser.rightsReturnUrl" is not defined.' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(160): CComponent->__set('rightsReturnUrl', Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\rights\controllers\AuthItemController.php(175): CWebUser->__set('rightsReturnUrl', Array)
+#2 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): AuthItemController->actionRoles()
+#3 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\work\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 C:\xampp\htdocs\work\yii\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\work\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 C:\xampp\htdocs\work\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(291): CFilterChain->run()
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('roles')
+#12 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('rights/authItem...')
+#13 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/work/amazoni5/index.php/rights/authItem/roles
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/rights
+---
+2014/05/07 17:17:10 [error] [exception.CException] exception 'CException' with message 'RWebUser and its behaviors do not have a method or closure named "updateSession".' in C:\xampp\htdocs\work\yii\framework\base\CComponent.php:266
+Stack trace:
+#0 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): CComponent->__call('updateSession', Array)
+#1 C:\xampp\htdocs\work\amazoni5\protected\modules\user\models\User.php(202): RWebUser->updateSession()
+#2 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(1129): User->afterSave()
+#3 C:\xampp\htdocs\work\yii\framework\db\ar\CActiveRecord.php(809): CActiveRecord->update(NULL)
+#4 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(36): CActiveRecord->save()
+#5 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(20): LoginController->lastViset()
+#6 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#7 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#11 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#12 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+HTTP_REFERER=http://localhost/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:21:14 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.web-user-behavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(12): CModule->__get('user')
+#8 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#13 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#14 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:22:48 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(12): CModule->__get('user')
+#8 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#13 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#14 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:22:50 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(12): CModule->__get('user')
+#8 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#13 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#14 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:22:52 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\LoginController.php(12): CModule->__get('user')
+#8 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): LoginController->actionLogin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#13 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user/login')
+#14 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/login
+---
+2014/05/07 17:25:44 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\UserModule.php(190): CModule->__get('user')
+#8 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(5): UserModule::isAdmin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#10 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#12 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#13 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#14 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#15 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#19 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#20 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#21 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/
+---
+2014/05/07 17:25:50 [error] [exception.CException] exception 'CException' with message 'Alias "vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing directory or file.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:348
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('vendor.schmunk4...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('vendor.schmunk4...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'vendor.schmunk4...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\UserModule.php(190): CModule->__get('user')
+#8 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(5): UserModule::isAdmin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#10 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#12 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#13 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#14 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#15 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#19 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#20 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#21 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/
+---
+2014/05/07 17:26:15 [error] [exception.CException] exception 'CException' with message 'Alias "application.vendor.schmunk42.webuserbehavior.WebUserBehavior" is invalid. Make sure it points to an existing PHP file and the file is readable.' in C:\xampp\htdocs\work\yii\framework\YiiBase.php:323
+Stack trace:
+#0 C:\xampp\htdocs\work\yii\framework\YiiBase.php(196): YiiBase::import('application.ven...', true)
+#1 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(329): YiiBase::createComponent('application.ven...')
+#2 C:\xampp\htdocs\work\yii\framework\base\CComponent.php(298): CComponent->attachBehavior(0, 'application.ven...')
+#3 C:\xampp\htdocs\work\yii\framework\base\CApplicationComponent.php(45): CComponent->attachBehaviors(Array)
+#4 C:\xampp\htdocs\work\yii\framework\web\auth\CWebUser.php(198): CApplicationComponent->init()
+#5 C:\xampp\htdocs\work\yii\framework\base\CModule.php(387): CWebUser->init()
+#6 C:\xampp\htdocs\work\yii\framework\base\CModule.php(103): CModule->getComponent('user')
+#7 C:\xampp\htdocs\work\amazoni5\protected\modules\user\UserModule.php(190): CModule->__get('user')
+#8 C:\xampp\htdocs\work\amazoni5\protected\modules\user\views\user\index.php(5): UserModule::isAdmin()
+#9 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(126): require('C:\xampp\htdocs...')
+#10 C:\xampp\htdocs\work\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\xampp\htdocs...', Array, true)
+#11 C:\xampp\htdocs\work\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\xampp\htdocs...', Array, true)
+#12 C:\xampp\htdocs\work\yii\framework\web\CController.php(782): CController->renderPartial('/user/index', Array, true)
+#13 C:\xampp\htdocs\work\amazoni5\protected\modules\user\controllers\DefaultController.php(22): CController->render('/user/index', Array)
+#14 C:\xampp\htdocs\work\yii\framework\web\actions\CInlineAction.php(49): DefaultController->actionIndex()
+#15 C:\xampp\htdocs\work\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 C:\xampp\htdocs\work\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#17 C:\xampp\htdocs\work\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(282): CController->run('')
+#19 C:\xampp\htdocs\work\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#20 C:\xampp\htdocs\work\yii\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#21 C:\xampp\htdocs\work\amazoni5\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/work/amazoni5/index.php/user/
+---
