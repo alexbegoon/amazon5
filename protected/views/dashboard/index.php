@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 ?>
 <h3>Dashboard</h3>
 
-<?php $this->widget('TIlesWidget',array(
+<?php $this->widget('TilesWidget',array(
     
                 'items' => array(
                     array(
