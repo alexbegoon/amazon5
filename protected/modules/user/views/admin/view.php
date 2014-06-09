@@ -14,7 +14,7 @@ $this->menu=array(
     array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
 );
 ?>
-<h1><?php echo UserModule::t('View User').' "'.$model->username.'"'; ?></h1>
+<h1 class="text-center"><?php echo UserModule::t('View User').' "'.$model->username.'"'; ?></h1>
 
 <?php
  

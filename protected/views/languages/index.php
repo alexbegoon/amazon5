@@ -12,7 +12,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Languages</h1>
+<h1 class="text-center">Languages</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

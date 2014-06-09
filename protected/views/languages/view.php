@@ -16,7 +16,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Languages #<?php echo $model->lang_code; ?></h1>
+<h1 class="text-center">View Languages #<?php echo $model->lang_code; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

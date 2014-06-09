@@ -17,25 +17,25 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/signin.css')
 
 <!--<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>-->
 
-<div class="form">
+<div class="container">
     
 <?php echo CHtml::beginForm(null, null, array('class'=>'form-signin', 'role'=>'form')); ?>
 
 	<!--<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>-->
 	<h2 class="form-signin-heading text-center"><?php echo UserModule::t("Login"); ?></h2>
-	<?php echo CHtml::errorSummary($model); ?>
+	<?php echo CHtml::errorSummary($model,null,null,array('class'=>'alert alert-danger')); ?>
 	
-	<div class="row">
+	<div class="row form-group">
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
 		<?php echo CHtml::activeTextField($model,'username',array('class'=>'form-control','required'=>"", 'autofocus'=>"")) ?>
 	</div>
 	
-	<div class="row">
+	<div class="row form-group">
 		<?php echo CHtml::activeLabelEx($model,'password'); ?>
 		<?php echo CHtml::activePasswordField($model,'password',array('class'=>'form-control','required'=>"")) ?>
 	</div>
 	
-	<div class="row">
+	<div class="row form-group">
 		<p class="hint">
 		<?php echo CHtml::link(UserModule::t("Register"),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
 		</p>

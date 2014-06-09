@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 	'Dashboard',
 );
 ?>
-<h3>Dashboard</h3>
+<h1 class="text-center">Dashboard</h1>
 
 <?php $this->widget('TilesWidget',array(
     

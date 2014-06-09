@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Languages <?php echo $model->lang_code; ?></h1>
+<h1 class="text-center">Update Languages <?php echo $model->lang_code; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

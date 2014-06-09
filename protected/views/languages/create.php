@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Languages</h1>
+<h1 class="text-center">Create Languages</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

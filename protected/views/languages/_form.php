@@ -25,7 +25,7 @@ $image_url_thumb_list = array_combine($image_url_thumb_list, $image_url_thumb_li
 
 ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note alert alert-warning">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model, null, null, array('class'=>'alert alert-danger')); ?>
 
