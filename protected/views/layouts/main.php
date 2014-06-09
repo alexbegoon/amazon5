@@ -1,4 +1,7 @@
 <?php /* @var $this Controller */ ?>
+<?php 
+Yii::app()->clientScript->registerCoreScript('jquery');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +41,7 @@
             $this->widget('zii.widgets.CMenu', array(
                 'htmlOptions' => array('class' => 'nav navbar-nav navbar-right'),
                 'items' => array(
-                    array('label' => 'Dashboard', 'url' => array('/site/index'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Dashboard', 'url' => array('/dashboard/index'), 'visible' => !Yii::app()->user->isGuest),
                     array('label' => 'Users', 'url' => array('/user'), 'visible' => !Yii::app()->user->isGuest), 
                     array('label' => Yii::t('app', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
                     array('label' => Yii::t('app', 'Rights'), 'url' => array('/rights'), 'visible' => !Yii::app()->user->isGuest),
@@ -77,7 +80,7 @@
 </div>
 
 <!-- JQuery -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>-->
 <!-- End JQuery -->
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->

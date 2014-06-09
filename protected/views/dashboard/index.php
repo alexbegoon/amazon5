@@ -5,9 +5,35 @@ $this->breadcrumbs=array(
 	'Dashboard',
 );
 ?>
-<h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
+<h3>Dashboard</h3>
 
-<p>
-	You may change the content of this page by modifying
-	the file <tt><?php echo __FILE__; ?></tt>.
-</p>
+<?php $this->widget('TIlesWidget',array(
+    
+                'items' => array(
+                    array(
+                        'url'=>'user',
+                        'glyphicon'=>'glyphicon-user',
+                        'label'=>'Users',
+                        ),
+                    array(
+                        'url'=>'rights',
+                        'glyphicon'=>'glyphicon-eye-open',
+                        'label'=>'Rights',
+                        ),
+                    array(
+                        'url'=>'orders',
+                        'glyphicon'=>'glyphicon-shopping-cart',
+                        'label'=>'Orders',
+                        ),
+                    array(
+                        'url'=>'languages',
+                        'glyphicon'=>'glyphicon-flag',
+                        'label'=>'Languages',
+                        ),
+                    array(
+                        'url'=>'webshops',
+                        'glyphicon'=>'glyphicon-home',
+                        'label'=>'Web Shops',
+                        ),
+                ),
+))?>
