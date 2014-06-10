@@ -31,7 +31,7 @@ $this->breadcrumbs=array(
                         'label'=>'Languages',
                         ),
                     array(
-                        'url'=>'webshops',
+                        'url'=>'webShops',
                         'glyphicon'=>'glyphicon-home',
                         'label'=>'Web Shops',
                         ),
