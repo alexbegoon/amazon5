@@ -151,17 +151,59 @@ class Languages extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public function beforeSave() 
+        protected function beforeSave() 
         {
             if ($this->isNewRecord)
             {
                 $this->created_on = new CDbExpression('NOW()');
-                $this->created_by = Yii::app()->getModule('user')->user()->id;
+                $this->created_by = Yii::app()->user->getId();
             }
             
             $this->modified_on = new CDbExpression('NOW()');
-            $this->modified_by = Yii::app()->getModule('user')->user()->id;
+            $this->modified_by = Yii::app()->user->getId();    
+            
+            $this->locked_by = 0;
+            $this->locked_on = null;
 
             return parent::beforeSave();
+        }
+        
+        protected function beforeValidate()
+        {
+            if(!parent::beforeValidate())
+            {
+                return FALSE;
+            }
+            
+            if((int)Yii::app()->user->getId() === (int)$this->locked_by)
+            {                
+                return true;
+            }
+            
+            if((int)$this->locked_by === 0 || $this->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
+            {                
+                return true;
+            }
+            
+            $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
+            $this->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
+            return FALSE;
+        }
+        
+        protected function beforeDelete() 
+        {
+            if((int)$this->locked_by === (int)Yii::app()->user->getId())
+            {
+                return true;
+            }    
+            
+            if ((int)$this->locked_by !== 0)
+            {
+                $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
+                $this->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
+                return FALSE;
+            }
+
+            return parent::beforeDelete();
         }
 }
