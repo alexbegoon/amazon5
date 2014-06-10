@@ -90,6 +90,12 @@ class WebShopsController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
+                $model->updateByPk($id,array(
+                    'locked_by'=>Yii::app()->user->getId(),
+                    'locked_on'=>date('Y-m-d H:i:s',time()),
+                ));
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
