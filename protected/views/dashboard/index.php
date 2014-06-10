@@ -35,5 +35,10 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-home',
                         'label'=>'Web Shops',
                         ),
+                    array(
+                        'url'=>'currencies',
+                        'glyphicon'=>'glyphicon-euro',
+                        'label'=>'Currencies',
+                        ),
                 ),
 ))?>

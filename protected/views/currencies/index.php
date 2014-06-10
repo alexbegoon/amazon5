@@ -1,18 +1,18 @@
 <?php
-/* @var $this WebShopsController */
+/* @var $this CurrenciesController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Web Shops',
+	'Currencies',
 );
 
 $this->menu=array(
-	array('label'=>'Create WebShops', 'url'=>array('create')),
-	array('label'=>'Manage WebShops', 'url'=>array('admin')),
+	array('label'=>'Create Currencies', 'url'=>array('create')),
+	array('label'=>'Manage Currencies', 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">Web Shops</h1>
+<h1 class="text-center">Currencies</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

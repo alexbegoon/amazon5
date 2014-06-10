@@ -45,19 +45,19 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'default_language',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'default_language',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'default_language',CHtml::listData(Languages::model()->findAll(array('order'=>'title')),'lang_code','title'),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'currency_id',array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'currency_id',CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name')),'id','currency_name'),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'currency_id',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'offline',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'offline',array('class'=>'form-control')); ?>
+		<?php echo $form->checkBox($model,'offline'); ?>
 		<?php echo $form->error($model,'offline',array('class'=>'label label-danger')); ?>
 	</div>
 
@@ -91,7 +91,7 @@
 		<?php echo $form->error($model,'admin_email',array('class'=>'label label-danger')); ?>
 	</div>
 
-	<div class="row form-group">
+<!--	<div class="row form-group">
 		<?php echo $form->labelEx($model,'created_on',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'created_on',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'created_on',array('class'=>'label label-danger')); ?>
@@ -101,9 +101,9 @@
 		<?php echo $form->labelEx($model,'created_by',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'created_by',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'created_by',array('class'=>'label label-danger')); ?>
-	</div>
+	</div>-->
 
-	<div class="row form-group">
+<!--	<div class="row form-group">
 		<?php echo $form->labelEx($model,'modified_on',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'modified_on',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'modified_on',array('class'=>'label label-danger')); ?>
@@ -113,9 +113,9 @@
 		<?php echo $form->labelEx($model,'modified_by',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'modified_by',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'modified_by',array('class'=>'label label-danger')); ?>
-	</div>
+	</div>-->
 
-	<div class="row form-group">
+<!--	<div class="row form-group">
 		<?php echo $form->labelEx($model,'locked_on',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'locked_on',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'locked_on',array('class'=>'label label-danger')); ?>
@@ -125,7 +125,7 @@
 		<?php echo $form->labelEx($model,'locked_by',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'locked_by',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'locked_by',array('class'=>'label label-danger')); ?>
-	</div>
+	</div>-->
 
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn btn-primary')); ?>

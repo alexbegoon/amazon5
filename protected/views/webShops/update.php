@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Web Shops'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
+	$model->shop_name=>array('view','id'=>$model->id),
 	'Update',
 );
 
@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center">Update WebShops <?php echo $model->id; ?></h1>
+<h1 class="text-center">Update WebShops <?php echo $model->shop_name; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

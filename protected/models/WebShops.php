@@ -55,7 +55,7 @@ class WebShops extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('default_language, currency_id', 'required'),
+			array('default_language, currency_id, shop_name, admin_email, shop_url, template_name', 'required'),
 			array('currency_id, offline, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('shop_name', 'length', 'max'=>100),
 			array('shop_code', 'length', 'max'=>64),
@@ -172,4 +172,18 @@ class WebShops extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function beforeSave() 
+        {
+            if ($this->isNewRecord)
+            {
+                $this->created_on = new CDbExpression('NOW()');
+                $this->created_by = Yii::app()->getModule('user')->user()->id;
+            }
+            
+            $this->modified_on = new CDbExpression('NOW()');
+            $this->modified_by = Yii::app()->getModule('user')->user()->id;
+
+            return parent::beforeSave();
+        }
 }

@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Web Shops'=>array('index'),
-	$model->id,
+	$model->shop_name,
 );
 
 $this->menu=array(
@@ -16,7 +16,7 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center">View WebShops #<?php echo $model->id; ?></h1>
+<h1 class="text-center">View WebShops #<?php echo $model->shop_name; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
