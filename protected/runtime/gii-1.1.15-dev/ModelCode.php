@@ -1,6 +1,6 @@
 <?php
 return array (
-  'template' => 'default',
+  'template' => 'amazoni5',
   'connectionId' => 'db',
   'tablePrefix' => 'amzni5_',
   'modelPath' => 'application.models',

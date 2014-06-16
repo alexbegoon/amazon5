@@ -40,5 +40,20 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-euro',
                         'label'=>'Currencies',
                         ),
+                    array(
+                        'url'=>'continents',
+                        'glyphicon'=>'glyphicon-globe',
+                        'label'=>'Continents',
+                        ),
+                    array(
+                        'url'=>'countries',
+                        'glyphicon'=>'glyphicon-globe',
+                        'label'=>'Countries',
+                        ),
+                    array(
+                        'url'=>'states',
+                        'glyphicon'=>'glyphicon-globe',
+                        'label'=>'States',
+                        ),
                 ),
 ))?>

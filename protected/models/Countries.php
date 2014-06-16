@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This is the model class for table "{{languages}}".
+ * This is the model class for table "{{countries}}".
  *
- * The followings are the available columns in table '{{languages}}':
- * @property string $lang_code
- * @property string $title
- * @property string $title_native
- * @property string $sef
- * @property string $image_url
- * @property string $image_url_thumb
+ * The followings are the available columns in table '{{countries}}':
+ * @property string $code
+ * @property string $name
+ * @property string $full_name
+ * @property string $iso3
+ * @property integer $number
+ * @property string $continent_code
  * @property integer $published
  * @property string $created_on
  * @property integer $created_by
@@ -19,24 +19,18 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property Categories[] $amzni5Categories
- * @property Content[] $contents
- * @property ContentCategories[] $contentCategories
- * @property Manufacturers[] $amzni5Manufacturers
- * @property Menu[] $menus
- * @property PaymentMethods[] $amzni5PaymentMethods
- * @property Products[] $amzni5Products
- * @property ShippingMethods[] $amzni5ShippingMethods
- * @property WebShops[] $webShops
+ * @property Continents $continentCode
+ * @property ShippingCosts[] $shippingCosts
+ * @property States[] $states
  */
-class Languages extends CActiveRecord
+class Countries extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{languages}}';
+		return '{{countries}}';
 	}
 
 	/**
@@ -47,17 +41,16 @@ class Languages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('lang_code','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> 'Language code must be in format \'xx-xx\', where \'x\' - letter.'),
-                        array('lang_code, title, sef, image_url, image_url_thumb','required'),
-			array('published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('lang_code', 'length', 'max'=>7),
-			array('title, title_native', 'length', 'max'=>64),
-			array('sef', 'length', 'max'=>32),
-			array('image_url, image_url_thumb', 'length', 'max'=>255),
+                        array('code','match','pattern'=> '/^[a-zA-Z]{2}$/','message'=> 'Country code must be in format \'xx\', where \'x\' - letter.'),
+			array('code, name, full_name, iso3, number, continent_code', 'required'),
+			array('number, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('code, continent_code', 'length', 'max'=>2),
+			array('name, full_name', 'length', 'max'=>255),
+			array('iso3', 'length', 'max'=>3),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('lang_code, title, title_native, sef, image_url, image_url_thumb, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('code, name, full_name, iso3, number, continent_code, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,15 +62,9 @@ class Languages extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'amzni5Categories' => array(self::MANY_MANY, 'Categories', '{{category_translations}}(language_code, category_id)'),
-			'contents' => array(self::HAS_MANY, 'Content', 'language_code'),
-			'contentCategories' => array(self::HAS_MANY, 'ContentCategories', 'language_code'),
-			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{manufacturer_translations}}(language_code, manufacturer_id)'),
-			'menus' => array(self::HAS_MANY, 'Menu', 'language_code'),
-			'amzni5PaymentMethods' => array(self::MANY_MANY, 'PaymentMethods', '{{payment_method_translations}}(language_code, payent_method_id)'),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_translations}}(language_code, product_id)'),
-			'amzni5ShippingMethods' => array(self::MANY_MANY, 'ShippingMethods', '{{shipping_method_translations}}(language_code, shipping_method_id)'),
-			'webShops' => array(self::HAS_MANY, 'WebShops', 'default_language'),
+			'continentCode' => array(self::BELONGS_TO, 'Continents', 'continent_code'),
+			'shippingCosts' => array(self::HAS_MANY, 'ShippingCosts', 'country_code'),
+			'states' => array(self::HAS_MANY, 'States', 'country_code'),
 		);
 	}
 
@@ -87,12 +74,12 @@ class Languages extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'lang_code' => 'Lang Code',
-			'title' => 'Title',
-			'title_native' => 'Title Native',
-			'sef' => 'Sef',
-			'image_url' => 'Image Url',
-			'image_url_thumb' => 'Image Url Thumb',
+			'code' => 'Code',
+			'name' => 'Name',
+			'full_name' => 'Full Name',
+			'iso3' => 'Iso3',
+			'number' => 'Number',
+			'continent_code' => 'Continent Code',
 			'published' => 'Published',
 			'created_on' => 'Created On',
 			'created_by' => 'Created By',
@@ -121,12 +108,12 @@ class Languages extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('lang_code',$this->lang_code,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('title_native',$this->title_native,true);
-		$criteria->compare('sef',$this->sef,true);
-		$criteria->compare('image_url',$this->image_url,true);
-		$criteria->compare('image_url_thumb',$this->image_url_thumb,true);
+		$criteria->compare('code',$this->code,true);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('full_name',$this->full_name,true);
+		$criteria->compare('iso3',$this->iso3,true);
+		$criteria->compare('number',$this->number);
+		$criteria->compare('continent_code',$this->continent_code,true);
 		$criteria->compare('published',$this->published);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
@@ -144,7 +131,7 @@ class Languages extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Languages the static model class
+	 * @return Countries the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
