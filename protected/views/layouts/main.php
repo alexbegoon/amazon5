@@ -8,6 +8,9 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="language" content="en">
         
+        <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/imgs/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="<?php echo Yii::app()->request->baseUrl; ?>/imgs/favicon.ico" type="image/x-icon">
+        
         <!-- Bootstrap framework -->
         <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap-select.min.css">
