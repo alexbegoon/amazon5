@@ -12,9 +12,9 @@ class LangBox extends CWidget
         
         if(Yii::app()->user->hasState('applicationLanguage'))
         {
-//            $currentLang = Yii::app()->user->getState('applicationLanguage');
+            $currentLang = Yii::app()->user->getState('applicationLanguage');
         }
         
-        $this->render('langBox', array('currentLang' => $currentLang));
+        $this->render('langbox', array('currentLang' => $currentLang));
     }
 }
