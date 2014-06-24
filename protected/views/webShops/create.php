@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Web Shops'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Web Shops'), 'url'=>array('admin')),
+        array('label'=>Yii::t('common','List') .' '. Yii::t('common','WebShops'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','WebShops'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common','Create')?> <?php echo Yii::t('common','Web Shop')?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'WebShops');?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

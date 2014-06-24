@@ -3,19 +3,19 @@
 /* @var $model WebShops */
 
 $this->breadcrumbs=array(
-	'Web Shops'=>array('index'),
+	Yii::t('common','Web Shops')=>array('index'),
 	$model->shop_name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('common','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List WebShops', 'url'=>array('index')),
-	array('label'=>'Create WebShops', 'url'=>array('create')),
-	array('label'=>'View WebShops', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage WebShops', 'url'=>array('admin')),
+        array('label'=>Yii::t('common','List') .' '. Yii::t('common','WebShops'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','WebShops'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','View') .' '. Yii::t('common','WebShops'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','WebShops'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">Update WebShops <?php echo $model->shop_name; ?></h1>
+<h1 class="text-center"><?php echo Yii::t('common','Update');?> <?php echo Yii::t('common', 'WebShops');?> <?php echo $model->shop_name; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -97,25 +97,25 @@ class WebShops extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'shop_name' => 'Shop Name',
-			'shop_code' => 'Shop Code',
-			'template_name' => 'Template Name',
-			'shop_url' => 'Shop Url',
-			'default_language' => 'Default Language',
-			'currency_id' => 'Currency',
-			'offline' => 'Offline',
-			'email' => 'Email',
-			'email_header' => 'Email Header',
-			'email_footer' => 'Email Footer',
-			'email_subject' => 'Email Subject',
-			'admin_email' => 'Admin Email',
-			'created_on' => 'Created On',
-			'created_by' => 'Created By',
-			'modified_on' => 'Modified On',
-			'modified_by' => 'Modified By',
-			'locked_on' => 'Locked On',
-			'locked_by' => 'Locked By',
+			'id' => Yii::t('common', 'ID'),
+			'shop_name' => Yii::t('common', 'Shop Name'),
+			'shop_code' => Yii::t('common', 'Shop Code'),
+			'template_name' => Yii::t('common', 'Template Name'),
+			'shop_url' => Yii::t('common', 'Shop Url'),
+			'default_language' => Yii::t('common', 'Default Language'),
+			'currency_id' => Yii::t('common', 'Currency'),
+			'offline' => Yii::t('common', 'Offline'),
+			'email' => Yii::t('common', 'Email'),
+			'email_header' => Yii::t('common', 'Email Header'),
+			'email_footer' => Yii::t('common', 'Email Footer'),
+			'email_subject' => Yii::t('common', 'Email Subject'),
+			'admin_email' => Yii::t('common', 'Admin Email'),
+			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -172,60 +172,4 @@ class WebShops extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
-        protected function beforeSave() 
-        {
-            if ($this->isNewRecord)
-            {
-                $this->created_on = new CDbExpression('NOW()');
-                $this->created_by = Yii::app()->user->getId();
-            }
-            
-            $this->modified_on = new CDbExpression('NOW()');
-            $this->modified_by = Yii::app()->user->getId();    
-            
-            $this->locked_by = 0;
-            $this->locked_on = null;
-
-            return parent::beforeSave();
-        }
-        
-        protected function beforeValidate()
-        {
-            if(!parent::beforeValidate())
-            {
-                return FALSE;
-            }
-            
-            if((int)Yii::app()->user->getId() === (int)$this->locked_by)
-            {                
-                return true;
-            }
-            
-            if((int)$this->locked_by === 0 || $this->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
-            {                
-                return true;
-            }
-            
-            $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-            $this->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
-            return FALSE;
-        }
-        
-        protected function beforeDelete() 
-        {
-            if((int)$this->locked_by === (int)Yii::app()->user->getId())
-            {
-                return true;
-            }    
-            
-            if ((int)$this->locked_by !== 0)
-            {
-                $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-                $this->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
-                return FALSE;
-            }
-
-            return parent::beforeDelete();
-        }
 }
