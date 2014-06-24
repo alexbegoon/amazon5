@@ -59,7 +59,7 @@
 	</div>
 
 	<div class="row form-group buttons">
-		<?php echo CHtml::submitButton('Search',array('class'=>'btn btn-primary')); ?>
+		<?php echo CHtml::submitButton(Yii::t('common','Search'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

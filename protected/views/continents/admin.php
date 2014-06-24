@@ -3,13 +3,13 @@
 /* @var $model Continents */
 
 $this->breadcrumbs=array(
-	'Continents'=>array('index'),
-	'Manage',
+	Yii::t('common','Continents')=>array('index'),
+	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Continents', 'url'=>array('index')),
-	array('label'=>'Create Continents', 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Continents'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Continents'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,11 +26,11 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center">Manage Continents</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Continents')?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+    <?php echo Yii::t('common','You may optionally enter a comparison operator');?>    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
+    <?php echo Yii::t('common','at the beginning of each of your search values to specify how the comparison should be done.');?>    
 </p>
 
 <?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
@@ -44,9 +44,9 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'continents-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
-        'columns'=>array(
-            'code',
-            'name',
+	'columns'=>array(
+		'code',
+		'name',
             array(
                 'name'=>'published',
                 'value'=>'$data->published==1?"Yes":"No"',
@@ -55,19 +55,19 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
                 'name'=>'created_by',
                 'value'=>'Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'lastname\')',
             ),
-            'created_on',
+		'created_on',
             array(
                 'name'=>'modified_by',
                 'value'=>'Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'lastname\')',
             ),
-            'modified_on',
-            array(
+		'modified_on',
+		array(
                 'name'=>'locked_by',
                 'type'=>'html',
                 'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"Locked by ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'lastname\')."\"></span>":""',                
             ),
             array(
-                    'class'=>'CButtonColumn',
-            ),
-        ),
+			'class'=>'CButtonColumn',
+		),
+	),
 )); ?>

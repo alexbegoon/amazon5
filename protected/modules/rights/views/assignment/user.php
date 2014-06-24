@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>Rights::getBaseUrl(),
+	Yii::t('common','Rights')=>Rights::getBaseUrl(),
 	Rights::t('core', 'Assignments')=>array('assignment/view'),
 	$model->getName(),
 ); ?>
