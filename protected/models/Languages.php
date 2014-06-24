@@ -49,7 +49,7 @@ class Languages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('lang_code','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> 'Language code must be in format \'xx-xx\', where \'x\' - letter.'),
+			array('lang_code','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> Yii::t('common','Language code must be in format \'xx-xx\', where \'x\' - letter.')),
                         array('lang_code, title, sef, image_url, image_url_thumb','required'),
 			array('published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('lang_code', 'length', 'max'=>7),
@@ -89,19 +89,19 @@ class Languages extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'lang_code' => 'Lang Code',
-			'title' => 'Title',
-			'title_native' => 'Title Native',
-			'sef' => 'Sef',
-			'image_url' => 'Image Url',
-			'image_url_thumb' => 'Image Url Thumb',
-			'published' => 'Published',
-			'created_on' => 'Created On',
-			'created_by' => 'Created By',
-			'modified_on' => 'Modified On',
-			'modified_by' => 'Modified By',
-			'locked_on' => 'Locked On',
-			'locked_by' => 'Locked By',
+			'lang_code' => Yii::t('common', 'Language Code'),
+			'title' => Yii::t('common', 'Title'),
+			'title_native' => Yii::t('common', 'Title Native'),
+			'sef' => Yii::t('common', 'Sef'),
+			'image_url' => Yii::t('common', 'Image Url'),
+			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
+			'published' => Yii::t('common', 'Published'),
+			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -160,5 +160,5 @@ class Languages extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior'
                         ),
             );
-        }
+}
 }

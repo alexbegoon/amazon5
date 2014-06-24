@@ -8,15 +8,15 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Languages', 'url'=>array('index')),
-	array('label'=>'Create Languages', 'url'=>array('create')),
-	array('label'=>'Update Languages', 'url'=>array('update', 'id'=>$model->lang_code)),
-	array('label'=>'Delete Languages', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->lang_code),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Languages', 'url'=>array('admin')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Languages'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Languages'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Languages'), 'url'=>array('update', 'id'=>$model->lang_code)),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Languages'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->lang_code),'confirm'=>Yii::t('common','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Languages'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">View Languages #<?php echo $model->lang_code; ?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'View')?> <?php echo Yii::t('common', 'Languages')?> #<?php echo $model->lang_code; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

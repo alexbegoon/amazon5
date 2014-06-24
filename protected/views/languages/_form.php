@@ -16,7 +16,6 @@
         'htmlOptions'=>array('class'=>'form-horizontal', 'role'=>'form'),
 )); 
 
-
 $image_url_list = CFileHelper::findFiles('imgs'.DIRECTORY_SEPARATOR.'flags');
 $image_url_thumb_list = (CFileHelper::findFiles('imgs'.DIRECTORY_SEPARATOR.'small_flags'));
 
@@ -24,14 +23,12 @@ $image_url_list = array_combine($image_url_list, $image_url_list);
 $image_url_thumb_list = array_combine($image_url_thumb_list, $image_url_thumb_list);
 
 ?>
-
-	<p class="note alert alert-warning">Fields with <span class="required">*</span> are required.</p>
-
+        <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 	<?php echo $form->errorSummary($model, null, null, array('class'=>'alert alert-danger')); ?>
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'lang_code',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'lang_code',array('size'=>7,'maxlength'=>7,'class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'lang_code',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'lang_code',array('class'=>'label label-danger')); ?>
 	</div>
 
@@ -71,8 +68,8 @@ $image_url_thumb_list = array_combine($image_url_thumb_list, $image_url_thumb_li
 		<?php echo $form->error($model,'published',array('class'=>'label label-danger')); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-primary')); ?>
+	<div class="row form-group buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

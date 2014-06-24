@@ -15,7 +15,7 @@
 
 	<div class="row form-group">
 		<?php echo $form->label($model,'lang_code',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'lang_code',array('size'=>7,'maxlength'=>7,'class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'lang_code',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
 	</div>
 
 	<div class="row form-group">
@@ -78,13 +78,14 @@
 		<?php echo $form->textField($model,'locked_by',array('class'=>'form-control')); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search',array('class'=>'btn btn-primary')); ?>
+	<div class="row form-group buttons">
+		<?php echo CHtml::submitButton(Yii::t('common','Search'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
 
-</div><!-- search-form -->
 </div>
 </div>
 </div>
+</div>
+<!-- search-form -->

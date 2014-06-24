@@ -3,13 +3,13 @@
 /* @var $model Languages */
 
 $this->breadcrumbs=array(
-	'Languages'=>array('index'),
-	'Manage',
+	Yii::t('common','Languages')=>array('index'),
+	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Languages', 'url'=>array('index')),
-	array('label'=>'Create Languages', 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Languages'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Languages'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,12 +26,12 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center">Manage Languages</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Languages')?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+    También puede escribir un operador de comparación 
+    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
+    al principio de cada uno de los valores de búsqueda para especificar cómo se debe hacer la comparación.</p>
 
 <?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
@@ -46,39 +46,20 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'lang_code',
-                'title',
-                'title_native',
-                'sef',
-                array(
-                    'name'=>'image_url',
-                    'type'=>'html',
-                    'value'=>'CHtml::image(Yii::app()->createUrl($data->image_url),$data->title)',
-                ),
-                array(
-                    'name'=>'image_url_thumb',
-                    'type'=>'html',
-                    'value'=>'CHtml::image(Yii::app()->createUrl($data->image_url_thumb),$data->title)',
-                ),
-                array(
-                    'name'=>'published',
-                    'value'=>'$data->published==1?"Yes":"No"',
-                ),
-                array(
-                    'name'=>'created_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'lastname\')',
-                ),
-                'created_on',
-
-                array(
-                    'name'=>'modified_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'lastname\')',
-                ),
-                'modified_on',
-                array(
-                    'name'=>'locked_by',
-                    'type'=>'html',
-                    'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"Locked by ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'lastname\')."\"></span>":""',                
-                ),
+		'title',
+		'title_native',
+		'sef',
+		'image_url',
+		'image_url_thumb',
+		/*
+		'published',
+		'created_on',
+		'created_by',
+		'modified_on',
+		'modified_by',
+		'locked_on',
+		'locked_by',
+		*/
 		array(
 			'class'=>'CButtonColumn',
 		),
