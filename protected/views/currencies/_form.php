@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note alert alert-warning">Fields with <span class="required">*</span> are required.</p>
+    <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
 	<?php echo $form->errorSummary($model, null, null, array('class'=>'alert alert-danger')); ?>
 
@@ -91,44 +91,9 @@
 		<?php echo $form->error($model,'published',array('class'=>'label label-danger')); ?>
 	</div>
 
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'created_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'created_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'created_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'created_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'created_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'created_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'modified_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'modified_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'modified_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'modified_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'modified_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'modified_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'locked_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'locked_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'locked_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'locked_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'locked_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'locked_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
+	
 	<div class="row form-group buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn btn-primary')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

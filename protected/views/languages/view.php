@@ -3,7 +3,7 @@
 /* @var $model Languages */
 
 $this->breadcrumbs=array(
-	'Languages'=>array('index'),
+	Yii::t('common','Languages')=>array('index'),
 	$model->title,
 );
 

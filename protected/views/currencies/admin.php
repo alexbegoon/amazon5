@@ -3,13 +3,13 @@
 /* @var $model Currencies */
 
 $this->breadcrumbs=array(
-	'Currencies'=>array('index'),
-	'Manage',
+	Yii::t('common','Currencies')=>array('index'),
+	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Currencies', 'url'=>array('index')),
-	array('label'=>'Create Currencies', 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Currencies'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Currencies'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,11 +26,11 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center">Manage Currencies</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Currencies')?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+    <?php echo Yii::t('common','You may optionally enter a comparison operator');?>    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
+    <?php echo Yii::t('common','at the beginning of each of your search values to specify how the comparison should be done.');?>    
 </p>
 
 <?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
@@ -46,37 +46,26 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-                'currency_name',
-                'currency_code_2',
-                'currency_code_3',
-                'currency_numeric_code',
-                'currency_exchange_rate',
-                'currency_symbol',
-                'currency_decimal_place',
-                'currency_decimal_symbol',
-                'currency_thousands',
-                'currency_positive_style',
-                'currency_negative_style',
-                array(
-                    'name'=>'published',
-                    'value'=>'$data->published==1?"Yes":"No"',
-                ),
-                array(
-                    'name'=>'created_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'lastname\')',
-                ),
-                'created_on',
-
-                array(
-                    'name'=>'modified_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'lastname\')',
-                ),
-                'modified_on',
-                array(
-                    'name'=>'locked_by',
-                    'type'=>'html',
-                    'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"Locked by ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'lastname\')."\"></span>":""',                
-                ),
+		'currency_name',
+		'currency_code_2',
+		'currency_code_3',
+		'currency_numeric_code',
+		'currency_exchange_rate',
+		/*
+		'currency_symbol',
+		'currency_decimal_place',
+		'currency_decimal_symbol',
+		'currency_thousands',
+		'currency_positive_style',
+		'currency_negative_style',
+		'published',
+		'created_on',
+		'created_by',
+		'modified_on',
+		'modified_by',
+		'locked_on',
+		'locked_by',
+		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

@@ -91,25 +91,25 @@ class Currencies extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'currency_name' => 'Currency Name',
-			'currency_code_2' => 'Currency Code 2',
-			'currency_code_3' => 'Currency Code 3',
-			'currency_numeric_code' => 'Currency Numeric Code',
-			'currency_exchange_rate' => 'Currency Exchange Rate',
-			'currency_symbol' => 'Currency Symbol',
-			'currency_decimal_place' => 'Currency Decimal Place',
-			'currency_decimal_symbol' => 'Currency Decimal Symbol',
-			'currency_thousands' => 'Currency Thousands',
-			'currency_positive_style' => 'Currency Positive Style',
-			'currency_negative_style' => 'Currency Negative Style',
-			'published' => 'Published',
-			'created_on' => 'Created On',
-			'created_by' => 'Created By',
-			'modified_on' => 'Modified On',
-			'modified_by' => 'Modified By',
-			'locked_on' => 'Locked On',
-			'locked_by' => 'Locked By',
+			'id' => Yii::t('common', 'ID'),
+			'currency_name' => Yii::t('common', 'Currency Name'),
+			'currency_code_2' => Yii::t('common', 'Currency Code 2'),
+			'currency_code_3' => Yii::t('common', 'Currency Code 3'),
+			'currency_numeric_code' => Yii::t('common', 'Currency Numeric Code'),
+			'currency_exchange_rate' => Yii::t('common', 'Currency Exchange Rate'),
+			'currency_symbol' => Yii::t('common', 'Currency Symbol'),
+			'currency_decimal_place' => Yii::t('common', 'Currency Decimal Place'),
+			'currency_decimal_symbol' => Yii::t('common', 'Currency Decimal Symbol'),
+			'currency_thousands' => Yii::t('common', 'Currency Thousands'),
+			'currency_positive_style' => Yii::t('common', 'Currency Positive Style'),
+			'currency_negative_style' => Yii::t('common', 'Currency Negative Style'),
+			'published' => Yii::t('common', 'Published'),
+			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -167,59 +167,10 @@ class Currencies extends CActiveRecord
 		return parent::model($className);
 	}
         
-        protected function beforeSave() 
+        public function behaviors()
         {
-            if ($this->isNewRecord)
-            {
-                $this->created_on = new CDbExpression('NOW()');
-                $this->created_by = Yii::app()->user->getId();
-            }
-            
-            $this->modified_on = new CDbExpression('NOW()');
-            $this->modified_by = Yii::app()->user->getId();    
-            
-            $this->locked_by = 0;
-            $this->locked_on = null;
-
-            return parent::beforeSave();
-        }
-        
-        protected function beforeValidate()
-        {
-            if(!parent::beforeValidate())
-            {
-                return FALSE;
-            }
-            
-            if((int)Yii::app()->user->getId() === (int)$this->locked_by)
-            {                
-                return true;
-            }
-            
-            if((int)$this->locked_by === 0 || $this->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
-            {                
-                return true;
-            }
-            
-            $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-            $this->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
-            return FALSE;
-        }
-        
-        protected function beforeDelete() 
-        {
-            if((int)$this->locked_by === (int)Yii::app()->user->getId())
-            {
-                return true;
-            }    
-            
-            if ((int)$this->locked_by !== 0)
-            {
-                $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-                $this->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
-                return FALSE;
-            }
-
-            return parent::beforeDelete();
+          return array( 'CBuyinArBehavior' => array(
+                'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
+              ));
         }
 }

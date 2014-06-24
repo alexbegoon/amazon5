@@ -3,20 +3,20 @@
 /* @var $model Currencies */
 
 $this->breadcrumbs=array(
-	'Currencies'=>array('index'),
+	Yii::t('common','Currencies')=>array('index'),
 	$model->currency_name,
 );
 
 $this->menu=array(
-	array('label'=>'List Currencies', 'url'=>array('index')),
-	array('label'=>'Create Currencies', 'url'=>array('create')),
-	array('label'=>'Update Currencies', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Currencies', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Currencies', 'url'=>array('admin')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Currencies'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Currencies'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Currencies'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Currencies'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('common','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Currencies'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">View Currencies #<?php echo $model->currency_name; ?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'View')?> <?php echo Yii::t('common', 'Currencies')?> <?php echo $model->currency_name; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

@@ -3,16 +3,16 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Currencies',
+	Yii::t('common','Currencies'),
 );
 
 $this->menu=array(
-	array('label'=>'Create Currencies', 'url'=>array('create')),
-	array('label'=>'Manage Currencies', 'url'=>array('admin')),
+        array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Currencies'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Currencies'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">Currencies</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Currencies')?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
