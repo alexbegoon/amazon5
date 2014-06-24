@@ -3,13 +3,13 @@
 /* @var $model WebShops */
 
 $this->breadcrumbs=array(
-	'Web Shops'=>array('index'),
-	'Manage',
+	Yii::t('common','Web Shops')=>array('index'),
+	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List WebShops', 'url'=>array('index')),
-	array('label'=>'Create WebShops', 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '.Yii::t('common','Web Shops'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '.Yii::t('common','Web Shops'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,14 +26,14 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center">Manage Web Shops</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage')?> <?php echo Yii::t('common','Web Shops')?></h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
 or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
 </p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,

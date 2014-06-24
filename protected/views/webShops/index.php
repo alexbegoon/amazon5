@@ -3,16 +3,16 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Web Shops',
+	Yii::t('common','Web Shops'),
 );
 
 $this->menu=array(
-	array('label'=>'Create WebShops', 'url'=>array('create')),
-	array('label'=>'Manage WebShops', 'url'=>array('admin')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Web Shops'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Web Shops'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">Web Shops</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Web Shops')?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

@@ -11,7 +11,7 @@ $this->menu=array(
 	array('label'=>'List WebShops', 'url'=>array('index')),
 	array('label'=>'Create WebShops', 'url'=>array('create')),
 	array('label'=>'Update WebShops', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete WebShops', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Delete WebShops', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('common','Are you sure you want to delete this item?'))),
 	array('label'=>'Manage WebShops', 'url'=>array('admin')),
 );
 ?>

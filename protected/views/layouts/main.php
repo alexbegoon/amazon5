@@ -44,12 +44,13 @@ Yii::app()->clientScript->registerCoreScript('jquery');
             $this->widget('zii.widgets.CMenu', array(
                 'htmlOptions' => array('class' => 'nav navbar-nav navbar-right'),
                 'items' => array(
-                    array('label' => 'Dashboard', 'url' => array('/dashboard/index'), 'visible' => !Yii::app()->user->isGuest),
-                    array('label' => 'Users', 'url' => array('/user'), 'visible' => !Yii::app()->user->isGuest), 
-                    array('label' => Yii::t('app', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
-                    array('label' => Yii::t('app', 'Rights'), 'url' => array('/rights'), 'visible' => !Yii::app()->user->isGuest),
-                    array('label' => Yii::t('app', 'Logout') . ' (' . Yii::app()->user->name . ')', 'url' => array('/user/logout'), 'visible' => !Yii::app()->user->isGuest)
-                ,
+                    array('label' => Yii::t('common','Dashboard'), 'url' => array('/dashboard/index'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' =>Yii::t('common','Users'), 'url' => array('/user'), 'visible' => !Yii::app()->user->isGuest), 
+                    array('label' => Yii::t('common', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
+                    array('label' => Yii::t('common', 'Rights'), 'url' => array('/rights'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => Yii::t('common','Language'), 'url'=>array('#'), 'linkOptions'=>array('onclick'=>'$("#mydialog").dialog("open"); return false;')),
+                    array('label' => Yii::t('common', 'Logout') . ' (' . Yii::app()->user->name . ')', 'url' => array('/user/logout'), 'visible' => !Yii::app()->user->isGuest),
+                    
                 ),
             ));
             ?>
@@ -81,7 +82,22 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <div id="footer">
         </div><!-- footer -->
 </div>
+<?php 
 
+$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+    'id'=>'mydialog',
+    // additional javascript options for the dialog plugin
+    'options'=>array(
+        'title'=>Yii::t('common','Language'),
+        'autoOpen'=>false,
+    ),
+));
+    echo Yii::t('common','Select language');
+    $this->widget( 'LangBox'
+                        );
+
+$this->endWidget('zii.widgets.jui.CJuiDialog');
+?>
 <!-- JQuery -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>-->
 <!-- End JQuery -->

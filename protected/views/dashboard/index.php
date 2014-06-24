@@ -2,10 +2,10 @@
 /* @var $this DashboardController */
 
 $this->breadcrumbs=array(
-	'Dashboard',
+	Yii::t('common','Dashboard'),
 );
 ?>
-<h1 class="text-center">Dashboard</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Dashboard');?></h1>
 
 <?php $this->widget('TilesWidget',array(
     
@@ -13,47 +13,52 @@ $this->breadcrumbs=array(
                     array(
                         'url'=>'user',
                         'glyphicon'=>'glyphicon-user',
-                        'label'=>'Users',
+                        'label'=>Yii::t('common','Users'),
                         ),
                     array(
                         'url'=>'rights',
                         'glyphicon'=>'glyphicon-eye-open',
-                        'label'=>'Rights',
+                        'label'=>Yii::t('common','Rights'),
                         ),
                     array(
                         'url'=>'orders',
                         'glyphicon'=>'glyphicon-shopping-cart',
-                        'label'=>'Orders',
+                        'label'=>Yii::t('common','Orders'),
                         ),
                     array(
                         'url'=>'languages',
                         'glyphicon'=>'glyphicon-flag',
-                        'label'=>'Languages',
+                        'label'=>Yii::t('common','Languages'),
                         ),
                     array(
                         'url'=>'webShops',
                         'glyphicon'=>'glyphicon-home',
-                        'label'=>'Web Shops',
+                        'label'=>Yii::t('common','Web Shops'),
                         ),
                     array(
                         'url'=>'currencies',
                         'glyphicon'=>'glyphicon-euro',
-                        'label'=>'Currencies',
+                        'label'=>Yii::t('common','Currencies'),
                         ),
                     array(
                         'url'=>'continents',
                         'glyphicon'=>'glyphicon-globe',
-                        'label'=>'Continents',
+                        'label'=>Yii::t('common','Continents'),
                         ),
                     array(
                         'url'=>'countries',
                         'glyphicon'=>'glyphicon-globe',
-                        'label'=>'Countries',
+                        'label'=>Yii::t('common','Countries'),
                         ),
                     array(
                         'url'=>'states',
                         'glyphicon'=>'glyphicon-globe',
-                        'label'=>'States',
+                        'label'=>Yii::t('common','States'),
+                        ),
+                    array(
+                        'url'=>'manufacturers',
+                        'glyphicon'=>'glyphicon-list-alt',
+                        'label'=>Yii::t('common','Manufacturers'),
                         ),
                 ),
 ))?>

@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{manufacturers}}':
  * @property integer $id
  * @property integer $hits
+ * @property integer $published
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -35,11 +36,11 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hits, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('hits, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hits, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, hits, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,7 +52,7 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
+			'translations' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
 			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
 		);
 	}
@@ -62,14 +63,15 @@ class Manufacturers extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'hits' => 'Hits',
-			'created_on' => 'Created On',
-			'created_by' => 'Created By',
-			'modified_on' => 'Modified On',
-			'modified_by' => 'Modified By',
-			'locked_on' => 'Locked On',
-			'locked_by' => 'Locked By',
+			'id' => Yii::t('manufacturers', 'ID'),
+			'hits' => Yii::t('manufacturers', 'Hits'),
+			'published' => Yii::t('manufacturers', 'Published'),
+			'created_on' => Yii::t('manufacturers', 'Created On'),
+			'created_by' => Yii::t('manufacturers', 'Created By'),
+			'modified_on' => Yii::t('manufacturers', 'Modified On'),
+			'modified_by' => Yii::t('manufacturers', 'Modified By'),
+			'locked_on' => Yii::t('manufacturers', 'Locked On'),
+			'locked_by' => Yii::t('manufacturers', 'Locked By'),
 		);
 	}
 
@@ -93,6 +95,7 @@ class Manufacturers extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('hits',$this->hits);
+		$criteria->compare('published',$this->published);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -116,59 +119,12 @@ class Manufacturers extends CActiveRecord
 		return parent::model($className);
 	}
         
-        protected function beforeSave() 
-        {
-            if ($this->isNewRecord)
-            {
-                $this->created_on = new CDbExpression('NOW()');
-                $this->created_by = Yii::app()->user->getId();
-            }
-            
-            $this->modified_on = new CDbExpression('NOW()');
-            $this->modified_by = Yii::app()->user->getId();    
-            
-            $this->locked_by = 0;
-            $this->locked_on = null;
-
-            return parent::beforeSave();
-        }
         
-        protected function beforeValidate()
-        {
-            if(!parent::beforeValidate())
-            {
-                return FALSE;
-            }
-            
-            if((int)Yii::app()->user->getId() === (int)$this->locked_by)
-            {                
-                return true;
-            }
-            
-            if((int)$this->locked_by === 0 || $this->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
-            {                
-                return true;
-            }
-            
-            $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-            $this->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
-            return FALSE;
-        }
         
-        protected function beforeDelete() 
+        public function behaviors()
         {
-            if((int)$this->locked_by === (int)Yii::app()->user->getId())
-            {
-                return true;
-            }    
-            
-            if ((int)$this->locked_by !== 0)
-            {
-                $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-                $this->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
-                return FALSE;
-            }
-
-            return parent::beforeDelete();
+          return array( 'CBuyinArBehavior' => array(
+                'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
+              ));
         }
 }
