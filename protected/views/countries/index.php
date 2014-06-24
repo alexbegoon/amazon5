@@ -3,16 +3,16 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Countries',
+	Yii::t('common','Countries'),
 );
 
 $this->menu=array(
-	array('label'=>'Create Countries', 'url'=>array('create')),
-	array('label'=>'Manage Countries', 'url'=>array('admin')),
+        array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Countries'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Countries'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center">Countries</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Countries')?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
