@@ -77,7 +77,7 @@ class Countries extends CActiveRecord
 			'code' => Yii::t('common', 'Code'),
 			'name' => Yii::t('common', 'Name'),
 			'full_name' => Yii::t('common', 'Full Name'),
-			'iso3' => Yii::t('common', 'Iso3'),
+			'iso3' => Yii::t('common', 'ISO3'),
 			'number' => Yii::t('common', 'Number'),
 			'continent_code' => Yii::t('common', 'Continent Code'),
 			'published' => Yii::t('common', 'Published'),
