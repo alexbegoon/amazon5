@@ -60,19 +60,19 @@ $('.search-form form').submit(function(){
                 ),
                 array(
                     'name'=>'created_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->created_by)->profile->getAttribute(\'lastname\')',
+                    'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
                 ),
 		'created_on',
 
                 array(
                     'name'=>'modified_by',
-                    'value'=>'Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->modified_by)->profile->getAttribute(\'lastname\')',
+                    'value'=>'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
                 ),
 		'modified_on',
 		array(
                     'name'=>'locked_by',
                     'type'=>'html',
-                    'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"".Yii::t(\'common\',\'Locked By\')." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'firstname\') ." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->profile->getAttribute(\'lastname\')."\"></span>":""',                
+                    'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"".Yii::t(\'common\',\'Locked By\')." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->getFullName()."\"></span>":""',                
                 ),
 		array(
 			'class'=>'CButtonColumn',

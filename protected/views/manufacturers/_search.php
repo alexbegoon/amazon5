@@ -24,6 +24,16 @@
 	</div>
 
 	<div class="row form-group">
+		<?php echo $form->label($model,'manufacturer_email',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'manufacturer_email',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->label($model,'manufacturer_url',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'manufacturer_url',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+	</div>
+
+	<div class="row form-group">
 		<?php echo $form->label($model,'published',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'published',array('class'=>'form-control')); ?>
 	</div>
@@ -59,7 +69,7 @@
 	</div>
 
 	<div class="row form-group buttons">
-		<?php echo CHtml::submitButton('Search',array('class'=>'btn btn-primary')); ?>
+		<?php echo CHtml::submitButton(Yii::t('common','Search'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

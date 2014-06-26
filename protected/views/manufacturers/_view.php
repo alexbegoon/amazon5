@@ -13,6 +13,14 @@
 	<?php echo CHtml::encode($data->hits); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('manufacturer_email')); ?>:</b>
+	<?php echo CHtml::encode($data->manufacturer_email); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('manufacturer_url')); ?>:</b>
+	<?php echo CHtml::encode($data->manufacturer_url); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('published')); ?>:</b>
 	<?php echo CHtml::encode($data->published); ?>
 	<br />
@@ -25,6 +33,7 @@
 	<?php echo CHtml::encode($data->created_by); ?>
 	<br />
 
+	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('modified_on')); ?>:</b>
 	<?php echo CHtml::encode($data->modified_on); ?>
 	<br />
@@ -33,7 +42,6 @@
 	<?php echo CHtml::encode($data->modified_by); ?>
 	<br />
 
-	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('locked_on')); ?>:</b>
 	<?php echo CHtml::encode($data->locked_on); ?>
 	<br />

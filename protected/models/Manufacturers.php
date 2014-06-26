@@ -6,6 +6,8 @@
  * The followings are the available columns in table '{{manufacturers}}':
  * @property integer $id
  * @property integer $hits
+ * @property string $manufacturer_email
+ * @property string $manufacturer_url
  * @property integer $published
  * @property string $created_on
  * @property integer $created_by
@@ -37,10 +39,12 @@ class Manufacturers extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('hits, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('manufacturer_email, manufacturer_url', 'length', 'max'=>255),
+			array('manufacturer_email','email'),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hits, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +56,7 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'translations' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
+			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
 			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
 		);
 	}
@@ -63,15 +67,17 @@ class Manufacturers extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Yii::t('manufacturers', 'ID'),
-			'hits' => Yii::t('manufacturers', 'Hits'),
-			'published' => Yii::t('manufacturers', 'Published'),
-			'created_on' => Yii::t('manufacturers', 'Created On'),
-			'created_by' => Yii::t('manufacturers', 'Created By'),
-			'modified_on' => Yii::t('manufacturers', 'Modified On'),
-			'modified_by' => Yii::t('manufacturers', 'Modified By'),
-			'locked_on' => Yii::t('manufacturers', 'Locked On'),
-			'locked_by' => Yii::t('manufacturers', 'Locked By'),
+			'id' => Yii::t('common', 'ID'),
+			'hits' => Yii::t('common', 'Hits'),
+			'manufacturer_email' => Yii::t('common', 'Manufacturer Email'),
+			'manufacturer_url' => Yii::t('common', 'Manufacturer URL'),
+			'published' => Yii::t('common', 'Published'),
+			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -95,6 +101,8 @@ class Manufacturers extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('hits',$this->hits);
+		$criteria->compare('manufacturer_email',$this->manufacturer_email,true);
+		$criteria->compare('manufacturer_url',$this->manufacturer_url,true);
 		$criteria->compare('published',$this->published);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
@@ -118,8 +126,6 @@ class Manufacturers extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
-        
         
         public function behaviors()
         {

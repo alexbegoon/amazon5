@@ -7,9 +7,7 @@
  * @property integer $manufacturer_id
  * @property string $language_code
  * @property string $manufacturer_name
- * @property string $manufacturer_email
  * @property string $manufacturer_desc
- * @property string $manufacturer_url
  * @property string $slug
  * @property string $created_on
  * @property integer $created_by
@@ -39,12 +37,11 @@ class ManufacturerTranslations extends CActiveRecord
 			array('manufacturer_id, language_code, manufacturer_name', 'required'),
 			array('manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('language_code', 'length', 'max'=>5),
-			array('manufacturer_email', 'email'),
-			array('manufacturer_name, manufacturer_email, manufacturer_url, slug', 'length', 'max'=>255),
+			array('manufacturer_name, slug', 'length', 'max'=>255),
 			array('manufacturer_desc, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('manufacturer_id, language_code, manufacturer_name, manufacturer_email, manufacturer_desc, manufacturer_url, slug, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('manufacturer_id, language_code, manufacturer_name, manufacturer_desc, slug, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,19 +62,17 @@ class ManufacturerTranslations extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'manufacturer_id' => Yii::t('manufacturers', 'Manufacturer ID'),
-			'language_code' => Yii::t('manufacturers', 'Language Code'),
-			'manufacturer_name' => Yii::t('manufacturers', 'Manufacturer Name'),
-			'manufacturer_email' => Yii::t('manufacturers', 'Manufacturer Email'),
-			'manufacturer_desc' => Yii::t('manufacturers', 'Manufacturer Desc'),
-			'manufacturer_url' => Yii::t('manufacturers', 'Manufacturer Url'),
-			'slug' => Yii::t('manufacturers', 'Slug'),
-			'created_on' => Yii::t('manufacturers', 'Created On'),
-			'created_by' => Yii::t('manufacturers', 'Created By'),
-			'modified_on' => Yii::t('manufacturers', 'Modified On'),
-			'modified_by' => Yii::t('manufacturers', 'Modified By'),
-			'locked_on' => Yii::t('manufacturers', 'Locked On'),
-			'locked_by' => Yii::t('manufacturers', 'Locked By'),
+			'manufacturer_id' => Yii::t('common', 'Manufacturer ID'),
+			'language_code' => Yii::t('common', 'Language Code'),
+			'manufacturer_name' => Yii::t('common', 'Manufacturer Name'),
+			'manufacturer_desc' => Yii::t('common', 'Manufacturer Desc'),
+			'slug' => Yii::t('common', 'Slug'),
+			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -102,9 +97,7 @@ class ManufacturerTranslations extends CActiveRecord
 		$criteria->compare('manufacturer_id',$this->manufacturer_id);
 		$criteria->compare('language_code',$this->language_code,true);
 		$criteria->compare('manufacturer_name',$this->manufacturer_name,true);
-		$criteria->compare('manufacturer_email',$this->manufacturer_email,true);
 		$criteria->compare('manufacturer_desc',$this->manufacturer_desc,true);
-		$criteria->compare('manufacturer_url',$this->manufacturer_url,true);
 		$criteria->compare('slug',$this->slug,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
@@ -128,62 +121,6 @@ class ManufacturerTranslations extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
-//        protected function beforeSave() 
-//        {
-//            if ($this->isNewRecord)
-//            {
-//                $this->created_on = new CDbExpression('NOW()');
-//                $this->created_by = Yii::app()->user->getId();
-//            }
-//            
-//            $this->modified_on = new CDbExpression('NOW()');
-//            $this->modified_by = Yii::app()->user->getId();    
-//            
-//            $this->locked_by = 0;
-//            $this->locked_on = null;
-//
-//            return parent::beforeSave();
-//        }
-//        
-//        protected function beforeValidate()
-//        {
-//            if(!parent::beforeValidate())
-//            {
-//                return FALSE;
-//            }
-//            
-//            if((int)Yii::app()->user->getId() === (int)$this->locked_by)
-//            {                
-//                return true;
-//            }
-//            
-//            if((int)$this->locked_by === 0 || $this->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
-//            {                
-//                return true;
-//            }
-//            
-//            $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-//            $this->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
-//            return FALSE;
-//        }
-//        
-//        protected function beforeDelete() 
-//        {
-//            if((int)$this->locked_by === (int)Yii::app()->user->getId())
-//            {
-//                return true;
-//            }    
-//            
-//            if ((int)$this->locked_by !== 0)
-//            {
-//                $username = Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('firstname') ." ". Yii::app()->getModule('user')->user($this->locked_by)->profile->getAttribute('lastname');
-//                $this->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
-//                return FALSE;
-//            }
-//
-//            return parent::beforeDelete();
-//        }
         
         public function behaviors()
         {

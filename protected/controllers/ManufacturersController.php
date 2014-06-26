@@ -66,10 +66,10 @@ class ManufacturersController extends Controller
 	{
 		$model=new Manufacturers;
                 
-                $manufacturerTranslations=new ManufacturerTranslations;
+                $modelTranslation=new ManufacturerTranslations;
                 
-		 $this->performAjaxValidation($manufacturerTranslations);
-		 $this->performAjaxValidation($model);
+                $this->performAjaxValidation(array($model, $modelTranslation));
+		 
 
 		if(isset($_POST['Manufacturers'],$_POST['ManufacturerTranslations']))
 		{
@@ -77,16 +77,16 @@ class ManufacturersController extends Controller
                         $transaction = Yii::app()->db->beginTransaction();
                         
 			$model->attributes=$_POST['Manufacturers'];
-			$manufacturerTranslations->attributes=$_POST['ManufacturerTranslations'];
+			$modelTranslation->attributes=$_POST['ManufacturerTranslations'];
                         
                         if($model->save())
                         {
-                            $manufacturerTranslations->setPrimaryKey(array(
+                            $modelTranslation->setPrimaryKey(array(
                                 'manufacturer_id'=>$model->primaryKey,
                                 'language_code'=> $_POST['ManufacturerTranslations']['language_code'],                                
                                     ));
                             
-                            if($manufacturerTranslations->save())
+                            if($modelTranslation->save())
                             {
                                 $transaction->commit();
                                 $this->redirect(array('view','id'=>$model->id));
@@ -104,7 +104,7 @@ class ManufacturersController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
-                        'manufacturerTranslations'=>$manufacturerTranslations
+                        'modelTranslation'=>$modelTranslation
 		));
 	}
 
@@ -116,7 +116,7 @@ class ManufacturersController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-                $manufacturerTranslations=new ManufacturerTranslations;
+                $modelTranslation=new ManufacturerTranslations;
                 
                 if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
                 $model->updateByPk($id,array(
@@ -136,7 +136,7 @@ class ManufacturersController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
-                        'manufacturerTranslations'=>$manufacturerTranslations,
+                        'modelTranslation'=>$modelTranslation,
 		));
 	}
 

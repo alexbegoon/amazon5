@@ -10,90 +10,80 @@
  */
 class CBuyinArBehavior extends CActiveRecordBehavior
 {        
-        public function beforeSave($event) 
+    public function beforeSave($event) 
+    {
+        if($this->getOwner()->hasAttribute('created_on') && 
+           $this->getOwner()->hasAttribute('created_by') &&
+           $this->getOwner()->hasAttribute('modified_on') && 
+           $this->getOwner()->hasAttribute('modified_by') &&
+           $this->getOwner()->hasAttribute('locked_by') && 
+           $this->getOwner()->hasAttribute('locked_on'))
         {
-            if($this->getOwner()->hasAttribute('created_on') && 
-               $this->getOwner()->hasAttribute('created_by') &&
-               $this->getOwner()->hasAttribute('modified_on') && 
-               $this->getOwner()->hasAttribute('modified_by') &&
-               $this->getOwner()->hasAttribute('locked_by') && 
-               $this->getOwner()->hasAttribute('locked_on'))
+            if ($this->getOwner()->getIsNewRecord())
             {
-                if ($this->getOwner()->getIsNewRecord())
-                {
-                    $this->getOwner()->created_on = new CDbExpression('NOW()');
-                    $this->getOwner()->created_by = Yii::app()->user->getId();
-                }
-
-                $this->getOwner()->modified_on = new CDbExpression('NOW()');
-                $this->getOwner()->modified_by = Yii::app()->user->getId();    
-
-                $this->getOwner()->locked_by = 0;
-                $this->getOwner()->locked_on = null;
+                $this->getOwner()->created_on = new CDbExpression('NOW()');
+                $this->getOwner()->created_by = Yii::app()->user->getId();
             }
+
+            $this->getOwner()->modified_on = new CDbExpression('NOW()');
+            $this->getOwner()->modified_by = Yii::app()->user->getId();    
+
+            $this->getOwner()->locked_by = 0;
+            $this->getOwner()->locked_on = null;
         }
-        
-        public function beforeValidate($event)
-        {            
-            if($this->getOwner()->hasAttribute('created_on') && 
-               $this->getOwner()->hasAttribute('created_by') &&
-               $this->getOwner()->hasAttribute('modified_on') && 
-               $this->getOwner()->hasAttribute('modified_by') &&
-               $this->getOwner()->hasAttribute('locked_by') && 
-               $this->getOwner()->hasAttribute('locked_on'))
+    }
+
+    public function beforeValidate($event)
+    {            
+        if($this->getOwner()->hasAttribute('created_on') && 
+           $this->getOwner()->hasAttribute('created_by') &&
+           $this->getOwner()->hasAttribute('modified_on') && 
+           $this->getOwner()->hasAttribute('modified_by') &&
+           $this->getOwner()->hasAttribute('locked_by') && 
+           $this->getOwner()->hasAttribute('locked_on'))
+        {
+            if((int)Yii::app()->user->getId() === (int)$this->getOwner()->locked_by)
+            {                
+                return true;
+            }
+
+            if((int)$this->getOwner()->locked_by === 0 || $this->getOwner()->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
+            {                
+                return true;
+            }
+
+            $username = Yii::app()->getModule('user')
+                                      ->user($this->getOwner()->locked_by)
+                                      ->getFullName();
+            $this->getOwner()->addError('locked_by_user',
+                    Yii::t('common','You can not edit this. Record locked by {username}.',array('{username}'=>$username)));
+            return FALSE;
+        }
+    }
+
+    public function beforeDelete() 
+    {
+        if($this->getOwner()->hasAttribute('created_on') && 
+           $this->getOwner()->hasAttribute('created_by') &&
+           $this->getOwner()->hasAttribute('modified_on') && 
+           $this->getOwner()->hasAttribute('modified_by') &&
+           $this->getOwner()->hasAttribute('locked_by') && 
+           $this->getOwner()->hasAttribute('locked_on'))
+        {
+            if((int)$this->getOwner()->locked_by === (int)Yii::app()->user->getId())
             {
-                if((int)Yii::app()->user->getId() === (int)$this->getOwner()->locked_by)
-                {                
-                    return true;
-                }
+                return true;
+            }    
 
-                if((int)$this->getOwner()->locked_by === 0 || $this->getOwner()->locked_on < date('Y-m-d H:i:s', time() - 3 * 60 * 60))
-                {                
-                    return true;
-                }
-
+            if ((int)$this->getOwner()->locked_by !== 0)
+            {
                 $username = Yii::app()->getModule('user')
-                                          ->user($this->getOwner()->locked_by)
-                                          ->profile
-                                          ->getAttribute('firstname') 
-                                                    ." ". Yii::app()
-                                          ->getModule('user')
-                                          ->user($this->getOwner()->locked_by)
-                                          ->profile
-                                          ->getAttribute('lastname');
-                $this->getOwner()->addError('locked_by_user','You can not edit this. Record locked by '.$username.'.');
+                                      ->user($this->getOwner()->locked_by)
+                                      ->getFullName();
+                $this->getOwner()->addError('locked_by_user',
+                        Yii::t('common','You can not delete this. Record locked by {username}.',array('{username}'=>$username)));
                 return FALSE;
             }
         }
-        
-        public function beforeDelete($event) 
-        {
-            if($this->getOwner()->hasAttribute('created_on') && 
-               $this->getOwner()->hasAttribute('created_by') &&
-               $this->getOwner()->hasAttribute('modified_on') && 
-               $this->getOwner()->hasAttribute('modified_by') &&
-               $this->getOwner()->hasAttribute('locked_by') && 
-               $this->getOwner()->hasAttribute('locked_on'))
-            {
-                if((int)$this->getOwner()->locked_by === (int)Yii::app()->user->getId())
-                {
-                    return true;
-                }    
-
-                if ((int)$this->getOwner()->locked_by !== 0)
-                {
-                    $username = Yii::app()->getModule('user')
-                                          ->user($this->getOwner()->locked_by)
-                                          ->profile
-                                          ->getAttribute('firstname') 
-                                                    ." ". Yii::app()
-                                          ->getModule('user')
-                                          ->user($this->getOwner()->locked_by)
-                                          ->profile
-                                          ->getAttribute('lastname');
-                    $this->getOwner()->addError('locked_by_user','You can not delete this. Record locked by '.$username.'.');
-                    return FALSE;
-                }
-            }
-        }
+    }
 }

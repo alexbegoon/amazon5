@@ -3,13 +3,13 @@
 /* @var $model Manufacturers */
 
 $this->breadcrumbs=array(
-	'Manufacturers'=>array('index'),
-	'Manage',
+	Yii::t('common','Manufacturers')=>array('index'),
+	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Manufacturers', 'url'=>array('index')),
-	array('label'=>'Create Manufacturers', 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Manufacturers'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Manufacturers'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,11 +26,11 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center">Manage Manufacturers</h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Manufacturers')?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+    <?php echo Yii::t('common','You may optionally enter a comparison operator');?>    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
+    <?php echo Yii::t('common','at the beginning of each of your search values to specify how the comparison should be done.');?>    
 </p>
 
 <?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
@@ -47,11 +47,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'columns'=>array(
 		'id',
 		'hits',
+		'manufacturer_email',
+		'manufacturer_url',
 		'published',
 		'created_on',
+		/*
 		'created_by',
 		'modified_on',
-		/*
 		'modified_by',
 		'locked_on',
 		'locked_by',

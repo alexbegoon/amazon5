@@ -203,4 +203,10 @@ class User extends CActiveRecord
         }
         return parent::afterSave();
     }
+    
+    public function getFullName()
+    {
+        return $this->profile->getAttribute('firstname') . ' ' .
+               $this->profile->getAttribute('lastname');
+    }
 }

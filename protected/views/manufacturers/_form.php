@@ -14,39 +14,45 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>true,
 )); ?>
-	<p class="note alert alert-warning">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary(array($model, $manufacturerTranslations), null, null, array('class'=>'alert alert-danger')); ?>
+    <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
+
+	<?php echo $form->errorSummary(array($model, $modelTranslation), null, null, array('class'=>'alert alert-danger')); ?>
 
 	<div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'manufacturer_name',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($manufacturerTranslations,'manufacturer_name',array('class'=>'form-control','maxlength'=>255)); ?>
-		<?php echo $form->error($manufacturerTranslations,'manufacturer_name',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($modelTranslation,'language_code',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($modelTranslation,'language_code',CHtml::listData(Languages::model()->findAll(array('order'=>'title')),'lang_code','title'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($modelTranslation,'language_code',array('class'=>'label label-danger')); ?>
 	</div>
-        <div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'language_code',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($manufacturerTranslations,'language_code',CHtml::listData(Languages::model()->findAll(array('order'=>'title')),'lang_code','title'),array('class'=>'form-control')); ?>
-		<?php echo $form->error($manufacturerTranslations,'language_code',array('class'=>'label label-danger')); ?>
-	</div>
+
 	<div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'manufacturer_email',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($manufacturerTranslations,'manufacturer_email',array('class'=>'form-control','maxlength'=>255)); ?>
-		<?php echo $form->error($manufacturerTranslations,'manufacturer_email',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($modelTranslation,'manufacturer_name',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($modelTranslation,'manufacturer_name',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($modelTranslation,'manufacturer_name',array('class'=>'label label-danger')); ?>
 	</div>
+    
 	<div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'manufacturer_desc',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($manufacturerTranslations,'manufacturer_desc',array('class'=>'form-control')); ?>
-		<?php echo $form->error($manufacturerTranslations,'manufacturer_desc',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($modelTranslation,'manufacturer_desc',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($modelTranslation,'manufacturer_desc',array('class'=>'form-control')); ?>
+		<?php echo $form->error($modelTranslation,'manufacturer_desc',array('class'=>'label label-danger')); ?>
 	</div>
+    
 	<div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'manufacturer_url',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($manufacturerTranslations,'manufacturer_url',array('class'=>'form-control','maxlength'=>255)); ?>
-		<?php echo $form->error($manufacturerTranslations,'manufacturer_url',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($model,'manufacturer_email',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'manufacturer_email',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'manufacturer_email',array('class'=>'label label-danger')); ?>
 	</div>
+
 	<div class="row form-group">
-		<?php echo $form->labelEx($manufacturerTranslations,'slug',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($manufacturerTranslations,'slug',array('class'=>'form-control','maxlength'=>255)); ?>
-		<?php echo $form->error($manufacturerTranslations,'slug',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($model,'manufacturer_url',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'manufacturer_url',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'manufacturer_url',array('class'=>'label label-danger')); ?>
+	</div>
+    
+	<div class="row form-group">
+		<?php echo $form->labelEx($modelTranslation,'slug',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($modelTranslation,'slug',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($modelTranslation,'slug',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
@@ -55,44 +61,8 @@
 		<?php echo $form->error($model,'published',array('class'=>'label label-danger')); ?>
 	</div>
 
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'created_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'created_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'created_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'created_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'created_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'created_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'modified_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'modified_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'modified_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'modified_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'modified_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'modified_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
-<!--	<div class="row form-group">
-		<?php echo $form->labelEx($model,'locked_on',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'locked_on',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'locked_on',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'locked_by',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'locked_by',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'locked_by',array('class'=>'label label-danger')); ?>
-	</div>-->
-
 	<div class="row form-group buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn btn-primary')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
