@@ -116,16 +116,12 @@ class ManufacturersController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-                $modelTranslation=new ManufacturerTranslations;
                 
-                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-                $model->updateByPk($id,array(
-                    'locked_by'=>Yii::app()->user->getId(),
-                    'locked_on'=>date('Y-m-d H:i:s',time()),
-                ));
+                $modelTranslation=ManufacturerTranslations::model()->getTranslation($id);
                 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+                $this->performAjaxValidation(array($model,$modelTranslation));
+                
+                $this->lockRows(array($model,$modelTranslation));		 
 
 		if(isset($_POST['Manufacturers']))
 		{
@@ -207,4 +203,38 @@ class ManufacturersController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        protected function lockRows($models)
+        {
+            if(!is_array($models))
+            {
+                $models = array($models);
+            }
+            
+            foreach ($models as $model)
+            {
+                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
+                {
+                    $pk = $model->tableSchema->primaryKey;
+                    if(!is_array($pk))
+                    {
+                        $model->updateByPk($model->primaryKey,array(
+                            'locked_by'=>Yii::app()->user->getId(),
+                            'locked_on'=>date('Y-m-d H:i:s',time()),
+                        ));
+                    }
+                    else
+                    {
+                        foreach($pk as $keyField)
+                        {
+                            $compositePk[$keyField]=$model->{$keyField};
+                        }
+                        $model->updateByPk($compositePk,array(
+                            'locked_by'=>Yii::app()->user->getId(),
+                            'locked_on'=>date('Y-m-d H:i:s',time()),
+                        ));
+                    }
+                }
+            }
+        }
 }

@@ -122,6 +122,36 @@ class ManufacturerTranslations extends CActiveRecord
 		return parent::model($className);
 	}
         
+        /**
+         * Return available translation.
+         * Firstly system check user language.
+         * @param type $id
+         */
+        public function getTranslation($id)
+        {
+            if(Yii::app()->user->hasState('applicationLanguage'))
+            {
+                $currentLang = Yii::app()->user->getState('applicationLanguage');
+            }
+            
+            $model = $this->findByPk(array('manufacturer_id'=>$id,'language_code'=>$currentLang));
+            
+            if($model===null)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition='manufacturer_id=:manufacturer_id';
+                $criteria->params=array(':manufacturer_id'=>$id);
+                $model = $this->find($criteria);
+            }
+            
+            if($model===null)
+            {
+                throw new CHttpException(500,'Model hasn\'t any translations');
+            }
+            
+            return $model;
+        }
+        
         public function behaviors()
         {
           return array( 'CBuyinArBehavior' => array(
