@@ -1,36 +1,34 @@
 <?php
-/* @var $this WebShopsController */
+/* @var $this ProvidersController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	Yii::t('common','Web Shops'),
+	Yii::t('common','Providers'),
 );
 
 $this->menu=array(
-        array('label'=>Yii::t('common','Create') .' '. Yii::t('common','WebShops'), 'url'=>array('create')),
-	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','WebShops'), 'url'=>array('admin')),
+        array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Providers'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Providers'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common','Web Shops')?></h1>
+<h1 class="text-center"><?php echo Yii::t('common','Providers')?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
-//	'itemView'=>'_view',
         'columns'=>array(
-                'id',
-                'shop_name',
-                'shop_code',
-                'template_name',
-                'shop_url',
-                'default_language',
-                'currency_id',
-                'email',
-                array(
-                    'name'=>'offline',
-                    'value'=>'$data->offline==1?Yii::t("yii","Yes"):Yii::t("yii","No")',
-                ),
-                array(
+            'id',
+            'provider_name',
+            'cif',
+            'provider_url',
+            'provider_country',
+            'provider_address',
+            'provider_type',
+            'vat',
+            'inactive',
+            'sku_format',
+            'provider_email',
+            array(
                     'name'=>'created_by',
                     'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
                 ),

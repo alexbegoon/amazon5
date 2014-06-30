@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
     
                 'items' => array(
                     array(
-                        'url'=>'user',
+                        'url'=>'providers',
                         'glyphicon'=>'glyphicon-briefcase',
                         'label'=>Yii::t('common','Provider Management'),
                         ),
