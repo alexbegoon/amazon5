@@ -55,6 +55,12 @@ class ManufacturersController extends Controller
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'dataProvider'=>new CActiveDataProvider('ManufacturerTranslations',array(
+                                'criteria'=>array(
+                                    'condition'=>'manufacturer_id=:id',
+                                    'params'=>array(':id'=>$id),
+                                ),
+                            )),
 		));
 	}
 
@@ -70,7 +76,6 @@ class ManufacturersController extends Controller
                 
                 $this->performAjaxValidation(array($model, $modelTranslation));
 		 
-
 		if(isset($_POST['Manufacturers'],$_POST['ManufacturerTranslations']))
 		{
                         // Start the transaction
@@ -123,16 +128,49 @@ class ManufacturersController extends Controller
                 
                 $this->lockRows(array($model,$modelTranslation));		 
 
-		if(isset($_POST['Manufacturers']))
+		if(isset($_POST['Manufacturers'],$_POST['ManufacturerTranslations']))
 		{
-			$model->attributes=$_POST['Manufacturers'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+                    // Start the transaction
+                    $transaction = Yii::app()->db->beginTransaction();
 
+                    $model->attributes=$_POST['Manufacturers'];
+                    $modelTranslation->attributes=$_POST['ManufacturerTranslations'];
+
+                    if($model->save())
+                    {
+                        $modelTranslation->setPrimaryKey(array(
+                            'manufacturer_id'=>$model->primaryKey,
+                            'language_code'=> $_POST['ManufacturerTranslations']['language_code'],                                
+                                ));
+                        
+                        if(!$modelTranslation->findByPk($modelTranslation->getPrimaryKey()))
+                            $modelTranslation->setIsNewRecord(true);
+                        
+                        if($modelTranslation->save())
+                        {
+                            $transaction->commit();
+                            $this->redirect(array('view','id'=>$model->id));
+                        }
+                        else
+                        {
+                            $transaction->rollback();
+                        }
+                    }
+                    else 
+                    {
+                        $transaction->rollback();
+                    }  
+                }
+                                
 		$this->render('update',array(
 			'model'=>$model,
                         'modelTranslation'=>$modelTranslation,
+                        'dataProvider'=>new CActiveDataProvider('ManufacturerTranslations',array(
+                            'criteria'=>array(
+                                'condition'=>'manufacturer_id=:id',
+                                'params'=>array(':id'=>$id),
+                            ),
+                        )),
 		));
 	}
 
@@ -203,38 +241,4 @@ class ManufacturersController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        protected function lockRows($models)
-        {
-            if(!is_array($models))
-            {
-                $models = array($models);
-            }
-            
-            foreach ($models as $model)
-            {
-                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-                {
-                    $pk = $model->tableSchema->primaryKey;
-                    if(!is_array($pk))
-                    {
-                        $model->updateByPk($model->primaryKey,array(
-                            'locked_by'=>Yii::app()->user->getId(),
-                            'locked_on'=>date('Y-m-d H:i:s',time()),
-                        ));
-                    }
-                    else
-                    {
-                        foreach($pk as $keyField)
-                        {
-                            $compositePk[$keyField]=$model->{$keyField};
-                        }
-                        $model->updateByPk($compositePk,array(
-                            'locked_by'=>Yii::app()->user->getId(),
-                            'locked_on'=>date('Y-m-d H:i:s',time()),
-                        ));
-                    }
-                }
-            }
-        }
 }

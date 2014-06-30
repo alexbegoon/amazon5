@@ -30,8 +30,33 @@ $this->menu=array(
                     'value'=>$model->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No"),
                 ),
 		'created_on',
-                'created_by',
+                array(
+                    'name'=>'created_by',
+                    'value'=>Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                ),
 		'modified_on',
-		'modified_by',
+		array(
+                    'name'=>'modified_by',
+                    'value'=>Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                ),
 	),
 )); ?>
+
+<h3><?php echo Yii::t('common', 'Available translations for this item.')?></h3>
+
+<?php 
+$this->widget('zii.widgets.grid.CGridView', array(
+    'dataProvider'=>$dataProvider,
+    'columns'=>array(
+        array(
+            'name'=>Yii::t('common', 'Language'),
+            'value'=>'$data->language->title_native'
+        ),
+        'manufacturer_name',
+        'manufacturer_desc',
+        'slug',
+    ),
+    'enableSorting'=>true,
+));
+
+?>

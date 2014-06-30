@@ -17,8 +17,8 @@
  * @property integer $locked_by
  */
 class ManufacturerTranslations extends CActiveRecord
-{
-	/**
+{       
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -53,6 +53,8 @@ class ManufacturerTranslations extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'manufacturer' => array(self::HAS_ONE, 'Manufacturers', 'id'),
+                    'language' => array(self::HAS_ONE, 'Languages', array('lang_code'=>'language_code')),
 		);
 	}
 
@@ -129,12 +131,13 @@ class ManufacturerTranslations extends CActiveRecord
          */
         public function getTranslation($id)
         {
+            $model = null;
             if(Yii::app()->user->hasState('applicationLanguage'))
             {
                 $currentLang = Yii::app()->user->getState('applicationLanguage');
+                
+                $model = $this->findByPk(array('manufacturer_id'=>$id,'language_code'=>$currentLang));
             }
-            
-            $model = $this->findByPk(array('manufacturer_id'=>$id,'language_code'=>$currentLang));
             
             if($model===null)
             {

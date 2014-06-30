@@ -57,6 +57,7 @@ class Manufacturers extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
+			'translations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
 			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
 		);
 	}
@@ -132,5 +133,35 @@ class Manufacturers extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function getName()
+        {
+            $currentLang='';
+        
+            if(Yii::app()->user->hasState('applicationLanguage'))
+            {
+                $currentLang = Yii::app()->user->getState('applicationLanguage');
+            }
+            
+            if(!empty($currentLang))
+            {
+                $translation = ManufacturerTranslations::model()->findByPk(array('manufacturer_id'=>$this->primaryKey, 'language_code'=>$currentLang));
+            }
+            
+            if($translation!==NULL)
+            {
+                return $translation->manufacturer_name;
+            }
+            
+            $criteria = new CDbCriteria();
+            $criteria->condition='manufacturer_id=:id'; 
+            $criteria->params=array(':id'=>$this->primaryKey);
+            $translation = ManufacturerTranslations::model()->find($criteria);
+
+            if($translation!==NULL)
+                return $translation->manufacturer_name;
+            
+            return NULL;
         }
 }

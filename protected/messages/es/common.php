@@ -103,7 +103,7 @@ return array(
     'Country code must be in format \'xx\', where \'x\' - letter.'=>'El código de país debe estar en formato \'xx\', donde \'x\'- carta.',
     'You can not delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
     'You can not edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
-    ''=>'',
+    'Available translations for this item.'=>'Traducciones disponibles de este material.',
     ''=>'',
     ''=>'',
     ''=>'',

@@ -28,4 +28,41 @@ class Controller extends RController
 
             );
         }
+        
+        /**
+         * Lock rows, which current user work with
+         * @param mixed $models
+         */
+        protected function lockRows($models)
+        {
+            if(!is_array($models))
+            {
+                $models = array($models);
+            }
+            
+            foreach ($models as $model)
+            {
+                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
+                {
+                    $pk = $model->tableSchema->primaryKey;
+                    $compositePk=null;
+                    if(!is_array($pk))
+                    {
+                        $compositePk = $model->primaryKey;
+                    }
+                    else
+                    {
+                        foreach($pk as $keyField)
+                        {
+                            $compositePk[$keyField]=$model->{$keyField};
+                        }
+                    }
+                    
+                    $model->updateByPk($compositePk,array(
+                        'locked_by'=>Yii::app()->user->getId(),
+                        'locked_on'=>date('Y-m-d H:i:s',time()),
+                    ));
+                }
+            }
+        }
 }

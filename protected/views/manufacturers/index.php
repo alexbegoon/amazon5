@@ -19,10 +19,22 @@ $this->menu=array(
 //	'itemView'=>'_view',
         'columns'=>array(
         'id',
+        array(
+            'name'=>  Yii::t('common', 'Manufacturer Name'),
+            'value'=>'$data->getName()',
+        ),
         'hits',
         'manufacturer_email',
         'manufacturer_url',
-        'published',
-        'locked_by'
+        array(
+            'name'=>'published',
+            'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+        ),
         ),
 )); ?>
+
+<?php 
+
+
+
+?>
