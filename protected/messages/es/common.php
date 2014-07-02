@@ -116,6 +116,12 @@ return array(
     'Total Cost'=>'Importe Total',
     'Provider Invoices'=>'Facturas de Proveedores',
     'Provider Invoice'=>'Factura del Proveedor',
+    'From:'=>'Desde:',
+    'To:'=>'Hasta:',
+    'Total: '=>'Total: ',
+    
+    
+    
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
     'Fields with <span class="required">*</span> are required.'=>'Los campos que lleven <span class="required"> * </ span> son obligatorios.',
     'You may optionally enter a comparison operator'=>'También puede escribir un operador de comparación', 
@@ -126,9 +132,8 @@ return array(
     'You can not delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
     'You can not edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
-    ''=>'',
-    ''=>'',
-    ''=>'',
+    
+    
     ''=>'',
     ''=>'',
     ''=>'',

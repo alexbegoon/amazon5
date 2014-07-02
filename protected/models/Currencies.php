@@ -199,13 +199,11 @@ class Currencies extends CActiveRecord
          * @return float
          * @throws CHttpException
          */
-        public function convertCurrencyTo($price,$currencyA,$currencyB)
-        {
-            if(empty($price))
+        public static function convertCurrencyTo($price,$currencyA,$currencyB=0)
+        {            
+            if(empty($currencyB))
             {
-                $msg='Price could not be empty';
-                Yii::log($msg);
-                throw new CHttpException(500, $msg);
+                $currencyB=self::getCurrencyForDisplay();
             }
             
             $cA=Currencies::model()->findByPk($currencyA,array('condition'=>'published=1'));
@@ -263,7 +261,7 @@ class Currencies extends CActiveRecord
          * @param int $currencyB
          * @return string
          */
-        public function priceDisplay($price,$currencyA,$currencyB=0)
+        public static function priceDisplay($price,$currencyA,$currencyB=0)
         {
             if(empty($currencyB))
             {
@@ -315,7 +313,7 @@ class Currencies extends CActiveRecord
          * Return currency for display in the views.
          * @return int
          */
-        private function getCurrencyForDisplay()
+        public function getCurrencyForDisplay()
         {
             if(Yii::app()->user->hasState('applicationCurrency'))
             {   

@@ -32,9 +32,9 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->labelEx($model,'currency',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'currency',  CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name','condition'=>'published = 1')), 'id', 'currency_name'),array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'currency',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'currency_id',  CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name','condition'=>'published = 1')), 'id', 'currency_name'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'currency_id',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">

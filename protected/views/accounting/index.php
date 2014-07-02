@@ -22,7 +22,7 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Invoice Management'),
                         ),
                     array(
-                        'url'=>'rights',
+                        'url'=>'accountingoverview',
                         'glyphicon'=>'glyphicon-calendar',
                         'label'=>Yii::t('common','Accounting Overview'),
                         ),

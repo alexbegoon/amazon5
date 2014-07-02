@@ -17,8 +17,8 @@
 	<?php echo CHtml::encode($data->net_cost); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('currency')); ?>:</b>
-	<?php echo CHtml::encode($data->currency); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('currency_id')); ?>:</b>
+	<?php echo CHtml::encode($data->currency_id); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('paid')); ?>:</b>

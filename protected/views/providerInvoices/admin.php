@@ -49,7 +49,7 @@ $('.search-form form').submit(function(){
 		'id',
 		'provider_id',
 		'net_cost',
-		'currency',
+		'currency_id',
 		'paid',
 		'created_on',
 		/*

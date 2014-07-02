@@ -29,11 +29,11 @@ $this->menu=array(
             ),
             array(
                 'name'=>  Yii::t('common', 'Net Cost'),
-                'value'=> Currencies::priceDisplay($model->net_cost, $model->currency),
+                'value'=> Currencies::priceDisplay($model->net_cost, $model->currency_id),
             ),
             array(
                 'name'=>  Yii::t('common', 'Total Cost'),
-                'value'=> Currencies::priceDisplay($model->totalCost, $model->currency),
+                'value'=> Currencies::priceDisplay($model->totalCost, $model->currency_id),
             ),
             array(
                 'name'=>  Yii::t('common', 'paid'),

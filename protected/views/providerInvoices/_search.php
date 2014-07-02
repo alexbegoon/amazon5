@@ -29,8 +29,8 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->label($model,'currency',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'currency',array('class'=>'form-control')); ?>
+		<?php echo $form->label($model,'currency_id',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'currency_id',array('class'=>'form-control')); ?>
 	</div>
 
 	<div class="row form-group">

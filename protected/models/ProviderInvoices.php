@@ -7,7 +7,7 @@
  * @property string $id
  * @property integer $provider_id
  * @property string $net_cost
- * @property integer $currency
+ * @property integer $currency_id
  * @property integer $paid
  * @property string $created_on
  * @property integer $created_by
@@ -17,12 +17,14 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
+ * @property Currencies $currency
  * @property Providers $provider
- * @property Currencies $currency0
  */
 class ProviderInvoices extends CActiveRecord
 {
-	/**
+        public $provider_type;
+        
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -39,12 +41,12 @@ class ProviderInvoices extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('provider_id, currency, net_cost', 'required'),
-			array('provider_id, currency, paid, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('provider_id, currency_id, paid, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('net_cost', 'length', 'max'=>15),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_id, net_cost, currency, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, provider_type, provider_id, net_cost, currency_id, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,8 +58,8 @@ class ProviderInvoices extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'currency' => array(self::BELONGS_TO, 'Currencies', 'currency_id'),
 			'provider' => array(self::BELONGS_TO, 'Providers', 'provider_id'),
-			'currency0' => array(self::BELONGS_TO, 'Currencies', 'currency'),
 		);
 	}
 
@@ -70,7 +72,7 @@ class ProviderInvoices extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'provider_id' => Yii::t('common', 'Provider'),
 			'net_cost' => Yii::t('common', 'Net Cost'),
-			'currency' => Yii::t('common', 'Currency'),
+			'currency_id' => Yii::t('common', 'Currency'),
 			'paid' => Yii::t('common', 'Paid'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -98,18 +100,24 @@ class ProviderInvoices extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+                
+                $criteria->with = array('provider');
+                
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('provider_id',$this->provider_id);
 		$criteria->compare('net_cost',$this->net_cost,true);
-		$criteria->compare('currency',$this->currency);
+		$criteria->compare('currency_id',$this->currency_id);
 		$criteria->compare('paid',$this->paid);
-		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->mergeWith($this->dateRangeSearchCriteria('t.created_on',$this->created_on));
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
 		$criteria->compare('modified_by',$this->modified_by);
 		$criteria->compare('locked_on',$this->locked_on,true);
 		$criteria->compare('locked_by',$this->locked_by);
+                
+		$criteria->compare('provider.provider_type',$this->provider_type);
+                
+                
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -129,9 +137,14 @@ class ProviderInvoices extends CActiveRecord
         
         public function behaviors()
         {
-          return array( 'CBuyinArBehavior' => array(
-                'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
-              ));
+            return array( 
+                'CBuyinArBehavior' => array(
+                    'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
+                ),
+                'EDateRangeSearchBehavior' => array(
+                    'class' => 'application.components.EDateRangeSearchBehavior', 
+                ),
+            );
         }
         
         public function getTotalCost()
@@ -141,5 +154,18 @@ class ProviderInvoices extends CActiveRecord
                 return 0;
             
             return $this->net_cost + ($p->vat/100*$this->net_cost);
+        }
+        
+        public function getTotal($property, $keys)
+        {
+            $objects=self::model()->findAllByPk($keys);
+            $sum=0;
+            foreach($objects as $object)
+            {
+                if(!empty($object->{$property}))
+                $sum+=Currencies::convertCurrencyTo($object->{$property}, $object->currency_id);
+            }
+            
+            return $sum;
         }
 }
