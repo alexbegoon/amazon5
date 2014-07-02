@@ -282,9 +282,9 @@ class Currencies extends CActiveRecord
          * @param int $currencyId
          * @return string
          */
-        private function getFormattedCurrency($nb, $currencyId)
+        private static function getFormattedCurrency($nb, $currencyId)
         {
-            $c=  Currencies::model()->findByPk($currencyId);
+            $c=Currencies::model()->findByPk($currencyId);
             if($c===null)
             {
                 Yii::log('Currency with ID: '.$currencyId.' not found.');
