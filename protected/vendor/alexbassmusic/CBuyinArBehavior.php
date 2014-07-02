@@ -61,7 +61,7 @@ class CBuyinArBehavior extends CActiveRecordBehavior
         }
     }
 
-    public function beforeDelete() 
+    public function beforeDelete($event) 
     {
         if($this->getOwner()->hasAttribute('created_on') && 
            $this->getOwner()->hasAttribute('created_by') &&
