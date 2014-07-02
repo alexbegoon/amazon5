@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Provider Management'),
                         ),
                     array(
-                        'url'=>'providerinvoices',
+                        'url'=>'providerInvoices',
                         'glyphicon'=>'glyphicon-file',
                         'label'=>Yii::t('common','Invoice Management'),
                         ),
