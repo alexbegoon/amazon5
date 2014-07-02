@@ -178,7 +178,7 @@ class Currencies extends CActiveRecord
          * Return default system currency
          * @return mixed
          */
-        public function getDefaultCurrency()
+        public static function getDefaultCurrency()
         {
             // default currency code
             $default='EUR';
@@ -313,7 +313,7 @@ class Currencies extends CActiveRecord
          * Return currency for display in the views.
          * @return int
          */
-        public function getCurrencyForDisplay()
+        public static function getCurrencyForDisplay()
         {
             if(Yii::app()->user->hasState('applicationCurrency'))
             {   

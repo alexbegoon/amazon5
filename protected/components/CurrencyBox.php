@@ -8,7 +8,7 @@ class CurrencyBox extends CWidget
 {
     public function run()
     {
-        $currencyId=Currencies::model()->getDefaultCurrency();
+        $currencyId=Currencies::getDefaultCurrency();
         
         if(Yii::app()->user->hasState('applicationCurrency'))
         {
