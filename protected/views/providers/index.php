@@ -3,6 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
+    Yii::t('common','Accounting')=>array('/accounting'),
 	Yii::t('common','Providers'),
 );
 

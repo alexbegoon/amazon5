@@ -38,5 +38,10 @@ class ApplicationConfigBehavior extends CBehavior
         {
             $this->owner->language='en';
         }
+        
+        if (isset($_POST['currencyId']))
+        {
+            $this->owner->user->setState('applicationCurrency', $_POST['currencyId']);
+        }
     }
 }

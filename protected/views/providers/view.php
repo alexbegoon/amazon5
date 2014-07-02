@@ -3,6 +3,7 @@
 /* @var $model Providers */
 
 $this->breadcrumbs=array(
+    Yii::t('common','Accounting')=>array('/accounting'),
 	Yii::t('common','Providers')=>array('index'),
 	$model->id,
 );

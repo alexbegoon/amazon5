@@ -173,4 +173,159 @@ class Currencies extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        /**
+         * Return default system currency
+         * @return mixed
+         */
+        public function getDefaultCurrency()
+        {
+            // default currency code
+            $default='EUR';
+            
+            $defaultCurrency=Currencies::model()->find('currency_code_3=:code',array(':code'=>$default));
+            if($defaultCurrency!==NULL)
+            {
+                return $defaultCurrency->id;
+            }
+            return NULL;
+        }
+        
+        /**
+         * Convert price from currency A to currency B
+         * @param float $price
+         * @param int $currencyA
+         * @param int $currencyB
+         * @return float
+         * @throws CHttpException
+         */
+        public function convertCurrencyTo($price,$currencyA,$currencyB)
+        {
+            if(empty($price))
+            {
+                $msg='Price could not be empty';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            
+            $cA=Currencies::model()->findByPk($currencyA,array('condition'=>'published=1'));
+            $cB=Currencies::model()->findByPk($currencyB,array('condition'=>'published=1'));
+            
+            if($cA===null)
+            {
+                $msg='Currency with ID: '.$currencyA.' not exists or not active';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            
+            if($cB===null)
+            {
+                $msg='Currency with ID: '.$currencyA.' not exists or not active';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            
+            $exchA=$cA->currency_exchange_rate;
+            $exchB=$cB->currency_exchange_rate;
+            
+            if($currencyA==self::getDefaultCurrency())
+            {
+                $exchA=1.0;
+            }
+            
+            if($currencyB==self::getDefaultCurrency())
+            {
+                $exchB=1.0;
+            }
+            
+            if(empty($exchA) || $exchA <= 0)
+            {
+                $msg='Currency with ID: '.$currencyA.' have no exchange rate';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            
+            if(empty($exchB) || $exchB <= 0)
+            {
+                $msg='Currency with ID: '.$currencyB.' have no exchange rate';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            
+            return (float)$price * (float)$exchB / (float)$exchA;
+        }
+        
+        /**
+         * Display formatted and rounded price. Currency B is optional.
+         * If currency B assigned, then price will be shown in currency B format, and of course converted to B
+         * @param float $price
+         * @param int $currencyA
+         * @param int $currencyB
+         * @return string
+         */
+        public function priceDisplay($price,$currencyA,$currencyB=0)
+        {
+            if(empty($currencyB))
+            {
+                $currencyIdForDisplay = self::getCurrencyForDisplay();
+            }
+            else 
+            {
+                $currencyIdForDisplay=$currencyB;
+            }
+            
+            $price = self::convertCurrencyTo($price,$currencyA,$currencyIdForDisplay);
+            return self::getFormattedCurrency($price,$currencyIdForDisplay);
+        }
+        
+        /**
+         * Format and Round price to selected currency
+         * @param float $nb
+         * @param int $currencyId
+         * @return string
+         */
+        private function getFormattedCurrency($nb, $currencyId)
+        {
+            $c=  Currencies::model()->findByPk($currencyId);
+            if($c===null)
+            {
+                Yii::log('Currency with ID: '.$currencyId.' not found.');
+                return null;
+            }
+            
+            $nbDecimal = $c->currency_decimal_place;
+            if($nb>=0){
+                    $format = $c->currency_positive_style;
+                    $sign = '+';
+            } else {
+                    $format = $c->currency_negative_style;
+                    $sign = '-';
+                    $nb = abs($nb);
+            }
+
+            $res = number_format((float)$nb,$nbDecimal,$c->currency_decimal_symbol,$c->currency_thousands);
+            $search = array('{sign}', '{number}', '{symbol}');
+            $replace = array($sign, $res, $c->currency_symbol);
+            $formattedRounded = str_replace ($search,$replace,$format);
+
+            return $formattedRounded;
+        }
+        
+        /**
+         * Return currency for display in the views.
+         * @return int
+         */
+        private function getCurrencyForDisplay()
+        {
+            if(Yii::app()->user->hasState('applicationCurrency'))
+            {   
+                $currencyId = Yii::app()->user->getState('applicationCurrency');
+            }   
+            if(empty($currencyId))
+            {
+                $currencyId = self::getDefaultCurrency();
+            }
+
+            return (int)$currencyId;
+        }
 }

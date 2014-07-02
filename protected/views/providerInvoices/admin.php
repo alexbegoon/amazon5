@@ -1,16 +1,16 @@
 <?php
-/* @var $this ProvidersController */
-/* @var $model Providers */
+/* @var $this ProviderInvoicesController */
+/* @var $model ProviderInvoices */
 
 $this->breadcrumbs=array(
-        Yii::t('common','Accounting')=>array('/accounting'),
-	Yii::t('common','Providers')=>array('index'),
+	Yii::t('common','Accounting')=>array('/accounting'),
+	Yii::t('common','Provider Invoices')=>array('index'),
 	Yii::t('common','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Providers'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Providers'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -19,7 +19,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$('#providers-grid').yiiGridView('update', {
+	$('#provider-invoices-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -27,7 +27,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Providers')?></h1>
+<h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Provider Invoices')?></h1>
 
 <p>
     <?php echo Yii::t('common','You may optionally enter a comparison operator');?>    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
@@ -42,15 +42,23 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'providers-grid',
+	'id'=>'provider-invoices-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'provider_name',
-		'cif',
-		'provider_desc',
-		
+		'provider_id',
+		'net_cost',
+		'currency',
+		'paid',
+		'created_on',
+		/*
+		'created_by',
+		'modified_on',
+		'modified_by',
+		'locked_on',
+		'locked_by',
+		*/
 		array(
 			'class'=>'CButtonColumn',
 		),
