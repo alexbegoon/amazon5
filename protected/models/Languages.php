@@ -170,4 +170,30 @@ class Languages extends CActiveRecord
         {
             return self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
         }
+        
+        /**
+         * Return available languages in the system for dropdown list
+         * @return mixed
+         */
+        public static function listData()
+        {
+            return CHtml::listData(self::listLanguages(), 'lang_code','title');
+        }
+        
+        public static function getCurrent()
+        {
+            if(Yii::app()->user->hasState('applicationLanguage'))
+                return Yii::app()->user->getState('applicationLanguage');
+            
+            return self::getDefault();
+        }
+        
+        /**
+         * Return default system language
+         * @return string
+         */
+        public static function getDefault()
+        {
+            return 'en-GB';
+        }
 }

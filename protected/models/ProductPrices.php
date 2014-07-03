@@ -45,7 +45,8 @@ class ProductPrices extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, currency_id, web_shop_id', 'required'),
+			array('product_id, currency_id, web_shop_id, product_price', 'required'),
+			array('product_price', 'type', 'type'=>'float'),
 			array('override, product_tax_id, currency_id, price_quantity_start, price_quantity_end, web_shop_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id, product_discount_id', 'length', 'max'=>11),
 			array('product_price, product_override_price', 'length', 'max'=>15),

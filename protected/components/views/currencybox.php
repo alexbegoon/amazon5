@@ -7,6 +7,6 @@
 ?>
 <?php echo CHtml::form(); ?>
     <div id="currencydrop">
-        <?php echo CHtml::dropDownList('currencyId', $currencyId, CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name','condition'=>'published = 1')),'id','currency_name'), array('submit' => '')); ?>
+        <?php echo CHtml::dropDownList('currencyId', $currencyId, Currencies::listData(), array('submit' => '')); ?>
     </div>
 <?php echo CHtml::endForm(); ?>

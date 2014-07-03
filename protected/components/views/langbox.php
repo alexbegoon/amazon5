@@ -7,6 +7,6 @@
 ?>
 <?php echo CHtml::form(); ?>
     <div id="langdrop">
-        <?php echo CHtml::dropDownList('lang', $currentLang, CHtml::listData(Languages::listLanguages(),'lang_code','title'), array('submit' => '')); ?>
+        <?php echo CHtml::dropDownList('lang', $currentLang, Languages::listData(), array('submit' => '')); ?>
     </div>
 <?php echo CHtml::endForm(); ?>

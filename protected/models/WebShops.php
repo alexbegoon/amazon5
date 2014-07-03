@@ -172,4 +172,21 @@ class WebShops extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function behaviors()
+        {
+            return array( 'CBuyinArBehavior' => array(
+                'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
+            ));
+        }
+        
+        public static function listWebShops()
+        {
+            return self::model()->findAll(array('order'=>'shop_name'));
+        }
+        
+        public static function listData()
+        {
+            return CHtml::listData(self::listWebShops(), 'id', 'shop_name');
+        }
 }

@@ -45,13 +45,13 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'default_language',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'default_language',CHtml::listData(Languages::listLanguages(),'lang_code','title'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'default_language',Languages::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'currency_id',CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name')),'id','currency_name'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'currency_id',Currencies::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'currency_id',array('class'=>'label label-danger')); ?>
 	</div>
 

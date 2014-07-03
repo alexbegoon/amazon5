@@ -19,8 +19,8 @@
  * @property Products $product
  */
 class ProductImages extends CActiveRecord
-{
-	/**
+{                
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -38,6 +38,7 @@ class ProductImages extends CActiveRecord
 		return array(
 			array('product_id', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+                        array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
 			array('product_id', 'length', 'max'=>11),
 			array('image_url, image_url_thumb', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
@@ -128,5 +129,36 @@ class ProductImages extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function getImagesPath()
+        {
+            return '/imgs/shop/';
+        }
+        
+        public function getImagesUrl()
+        {
+            return Yii::app()->request->baseUrl.$this->getImagesPath();
+        }
+        
+        public function getImageUrl()
+        {
+            if(empty($this->image_url))
+                return $this->NoImageUrl;
+                
+            return $this->imagesUrl.$this->image_url;
+        }
+        
+        public function getThumbImageUrl()
+        {
+            if(empty($this->image_url_thumb))
+                return $this->NoImageUrl;
+            
+            return $this->imagesUrl.$this->image_url_thumb;
+        }
+        
+        public function getNoImageUrl()
+        {
+            return $this->imagesUrl.'noimage.png';
         }
 }

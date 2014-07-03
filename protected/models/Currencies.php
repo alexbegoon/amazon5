@@ -326,4 +326,14 @@ class Currencies extends CActiveRecord
 
             return (int)$currencyId;
         }
+        
+        public static function listCurrencies()
+        {
+            return self::model()->findAll(array('condition'=>'published=1','order'=>'currency_name'));
+        }
+        
+        public static function listData()
+        {
+            return CHtml::listData(self::listCurrencies(), 'id', 'currency_name');
+        }
 }

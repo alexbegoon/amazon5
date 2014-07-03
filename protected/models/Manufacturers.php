@@ -164,4 +164,17 @@ class Manufacturers extends CActiveRecord
             
             return NULL;
         }
+        
+        public static function listManufacturers()
+        {
+            return self::model()->findAll(array('condition'=>'published=1'));
+        }
+        
+        public static function listData()
+        {
+            $manufacturers = self::listManufacturers();
+            return CHtml::listData($manufacturers,'id',function($manufacturer) {
+                return CHtml::encode(Manufacturers::model()->findByPk($manufacturer->id)->name);
+            });
+        }
 }
