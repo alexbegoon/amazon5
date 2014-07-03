@@ -19,7 +19,9 @@
  * @property Products $product
  */
 class ProductImages extends CActiveRecord
-{                
+{               
+        public $image;
+                
         /**
 	 * @return string the associated database table name
 	 */
@@ -36,7 +38,7 @@ class ProductImages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id', 'required'),
+			array('product_id, image_url', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
                         array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
 			array('product_id', 'length', 'max'=>11),
@@ -68,6 +70,7 @@ class ProductImages extends CActiveRecord
 		return array(
 			'id' => Yii::t('common', 'ID'),
 			'product_id' => Yii::t('common', 'Product'),
+			'image' => Yii::t('common', 'Product Image'),
 			'image_url' => Yii::t('common', 'Image Url'),
 			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
 			'created_on' => Yii::t('common', 'Created On'),

@@ -83,7 +83,25 @@ class ProductsController extends Controller
                         $valid=FALSE;
                     }
                     
-                    if(!$productImages->save())
+                    $rnd  = rand(0,999999);  // generate random number between 0-999999
+                    $rnd2 = rand(0,999999);  // generate random number between 0-999999
+                    $uploadedFile=CUploadedFile::getInstance($productImages,'image');
+                    $fileName = "{$rnd}-{$model->product_sku}.".$uploadedFile->getExtensionName();  // random number + file name
+                    $thumbFileName = "{$rnd2}-{$model->product_sku}-t.".$uploadedFile->getExtensionName();  // random number + file name
+                    $productImages->image = $fileName;
+                    $productImages->image_url = $fileName;
+                    $productImages->image_url_thumb = $thumbFileName;
+                    
+                    if($productImages->save())
+                    {
+                        $uploadedFile->saveAs(Yii::app()->basePath."/../".$productImages->imagespath.$fileName);
+                        $uploadedFile->saveAs(Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName);
+                        
+                        $image = Yii::app()->image->load(Yii::app()->basePath."/../".$productImages->imagespath.$fileName);
+                        $image->resize(150, 150);
+                        $image->save(Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName);
+                    }
+                    else
                     {
                         $transaction->rollback();
                         $valid=FALSE;

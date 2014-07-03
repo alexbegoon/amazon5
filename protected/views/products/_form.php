@@ -92,13 +92,18 @@
 		<?php echo $form->error($productPrices,'product_price',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
-    
+        <div class="row form-group">
+		<?php echo $form->labelEx($productImages,'image',array('class'=>'control-label')); ?>
+		<?php echo CHtml::activeFileField($productImages, 'image'); ?>
+		<?php echo $form->error($productImages,'image',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'product_parent_id',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'product_parent_id',array('size'=>11,'maxlength'=>11,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'product_parent_id',array('class'=>'label label-danger')); ?>
 	</div>
-    
+        <hr>    
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'published',array('class'=>'control-label')); ?>
 		<?php echo $form->checkBox($model,'published'); ?>
