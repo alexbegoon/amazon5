@@ -119,6 +119,21 @@ return array(
     'From:'=>'Desde:',
     'To:'=>'Hasta:',
     'Total: '=>'Total: ',
+    'Products'=>'Productos',
+    'Parent Product'=>'Padres Producto',
+    'Product Name'=>'Nombre del Producto',
+    'Product Description'=>'Descripción del Producto',
+    'Product Short Description'=>'Descripción breve del Producto',
+    'Meta Description'=>'Meta Descripción',
+    'Meta Keywords'=>'Meta Keywords',
+    'Custom Title'=>'Título Personalizado',
+    'Product SKU'=>'SKU del Producto',
+    'Blocked'=>'Obstruido',
+    ''=>'',
+    
+    
+    
+    'This SKU already exists'=>'Esta SKU ya existe',
     
     
     

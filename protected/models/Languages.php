@@ -160,5 +160,14 @@ class Languages extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior'
                         ),
             );
-}
+        }
+        
+        /**
+         * Return available languages in the system
+         * @return object
+         */
+        public static function listLanguages()
+        {
+            return self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
+        }
 }

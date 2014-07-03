@@ -1,14 +1,13 @@
 <?php
 
 /**
- * This is the model class for table "{{products}}".
+ * This is the model class for table "{{product_images}}".
  *
- * The followings are the available columns in table '{{products}}':
+ * The followings are the available columns in table '{{product_images}}':
  * @property string $id
- * @property string $product_parent_id
- * @property string $product_sku
- * @property integer $published
- * @property integer $blocked
+ * @property string $product_id
+ * @property string $image_url
+ * @property string $image_url_thumb
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -17,27 +16,16 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property OrderItems[] $orderItems
- * @property OrderItemsHistories[] $orderItemsHistories
- * @property Categories[] $amzni5Categories
- * @property ProductImages[] $productImages
- * @property Manufacturers[] $amzni5Manufacturers
- * @property ProductPrices[] $productPrices
- * @property ProductReviews[] $productReviews
- * @property Languages[] $amzni5Languages
- * @property ProviderOrderItems[] $providerOrderItems
- * @property Providers[] $amzni5Providers
- * @property ProviderProductsHistories[] $providerProductsHistories
- * @property Warehouse[] $warehouses
+ * @property Products $product
  */
-class Products extends CActiveRecord
+class ProductImages extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{products}}';
+		return '{{product_images}}';
 	}
 
 	/**
@@ -48,16 +36,14 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_sku', 'required'),
-			array('product_sku', 'unique', 'message'=>Yii::t('common', 'This SKU already exists')),
-			array('product_parent_id, published, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('product_parent_id', 'length', 'max'=>11),
-			array('product_sku', 'length', 'max'=>32),
-			array('product_sku', 'length', 'min'=>6),
+			array('product_id', 'required'),
+			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('product_id', 'length', 'max'=>11),
+			array('image_url, image_url_thumb', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, product_parent_id, product_sku, published, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, product_id, image_url, image_url_thumb, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,18 +55,7 @@ class Products extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
-			'orderItemsHistories' => array(self::HAS_MANY, 'OrderItemsHistories', 'product_id'),
-			'amzni5Categories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
-			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
-			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
-			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
-			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
-			'providerOrderItems' => array(self::HAS_MANY, 'ProviderOrderItems', 'product_id'),
-			'amzni5Providers' => array(self::MANY_MANY, 'Providers', '{{provider_products}}(product_id, provider_id)'),
-			'providerProductsHistories' => array(self::HAS_MANY, 'ProviderProductsHistories', 'product_id'),
-			'warehouses' => array(self::HAS_MANY, 'Warehouse', 'product_id'),
+			'product' => array(self::BELONGS_TO, 'Products', 'product_id'),
 		);
 	}
 
@@ -91,10 +66,9 @@ class Products extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'product_parent_id' => Yii::t('common', 'Parent Product'),
-			'product_sku' => Yii::t('common', 'Product SKU'),
-			'published' => Yii::t('common', 'Published'),
-			'blocked' => Yii::t('common', 'Blocked'),
+			'product_id' => Yii::t('common', 'Product'),
+			'image_url' => Yii::t('common', 'Image Url'),
+			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -123,10 +97,9 @@ class Products extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('product_parent_id',$this->product_parent_id,true);
-		$criteria->compare('product_sku',$this->product_sku,true);
-		$criteria->compare('published',$this->published);
-		$criteria->compare('blocked',$this->blocked);
+		$criteria->compare('product_id',$this->product_id,true);
+		$criteria->compare('image_url',$this->image_url,true);
+		$criteria->compare('image_url_thumb',$this->image_url_thumb,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -143,7 +116,7 @@ class Products extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Products the static model class
+	 * @return ProductImages the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

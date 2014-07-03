@@ -1,14 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "{{products}}".
+ * This is the model class for table "{{product_prices}}".
  *
- * The followings are the available columns in table '{{products}}':
+ * The followings are the available columns in table '{{product_prices}}':
  * @property string $id
- * @property string $product_parent_id
- * @property string $product_sku
- * @property integer $published
- * @property integer $blocked
+ * @property string $product_id
+ * @property string $product_price
+ * @property integer $override
+ * @property string $product_override_price
+ * @property integer $product_tax_id
+ * @property string $product_discount_id
+ * @property integer $currency_id
+ * @property integer $price_quantity_start
+ * @property integer $price_quantity_end
+ * @property integer $web_shop_id
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -17,27 +23,18 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property OrderItems[] $orderItems
- * @property OrderItemsHistories[] $orderItemsHistories
- * @property Categories[] $amzni5Categories
- * @property ProductImages[] $productImages
- * @property Manufacturers[] $amzni5Manufacturers
- * @property ProductPrices[] $productPrices
- * @property ProductReviews[] $productReviews
- * @property Languages[] $amzni5Languages
- * @property ProviderOrderItems[] $providerOrderItems
- * @property Providers[] $amzni5Providers
- * @property ProviderProductsHistories[] $providerProductsHistories
- * @property Warehouse[] $warehouses
+ * @property Products $product
+ * @property WebShops $webShop
+ * @property Currencies $currency
  */
-class Products extends CActiveRecord
+class ProductPrices extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{products}}';
+		return '{{product_prices}}';
 	}
 
 	/**
@@ -48,16 +45,14 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_sku', 'required'),
-			array('product_sku', 'unique', 'message'=>Yii::t('common', 'This SKU already exists')),
-			array('product_parent_id, published, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('product_parent_id', 'length', 'max'=>11),
-			array('product_sku', 'length', 'max'=>32),
-			array('product_sku', 'length', 'min'=>6),
+			array('product_id, currency_id, web_shop_id', 'required'),
+			array('override, product_tax_id, currency_id, price_quantity_start, price_quantity_end, web_shop_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('product_id, product_discount_id', 'length', 'max'=>11),
+			array('product_price, product_override_price', 'length', 'max'=>15),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, product_parent_id, product_sku, published, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, product_id, product_price, override, product_override_price, product_tax_id, product_discount_id, currency_id, price_quantity_start, price_quantity_end, web_shop_id, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,18 +64,9 @@ class Products extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
-			'orderItemsHistories' => array(self::HAS_MANY, 'OrderItemsHistories', 'product_id'),
-			'amzni5Categories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
-			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
-			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
-			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
-			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
-			'providerOrderItems' => array(self::HAS_MANY, 'ProviderOrderItems', 'product_id'),
-			'amzni5Providers' => array(self::MANY_MANY, 'Providers', '{{provider_products}}(product_id, provider_id)'),
-			'providerProductsHistories' => array(self::HAS_MANY, 'ProviderProductsHistories', 'product_id'),
-			'warehouses' => array(self::HAS_MANY, 'Warehouse', 'product_id'),
+			'product' => array(self::BELONGS_TO, 'Products', 'product_id'),
+			'webShop' => array(self::BELONGS_TO, 'WebShops', 'web_shop_id'),
+			'currency' => array(self::BELONGS_TO, 'Currencies', 'currency_id'),
 		);
 	}
 
@@ -91,10 +77,16 @@ class Products extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'product_parent_id' => Yii::t('common', 'Parent Product'),
-			'product_sku' => Yii::t('common', 'Product SKU'),
-			'published' => Yii::t('common', 'Published'),
-			'blocked' => Yii::t('common', 'Blocked'),
+			'product_id' => Yii::t('common', 'Product'),
+			'product_price' => Yii::t('common', 'Product Price'),
+			'override' => Yii::t('common', 'Override'),
+			'product_override_price' => Yii::t('common', 'Product Override Price'),
+			'product_tax_id' => Yii::t('common', 'Product Tax'),
+			'product_discount_id' => Yii::t('common', 'Product Discount'),
+			'currency_id' => Yii::t('common', 'Currency'),
+			'price_quantity_start' => Yii::t('common', 'Price Quantity Start'),
+			'price_quantity_end' => Yii::t('common', 'Price Quantity End'),
+			'web_shop_id' => Yii::t('common', 'Web Shop'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -123,10 +115,16 @@ class Products extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('product_parent_id',$this->product_parent_id,true);
-		$criteria->compare('product_sku',$this->product_sku,true);
-		$criteria->compare('published',$this->published);
-		$criteria->compare('blocked',$this->blocked);
+		$criteria->compare('product_id',$this->product_id,true);
+		$criteria->compare('product_price',$this->product_price,true);
+		$criteria->compare('override',$this->override);
+		$criteria->compare('product_override_price',$this->product_override_price,true);
+		$criteria->compare('product_tax_id',$this->product_tax_id);
+		$criteria->compare('product_discount_id',$this->product_discount_id,true);
+		$criteria->compare('currency_id',$this->currency_id);
+		$criteria->compare('price_quantity_start',$this->price_quantity_start);
+		$criteria->compare('price_quantity_end',$this->price_quantity_end);
+		$criteria->compare('web_shop_id',$this->web_shop_id);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -143,7 +141,7 @@ class Products extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Products the static model class
+	 * @return ProductPrices the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

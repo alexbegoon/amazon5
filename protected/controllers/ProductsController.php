@@ -9,45 +9,6 @@ class ProductsController extends Controller
 	public $layout='//layouts/column2';
 
 	/**
-	 * @return array action filters
-	 */
-        /*
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-        */
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-        /* 
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
-        */
-	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
@@ -65,19 +26,83 @@ class ProductsController extends Controller
 	public function actionCreate()
 	{
 		$model=new Products;
-
+                $productTranslation=new ProductTranslations;
+                $productManufaturers=new ProductManufacturers;
+                $productPrices=new ProductPrices;
+                $productImages=new ProductImages;
+                
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation(array($model,$productTranslation,$productManufaturers,$productPrices,$productImages));
 
-		if(isset($_POST['Products']))
+		if(isset($_POST['Products'], 
+                         $_POST['ProductTranslations'], 
+                         $_POST['ProductManufacturers'],
+                         $_POST['ProductPrices'],
+                         $_POST['ProductImages']
+                        ))
 		{
-			$model->attributes=$_POST['Products'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                    // Start the transaction
+                    $transaction = Yii::app()->db->beginTransaction();
+                    $valid = true;
+                    
+                    $model->attributes=$_POST['Products'];
+                    $productTranslation->attributes=$_POST['ProductTranslations'];
+                    $productManufaturers->attributes=$_POST['ProductManufacturers'];
+                    $productPrices->attributes=$_POST['ProductPrices'];
+                    $productImages->attributes=$_POST['ProductImages'];
+
+                    if(!$model->save())
+                    {
+                        $transaction->rollback();
+                        $valid=FALSE;
+                    }
+                    
+                    if($valid)
+                    {
+                        $productTranslation->setAttribute('product_id', $model->id);
+                        $productManufaturers->setAttribute('product_id', $model->id);
+                        $productPrices->setAttribute('product_id', $model->id);
+                        $productImages->setAttribute('product_id', $model->id);
+                    }
+                    
+                    if(!$productTranslation->save())
+                    {
+                        $transaction->rollback();
+                        $valid=FALSE;
+                    }
+                    
+                    if(!$productManufaturers->save())
+                    {
+                        $transaction->rollback();
+                        $valid=FALSE;
+                    }
+                    
+                    if(!$productPrices->save())
+                    {
+                        $transaction->rollback();
+                        $valid=FALSE;
+                    }
+                    
+                    if(!$productImages->save())
+                    {
+                        $transaction->rollback();
+                        $valid=FALSE;
+                    }
+                    
+                    // Product Successfully created 
+                    if($valid)
+                    {
+                        $transaction->commit();
+                        $this->redirect(array('view','id'=>$model->id));
+                    }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'productTranslation'=>$productTranslation,
+                        'productManufaturers'=>$productManufaturers,
+                        'productPrices'=>$productPrices,
+                        'productImages'=>$productImages,
 		));
 	}
 

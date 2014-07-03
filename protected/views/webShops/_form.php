@@ -45,7 +45,7 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'default_language',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'default_language',CHtml::listData(Languages::model()->findAll(array('order'=>'title')),'lang_code','title'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'default_language',CHtml::listData(Languages::listLanguages(),'lang_code','title'),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
 	</div>
 
