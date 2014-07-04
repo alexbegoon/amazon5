@@ -46,7 +46,6 @@ $('.search-form form').submit(function(){
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'product_parent_id',
 		'product_sku',
 		'published',
 		'blocked',

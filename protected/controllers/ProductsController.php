@@ -13,9 +13,15 @@ class ProductsController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
-	{
+	{       
+                $productImages = new CActiveDataProvider('ProductImages', array(
+                    'criteria'=>array(
+                        'condition'=>'product_id='.$id
+                    ),
+                ));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'productImages'=>$productImages,
 		));
 	}
 

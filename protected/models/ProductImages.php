@@ -179,12 +179,12 @@ class ProductImages extends CActiveRecord
         
         public function getImageTag()
         {
-            return CHtml::image($this->ImageUrl,'img for product id '.$this->product_id);
+            return CHtml::image($this->ImageUrl,'image for product id '.$this->product_id);
         }
         
         public function getThumbImageTag()
         {
-            return CHtml::image($this->ThumbImageUrl,'thumb img for product id '.$this->product_id);
+            return CHtml::image($this->ThumbImageUrl,'thumb image for product id '.$this->product_id);
         }
         
         public static function listQualities()
@@ -206,5 +206,10 @@ class ProductImages extends CActiveRecord
                 20=>'20 %',
                 10=>'10 %',
            );
+        }
+        
+        public function getPopUpImage()
+        {        
+            return  CHtml::link($this->thumbImageTag, $this->imageUrl, array('class' => 'fancybox-image'));
         }
 }

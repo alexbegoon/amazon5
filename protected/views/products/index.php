@@ -14,7 +14,29 @@ $this->menu=array(
 
 <h1 class="text-center"><?php echo Yii::t('common','Products')?></h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
+	'columns'=>array(
+            'id',
+            'product_sku',
+            array(
+                'name'=>Yii::t('common', 'Published'),
+                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
+            array(
+                'name'=>Yii::t('common', 'Blocked'),
+                'value'=>'$data->blocked==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
+            array(
+                'name'=>'created_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+            ),
+            'created_on',
+
+            array(
+                'name'=>'modified_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+            ),
+            'modified_on',
+        ),
 )); ?>

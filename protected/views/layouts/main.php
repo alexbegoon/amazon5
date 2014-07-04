@@ -89,6 +89,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'options'=>array(
         'title'=>Yii::t('common','Language'),
         'autoOpen'=>false,
+        'width'=>'auto',
+        'height'=>'auto',
+        'modal'=>'true'
     ),
 ));
     echo Yii::t('common','Select language');
@@ -105,6 +108,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'options'=>array(
         'title'=>Yii::t('common','Currency'),
         'autoOpen'=>false,
+        'width'=>'auto',
+        'height'=>'auto',
+        'modal'=>'true'
     ),
 ));
     echo Yii::t('common','Select Currency');
