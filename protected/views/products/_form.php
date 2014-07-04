@@ -97,6 +97,21 @@
 		<?php echo CHtml::activeFileField($productImages, 'image'); ?>
 		<?php echo $form->error($productImages,'image',array('class'=>'label label-danger')); ?>
 	</div>
+        <div class="row form-group">
+		<?php echo $form->labelEx($productImages,'thumb_width',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productImages,'thumb_width',array('class'=>'form-control')); ?>
+		<?php echo $form->error($productImages,'thumb_width',array('class'=>'label label-danger')); ?>
+	</div>
+        <div class="row form-group">
+		<?php echo $form->labelEx($productImages,'thumb_height',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productImages,'thumb_height',array('class'=>'form-control')); ?>
+		<?php echo $form->error($productImages,'thumb_height',array('class'=>'label label-danger')); ?>
+	</div>
+        <div class="row form-group">
+		<?php echo $form->labelEx($productImages,'thumb_quality',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($productImages,'thumb_quality', ProductImages::listQualities(),array('class'=>'form-control')); ?>
+		<?php echo $form->error($productImages,'thumb_quality',array('class'=>'label label-danger')); ?>
+	</div>
         <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'product_parent_id',array('class'=>'control-label')); ?>

@@ -14,6 +14,10 @@
  * @property integer $modified_by
  * @property string $locked_on
  * @property integer $locked_by
+ * 
+ * @property int $thumb_width Default thumb image width
+ * @property int $thumb_height Default thumb image height
+ * @property int $thumb_quality Default thumb image quality
  *
  * The followings are the available model relations:
  * @property Products $product
@@ -21,7 +25,15 @@
 class ProductImages extends CActiveRecord
 {               
         public $image;
-                
+        
+        // Thumb defaults
+        public $thumb_width = 150;
+        public $thumb_height = 150;
+        public $thumb_quality = 100;
+        
+        public $noImageFilename = 'noimage.png';
+
+
         /**
 	 * @return string the associated database table name
 	 */
@@ -39,8 +51,8 @@ class ProductImages extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, image_url, image', 'required'),
-			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-                        array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
+			array('created_by, modified_by, locked_by, thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true),
+                        array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true),
 			array('product_id', 'length', 'max'=>11),
 			array('image_url, image_url_thumb', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
@@ -162,7 +174,7 @@ class ProductImages extends CActiveRecord
         
         public function getNoImageUrl()
         {
-            return $this->imagesUrl.'noimage.png';
+            return $this->imagesUrl.$this->noImageFilename;
         }
         
         public function getImageTag()
@@ -173,5 +185,26 @@ class ProductImages extends CActiveRecord
         public function getThumbImageTag()
         {
             return CHtml::image($this->ThumbImageUrl,'thumb img for product id '.$this->product_id);
+        }
+        
+        public static function listQualities()
+        {
+            return array(
+                100=>'100 %',
+                98=>'98 %',
+                95=>'95 %',
+                90=>'90 %',
+                85=>'85 %',
+                80=>'80 %',
+                75=>'75 %',
+                70=>'70 %',
+                65=>'65 %',
+                60=>'60 %',
+                50=>'50 %',
+                40=>'40 %',
+                30=>'30 %',
+                20=>'20 %',
+                10=>'10 %',
+           );
         }
 }

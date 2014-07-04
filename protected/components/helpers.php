@@ -24,3 +24,27 @@ function enumItem($model,$attribute)
 
         return $values;
 }
+
+/**
+ * Return random alphanumeric string with specified length bytes
+ * @param int $length
+ * @return string
+ */
+function str_random($length=6,$lowercaseOnly=true)
+{
+    $validCharacters = "0123456789abcdefghijklmnopqrstuxyvwzABCDEFGHIJKLMNOPQRSTUXYVWZ";
+    
+    if($lowercaseOnly)
+        $validCharacters = "0123456789abcdefghijklmnopqrstuxyvwz";
+    
+    $validCharNumber = strlen($validCharacters);
+ 
+    $result = "";
+ 
+    for ($i = 0; $i < $length; $i++) {
+        $index = mt_rand(0, $validCharNumber - 1);
+        $result .= $validCharacters[$index];
+    }
+ 
+    return $result;
+}

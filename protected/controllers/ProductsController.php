@@ -83,16 +83,20 @@ class ProductsController extends Controller
                         $valid=FALSE;
                     }
                     
-                    $rnd  = rand(0,999999);  // generate random number between 0-999999
-                    $rnd2 = rand(0,999999);  // generate random number between 0-999999
+                    $rnd  = str_random(10);  // generate random string
+                    $rnd2 = str_random(10);  // generate random string
                     $uploadedFile=CUploadedFile::getInstance($productImages,'image');
-                    $fileName = "{$rnd}-{$model->product_sku}.".$uploadedFile->getExtensionName();  // random number + file name
-                    $thumbFileName = "{$rnd2}-{$model->product_sku}-t.".$uploadedFile->getExtensionName();  // random number + file name
-                    $productImages->image = $fileName;
-                    $productImages->image_url = $fileName;
-                    $productImages->image_url_thumb = $thumbFileName;
-                    $imagePath=Yii::app()->basePath."/../".$productImages->imagespath.$fileName;
-                    $thumbImagePath=Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName;
+                    
+                    if($uploadedFile)
+                    {
+                        $fileName = "{$model->product_sku}-{$rnd}.".$uploadedFile->getExtensionName();  // random number + file name
+                        $thumbFileName = "{$model->product_sku}-{$rnd2}-t.".$uploadedFile->getExtensionName();  // random number + file name
+                        $productImages->image = $fileName;
+                        $productImages->image_url = $fileName;
+                        $productImages->image_url_thumb = $thumbFileName;
+                        $imagePath=Yii::app()->basePath."/../".$productImages->imagespath.$fileName;
+                        $thumbImagePath=Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName;
+                    }
                     
                     if($productImages->save())
                     {
@@ -100,7 +104,8 @@ class ProductsController extends Controller
                         $uploadedFile->saveAs($thumbImagePath);
                         
                         $image = Yii::app()->image->load($imagePath);
-                        $image->resize(150, 150);
+                        $image->resize($productImages->thumb_width, $productImages->thumb_height)
+                              ->quality($productImages->thumb_quality);
                         $image->save($thumbImagePath);
                                                 
                         // check if file not exists
