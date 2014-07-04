@@ -100,6 +100,8 @@ class ProductsController extends Controller
                         $image = Yii::app()->image->load(Yii::app()->basePath."/../".$productImages->imagespath.$fileName);
                         $image->resize(150, 150);
                         $image->save(Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName);
+                        
+                        // Her should be check if file not exists
                     }
                     else
                     {
