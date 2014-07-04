@@ -119,7 +119,16 @@ return array(
     'From:'=>'Desde:',
     'To:'=>'Hasta:',
     'Total: '=>'Total: ',
-    
+    'Service URL'=>'URL del Servicio',
+    'Sync Params'=>'Parámetros de Sincronización',
+    'Sync Enabled'=>'Sincronización Activada',
+    'Sync Schedule'=>'Programación de Sincronización',
+    'Last Sync Date'=>'Última Sincronización Fecha',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
     
     
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
@@ -134,7 +143,7 @@ return array(
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
     
     
-    ''=>'',
+    
     ''=>'',
     ''=>'',
     ''=>'',

@@ -54,6 +54,26 @@
 	<?php echo CHtml::encode($data->provider_email); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('service_url')); ?>:</b>
+	<?php echo CHtml::encode($data->service_url); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('sync_params')); ?>:</b>
+	<?php echo CHtml::encode($data->sync_params); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('sync_enabled')); ?>:</b>
+	<?php echo CHtml::encode($data->sync_enabled); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('sync_schedule')); ?>:</b>
+	<?php echo CHtml::encode($data->sync_schedule); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('last_sync_date')); ?>:</b>
+	<?php echo CHtml::encode($data->last_sync_date); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('created_on')); ?>:</b>
 	<?php echo CHtml::encode($data->created_on); ?>
 	<br />

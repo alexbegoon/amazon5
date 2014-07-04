@@ -16,6 +16,11 @@
  * @property integer $inactive
  * @property string $sku_format
  * @property string $provider_email
+ * @property string $service_url
+ * @property string $sync_params
+ * @property integer $sync_enabled
+ * @property string $sync_schedule
+ * @property string $last_sync_date
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -51,17 +56,17 @@ class Providers extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         array('provider_name, vat, provider_type, provider_country', 'required'),
-			array('inactive, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('inactive, sync_enabled, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('provider_name, provider_email', 'length', 'max'=>128),
-			array('cif, provider_desc, provider_url, provider_address, sku_format', 'length', 'max'=>255),
+			array('cif, provider_desc, provider_url, provider_address, sku_format, service_url', 'length', 'max'=>255),
 			array('provider_country', 'length', 'max'=>2),
 			array('provider_type', 'length', 'max'=>16),
 			array('provider_email', 'email'),
 			array('vat', 'length', 'max'=>5),
-			array('created_on, modified_on, locked_on', 'safe'),
+			array('sync_params, sync_schedule, last_sync_date, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_type, vat, inactive, sku_format, provider_email, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_type, vat, inactive, sku_format, provider_email, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -101,6 +106,11 @@ class Providers extends CActiveRecord
 			'inactive' => Yii::t('common', 'Inactive'),
 			'sku_format' => Yii::t('common', 'SKU Format'),
 			'provider_email' => Yii::t('common', 'Provider Email'),
+			'service_url' => Yii::t('common', 'Service URL'),
+			'sync_params' => Yii::t('common', 'Sync Params'),
+			'sync_enabled' => Yii::t('common', 'Sync Enabled'),
+			'sync_schedule' => Yii::t('common', 'Sync Schedule'),
+			'last_sync_date' => Yii::t('common', 'Last Sync Date'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -140,6 +150,11 @@ class Providers extends CActiveRecord
 		$criteria->compare('inactive',$this->inactive);
 		$criteria->compare('sku_format',$this->sku_format,true);
 		$criteria->compare('provider_email',$this->provider_email,true);
+		$criteria->compare('service_url',$this->service_url,true);
+		$criteria->compare('sync_params',$this->sync_params,true);
+		$criteria->compare('sync_enabled',$this->sync_enabled);
+		$criteria->compare('sync_schedule',$this->sync_schedule,true);
+		$criteria->compare('last_sync_date',$this->last_sync_date,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);

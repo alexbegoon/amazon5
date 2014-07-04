@@ -45,7 +45,7 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_country',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'provider_country',CHtml::listData(Countries::model()->findAll(array('order'=>'name')), 'code', 'name'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'provider_country',Countries::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_country',array('class'=>'label label-danger')); ?>
 	</div>
 
@@ -68,12 +68,6 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->labelEx($model,'inactive',array('class'=>'control-label')); ?>
-		<?php echo $form->checkBox($model,'inactive'); ?>
-		<?php echo $form->error($model,'inactive',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
 		<?php echo $form->labelEx($model,'sku_format',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'sku_format',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'sku_format',array('class'=>'label label-danger')); ?>
@@ -83,6 +77,36 @@
 		<?php echo $form->labelEx($model,'provider_email',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'provider_email',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_email',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'service_url',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'service_url',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'service_url',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'sync_params',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'sync_params',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'sync_params',array('class'=>'label label-danger')); ?>
+	</div>
+        
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'sync_schedule',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'sync_schedule',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'sync_schedule',array('class'=>'label label-danger')); ?>
+	</div>
+        
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'sync_enabled',array('class'=>'control-label')); ?>
+		<?php echo $form->checkBox($model,'sync_enabled'); ?>
+		<?php echo $form->error($model,'sync_enabled',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'inactive',array('class'=>'control-label')); ?>
+		<?php echo $form->checkBox($model,'inactive'); ?>
+		<?php echo $form->error($model,'inactive',array('class'=>'label label-danger')); ?>
 	</div>
     
 	<div class="row form-group buttons">

@@ -50,7 +50,27 @@ $('.search-form form').submit(function(){
 		'provider_name',
 		'cif',
 		'provider_desc',
-		
+		'provider_url',
+		'provider_type',
+		/*
+		'provider_address',
+		'provider_type',
+		'vat',
+		'inactive',
+		'sku_format',
+		'provider_email',
+		'service_url',
+		'sync_params',
+		'sync_enabled',
+		'sync_schedule',
+		'last_sync_date',
+		'created_on',
+		'created_by',
+		'modified_on',
+		'modified_by',
+		'locked_on',
+		'locked_by',
+		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

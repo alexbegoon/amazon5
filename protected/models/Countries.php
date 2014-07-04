@@ -144,4 +144,14 @@ class Countries extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listCountries()
+        {
+            return self::model()->findAll(array('order'=>'name','condition'=>'published=1'));
+        }
+        
+        public static function listData()
+        {
+            return CHtml::listData(self::listCountries(), 'code', 'name');
+        }
 }
