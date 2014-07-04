@@ -91,17 +91,26 @@ class ProductsController extends Controller
                     $productImages->image = $fileName;
                     $productImages->image_url = $fileName;
                     $productImages->image_url_thumb = $thumbFileName;
+                    $imagePath=Yii::app()->basePath."/../".$productImages->imagespath.$fileName;
+                    $thumbImagePath=Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName;
                     
                     if($productImages->save())
                     {
-                        $uploadedFile->saveAs(Yii::app()->basePath."/../".$productImages->imagespath.$fileName);
-                        $uploadedFile->saveAs(Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName);
+                        $uploadedFile->saveAs($imagePath);
+                        $uploadedFile->saveAs($thumbImagePath);
                         
-                        $image = Yii::app()->image->load(Yii::app()->basePath."/../".$productImages->imagespath.$fileName);
+                        $image = Yii::app()->image->load($imagePath);
                         $image->resize(150, 150);
-                        $image->save(Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName);
-                        
-                        // Her should be check if file not exists
+                        $image->save($thumbImagePath);
+                                                
+                        // check if file not exists
+                        if(!Yii::app()->file->set($imagePath)->isFile || 
+                           !Yii::app()->file->set($thumbImagePath)->isFile )
+                        {
+                            $transaction->rollback();
+                            $valid=FALSE;
+                            throw new CHttpException(500,'Can\'t store the product images');
+                        }
                     }
                     else
                     {

@@ -38,7 +38,7 @@ class ProductImages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, image_url', 'required'),
+			array('product_id, image_url, image', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
                         array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
 			array('product_id', 'length', 'max'=>11),
@@ -163,5 +163,15 @@ class ProductImages extends CActiveRecord
         public function getNoImageUrl()
         {
             return $this->imagesUrl.'noimage.png';
+        }
+        
+        public function getImageTag()
+        {
+            return CHtml::image($this->ImageUrl,'img for product id '.$this->product_id);
+        }
+        
+        public function getThumbImageTag()
+        {
+            return CHtml::image($this->ThumbImageUrl,'thumb img for product id '.$this->product_id);
         }
 }
