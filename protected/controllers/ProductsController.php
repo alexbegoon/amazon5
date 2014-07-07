@@ -253,7 +253,7 @@ class ProductsController extends Controller
         {            
             $model= new ProductTranslations;
             
-            $model->setAttribute('product_id', CHttpRequest::getParam('product_id'));
+            $model->setAttribute('product_id', Yii::app()->request->getParam('product_id'));
                 
             // enable ajax-based validation
             
@@ -278,8 +278,8 @@ class ProductsController extends Controller
         {
             $model=new ProductImages;
             
-            $model->setAttribute('product_id', CHttpRequest::getParam('product_id'));
-            $sku = Products::getSKUbyPk(CHttpRequest::getParam('product_id'));
+            $model->setAttribute('product_id', Yii::app()->request->getParam('product_id'));
+            $sku = Products::getSKUbyPk(Yii::app()->request->getParam('product_id'));
             
             //  enable ajax-based validation
             
@@ -346,7 +346,7 @@ class ProductsController extends Controller
         {
             $model=new ProductPrices;
             
-            $model->product_id=CHttpRequest::getParam('product_id');
+            $model->product_id=Yii::app()->request->getParam('product_id');
             // enable ajax-based validation
             
             if(isset($_POST['ajax']) && $_POST['ajax']==='product-prices-_prices-form')
