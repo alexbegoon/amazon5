@@ -279,7 +279,7 @@ class ProductsController extends Controller
             $model=new ProductImages;
             
             $model->setAttribute('product_id', CHttpRequest::getParam('product_id'));
-            $sku = Products::getSKUbyId(CHttpRequest::getParam('product_id'));
+            $sku = Products::getSKUbyPk(CHttpRequest::getParam('product_id'));
             
             //  enable ajax-based validation
             
@@ -313,6 +313,59 @@ class ProductsController extends Controller
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if(!isset($_GET['ajax']))
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
+        
+        public function actionUpdatePrice()
+        {
+            $model=ProductPrices::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-prices-_prices-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            
+
+            if(isset($_POST['ProductPrices']))
+            {
+                $model->attributes=$_POST['ProductPrices'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('update_prices',array('model'=>$model));
+        }
+        
+        public function actionCreatePrice()
+        {
+            $model=new ProductPrices;
+            
+            $model->product_id=CHttpRequest::getParam('product_id');
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-prices-_prices-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            
+
+            if(isset($_POST['ProductPrices']))
+            {
+                $model->attributes=$_POST['ProductPrices'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('update_prices',array('model'=>$model));
         }
 
         private static function saveProductImage($model,$sku)

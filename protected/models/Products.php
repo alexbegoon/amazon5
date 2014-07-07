@@ -162,7 +162,7 @@ class Products extends CActiveRecord
          * @param int $product_id
          * @return string
          */
-        public static function getSKUbyId($product_id)
+        public static function getSKUbyPk($product_id)
         {
             return self::model()->findByPk($product_id)->product_sku;
         }

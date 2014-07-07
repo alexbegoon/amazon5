@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	Yii::t('common','Products')=>array('index'),
-        'id '.$model->product_id=>array('view','id'=>$model->product_id),
+        '#'.Products::getSKUbyPk($model->product_id)=>array('view','id'=>$model->product_id),
 	Yii::t('common','Create')." ".Yii::t('common','Translation'),
 );
 
@@ -14,6 +14,6 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Product');?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Translation');?></h1>
 
 <?php $this->renderPartial('_translations', array(  'model'=>$model)); ?>

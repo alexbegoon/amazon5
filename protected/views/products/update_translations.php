@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	Yii::t('common','Products')=>array('index'),
-	'id '.$model->product_id=>array('view','id'=>$model->product_id),
+	'#'.Products::getSKUbyPk($model->product_id)=>array('view','id'=>$model->product_id),
 	Yii::t('common','Update')." ".Yii::t('common', 'Translation'),
 );
 

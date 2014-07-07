@@ -140,6 +140,9 @@ return array(
     'Add'=>'Añadir',
     'Translation'=>'Traducción',
     
+    
+    // Long text
+    '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',
     'This SKU already exists'=>'Esta SKU ya existe',
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
     'Fields with <span class="required">*</span> are required.'=>'Los campos que lleven <span class="required"> * </ span> son obligatorios.',

@@ -69,11 +69,18 @@ $this->menu=array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
                 ),
-                array(
-                    'name'=>'',
-                    'type'=>'html',
-                    'value'=>'CHtml::link(Yii::t("common", "Update"),Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey()))',
-                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
 	),
 ));
 ?>
@@ -102,11 +109,18 @@ $this->menu=array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
                 ),
-                array(
-                    'name'=>'',
-                    'type'=>'html',
-                    'value'=>'CHtml::link(Yii::t("common", "Update"),Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey()))',
-                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
 	),
 ));
 ?>
@@ -120,6 +134,7 @@ $this->menu=array(
                 array(
                     'name'=>  Yii::t('common', 'Web Shop'),
                     'value'=> 'WebShops::getNameByPk($data->web_shop_id)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createPrice",array('product_id'=>$model->id))),
                 ),
                 'product_price',
                 array(
@@ -142,6 +157,18 @@ $this->menu=array(
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updatePrice",array("id"=>$data->id))',
+                        )
+                    ),
                 )
 	),
 ));
@@ -173,11 +200,18 @@ $this->menu=array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
                 ),
-                array(
-                    'name'=>'',
-                    'type'=>'html',
-                    'value'=>'CHtml::link(Yii::t("common", "Update"),Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey()))',
-                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
 	),
 ));
 ?>
@@ -215,7 +249,7 @@ $this->menu=array(
                     (
                         'delete' => array
                         (
-                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/deleteImage/".$data->id)',
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/deleteImage/",array("id"=>$data->id))',
                         )
                     ),
                 )
