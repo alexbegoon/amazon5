@@ -26,6 +26,12 @@ class ProductManufacturers extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, manufacturer_id', 'required'),
+                        array('product_id', 'unique', 'criteria'=>array(
+                            'condition'=>'`manufacturer_id`=:manufacturer_id',
+                            'params'=>array(
+                                ':manufacturer_id'=>$this->manufacturer_id
+                            )
+                        )),
 			array('manufacturer_id', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
 			// The following rule is used by search().

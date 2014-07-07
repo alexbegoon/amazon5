@@ -156,4 +156,14 @@ class Products extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        /**
+         * Return Product SKU by product ID
+         * @param int $product_id
+         * @return string
+         */
+        public static function getSKUbyId($product_id)
+        {
+            return self::model()->findByPk($product_id)->product_sku;
+        }
 }

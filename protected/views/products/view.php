@@ -88,6 +88,7 @@ $this->menu=array(
                 array(
                     'name'=>  Yii::t('common', 'Language'),
                     'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('product_id'=>$model->id))),
                 ),
                 'product_desc',
                 'product_s_desc',
@@ -100,7 +101,12 @@ $this->menu=array(
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
-                )
+                ),
+                array(
+                    'name'=>'',
+                    'type'=>'html',
+                    'value'=>'CHtml::link(Yii::t("common", "Update"),Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey()))',
+                ),
 	),
 ));
 ?>
@@ -151,6 +157,7 @@ $this->menu=array(
                 array(
                     'name'=>  Yii::t('common', 'Language'),
                     'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('product_id'=>$model->id))),
                 ),
                 'meta_desc', 
                 'meta_keywords', 
@@ -165,7 +172,12 @@ $this->menu=array(
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
-                )
+                ),
+                array(
+                    'name'=>'',
+                    'type'=>'html',
+                    'value'=>'CHtml::link(Yii::t("common", "Update"),Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey()))',
+                ),
 	),
 ));
 ?>
@@ -177,11 +189,12 @@ $this->menu=array(
     $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$productImages,
 	'columns'=>array(
-		'id',	
                 array(
                     'name'=>Yii::t('common', 'Image'),
                     'value'=>'$data->popupImage',                  
-                    'type'=>'html',                
+                    'type'=>'html',
+                    'htmlOptions'=>array('style'=>'text-align: center'),
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createImage",array('product_id'=>$model->id))),        
                 ),	
 		'created_on',
                 array(
@@ -192,10 +205,25 @@ $this->menu=array(
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                'id',
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{delete}',
+                    'buttons'=>array
+                    (
+                        'delete' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/deleteImage/".$data->id)',
+                        )
+                    ),
                 )
 	),
 ));
 ?>
+
+<hr>
 
 <?php $this->widget('application.extensions.fancybox.EFancyBox', array(
                                 'target'=>'a.fancybox-image',

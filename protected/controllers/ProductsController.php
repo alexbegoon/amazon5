@@ -45,119 +45,83 @@ class ProductsController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Products;
-                $productTranslation=new ProductTranslations;
-                $productManufaturers=new ProductManufacturers;
-                $productPrices=new ProductPrices;
-                $productImages=new ProductImages;
+            $model=new Products;
+            $productTranslation=new ProductTranslations;
+            $productManufaturers=new ProductManufacturers;
+            $productPrices=new ProductPrices;
+            $productImages=new ProductImages;
+
+            // Uncomment the following line if AJAX validation is needed
+             $this->performAjaxValidation(array($model,$productTranslation,$productManufaturers,$productPrices,$productImages));
+
+            if(isset($_POST['Products'], 
+                     $_POST['ProductTranslations'], 
+                     $_POST['ProductManufacturers'],
+                     $_POST['ProductPrices'],
+                     $_POST['ProductImages']
+                    ))
+            {
+                // Start the transaction
+                $transaction = Yii::app()->db->beginTransaction();
+                $valid = true;
+
+                $model->attributes=$_POST['Products'];
+                $productTranslation->attributes=$_POST['ProductTranslations'];
+                $productManufaturers->attributes=$_POST['ProductManufacturers'];
+                $productPrices->attributes=$_POST['ProductPrices'];
+                $productImages->attributes=$_POST['ProductImages'];
+
+                if($model->validate() && $valid)
+                {
+                    $model->save();
+                }
+                else
+                {
+                    $valid=FALSE;
+                }
+
+                if($valid)
+                {
+                    $productTranslation->setAttribute('product_id', $model->id);
+                    $productManufaturers->setAttribute('product_id', $model->id);
+                    $productPrices->setAttribute('product_id', $model->id);
+                    $productImages->setAttribute('product_id', $model->id);
+                }
                 
-		// Uncomment the following line if AJAX validation is needed
-		 $this->performAjaxValidation(array($model,$productTranslation,$productManufaturers,$productPrices,$productImages));
+                if($productManufaturers->validate() &&
+                   $productTranslation->validate() &&
+                   $productPrices->validate() && 
+                   self::saveProductImage($productImages,$model->product_sku) && 
+                   $valid )
+                {
+                    $productManufaturers->save();
+                    $productTranslation->save();
+                    $productPrices->save();
+                }
+                else
+                {
+                    $valid=FALSE;
+                }
 
-		if(isset($_POST['Products'], 
-                         $_POST['ProductTranslations'], 
-                         $_POST['ProductManufacturers'],
-                         $_POST['ProductPrices'],
-                         $_POST['ProductImages']
-                        ))
-		{
-                    // Start the transaction
-                    $transaction = Yii::app()->db->beginTransaction();
-                    $valid = true;
-                    
-                    $model->attributes=$_POST['Products'];
-                    $productTranslation->attributes=$_POST['ProductTranslations'];
-                    $productManufaturers->attributes=$_POST['ProductManufacturers'];
-                    $productPrices->attributes=$_POST['ProductPrices'];
-                    $productImages->attributes=$_POST['ProductImages'];
+                // Product Successfully created 
+                if($valid)
+                {
+                    $transaction->commit();
+                    $this->redirect(array('view','id'=>$model->id));
+                }
+                else
+                {
+                    $transaction->rollback();
+                }
+            }
 
-                    if(!$model->save())
-                    {
-                        $transaction->rollback();
-                        $valid=FALSE;
-                    }
-                    
-                    if($valid)
-                    {
-                        $productTranslation->setAttribute('product_id', $model->id);
-                        $productManufaturers->setAttribute('product_id', $model->id);
-                        $productPrices->setAttribute('product_id', $model->id);
-                        $productImages->setAttribute('product_id', $model->id);
-                    }
-                    
-                    if(!$productTranslation->save())
-                    {
-                        $transaction->rollback();
-                        $valid=FALSE;
-                    }
-                    
-                    if(!$productManufaturers->save())
-                    {
-                        $transaction->rollback();
-                        $valid=FALSE;
-                    }
-                    
-                    if(!$productPrices->save())
-                    {
-                        $transaction->rollback();
-                        $valid=FALSE;
-                    }
-                    
-                    $rnd  = str_random(10);  // generate random string
-                    $rnd2 = str_random(10);  // generate random string
-                    $uploadedFile=CUploadedFile::getInstance($productImages,'image');
-                    
-                    if($uploadedFile)
-                    {
-                        $fileName = "{$model->product_sku}-{$rnd}.".$uploadedFile->getExtensionName();  // random number + file name
-                        $thumbFileName = "{$model->product_sku}-{$rnd2}-t.".$uploadedFile->getExtensionName();  // random number + file name
-                        $productImages->image = $fileName;
-                        $productImages->image_url = $fileName;
-                        $productImages->image_url_thumb = $thumbFileName;
-                        $imagePath=Yii::app()->basePath."/../".$productImages->imagespath.$fileName;
-                        $thumbImagePath=Yii::app()->basePath."/../".$productImages->imagespath.$thumbFileName;
-                    }
-                    
-                    if($productImages->save())
-                    {
-                        $uploadedFile->saveAs($imagePath);
-                        $uploadedFile->saveAs($thumbImagePath);
-                        
-                        $image = Yii::app()->image->load($imagePath);
-                        $image->resize($productImages->thumb_width, $productImages->thumb_height)
-                              ->quality($productImages->thumb_quality);
-                        $image->save($thumbImagePath);
-                                                
-                        // check if file not exists
-                        if(!Yii::app()->file->set($imagePath)->isFile || 
-                           !Yii::app()->file->set($thumbImagePath)->isFile )
-                        {
-                            $transaction->rollback();
-                            $valid=FALSE;
-                            throw new CHttpException(500,'Can\'t store the product images');
-                        }
-                    }
-                    else
-                    {
-                        $transaction->rollback();
-                        $valid=FALSE;
-                    }
-                    
-                    // Product Successfully created 
-                    if($valid)
-                    {
-                        $transaction->commit();
-                        $this->redirect(array('view','id'=>$model->id));
-                    }
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-                        'productTranslation'=>$productTranslation,
-                        'productManufaturers'=>$productManufaturers,
-                        'productPrices'=>$productPrices,
-                        'productImages'=>$productImages,
-		));
+            $this->render('create',array(
+                    'model'=>$model,
+                    'productTranslation'=>$productTranslation,
+                    'productManufaturers'=>$productManufaturers,
+                    'productPrices'=>$productPrices,
+                    'productImages'=>$productImages,
+            ));
 	}
 
 	/**
@@ -280,7 +244,6 @@ class ProductsController extends Controller
                 {
                     $model->save();
                     $this->redirect(array('view','id'=>$model->product_id));
-                    return;
                 }
             }
             $this->render('update_translations',array('model'=>$model));
@@ -306,9 +269,92 @@ class ProductsController extends Controller
                 {
                     $model->save();
                     $this->redirect(array('view','id'=>$model->product_id));
-                    return;
                 }
             }
             $this->render('create_translations',array('model'=>$model));
+        }
+        
+        public function actionCreateImage()
+        {
+            $model=new ProductImages;
+            
+            $model->setAttribute('product_id', CHttpRequest::getParam('product_id'));
+            $sku = Products::getSKUbyId(CHttpRequest::getParam('product_id'));
+            
+            //  enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-images-_images-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+
+            if(isset($_POST['ProductImages']))
+            {
+                $model->attributes=$_POST['ProductImages'];
+
+                if(self::saveProductImage($model,$sku))
+                {
+                    // form inputs are valid, do something here
+                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('create_images',array('model'=>$model));
+        }
+        
+        public function actionDeleteImage($id)
+        {
+            $model=ProductImages::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            $model->delete();
+
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
+
+        private static function saveProductImage($model,$sku)
+        {
+            // generate random string
+            $rnd  = str_random(10);
+            $rnd2 = str_random(10);  
+            
+            $uploadedFile=CUploadedFile::getInstance($model,'image');
+
+            if($uploadedFile)
+            {
+                $fileName = "{$sku}-{$rnd}.".$uploadedFile->getExtensionName();  // random number + file name
+                $thumbFileName = "{$sku}-{$rnd2}-t.".$uploadedFile->getExtensionName();  // random number + file name
+                $model->image = $fileName;
+                $model->image_url = $fileName;
+                $model->image_url_thumb = $thumbFileName;
+                $imagePath=Yii::app()->basePath."/../".$model->imagespath.$fileName;
+                $thumbImagePath=Yii::app()->basePath."/../".$model->imagespath.$thumbFileName;
+            }
+
+            if($model->validate())
+            {
+                $uploadedFile->saveAs($imagePath);
+                $uploadedFile->saveAs($thumbImagePath);
+
+                $image = Yii::app()->image->load($imagePath);
+                $image->resize($model->thumb_width, $model->thumb_height)
+                      ->quality($model->thumb_quality);
+                $image->save($thumbImagePath);
+
+                // check if file not exists
+                if(!Yii::app()->file->set($imagePath)->isFile || 
+                   !Yii::app()->file->set($thumbImagePath)->isFile )
+                {
+                    throw new CHttpException(500,'Can\'t store the product images');
+                }
+                
+                if($model->save())
+                return true;
+            }
+            
+            return false;
         }
 }
