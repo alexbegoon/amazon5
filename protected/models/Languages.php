@@ -196,4 +196,9 @@ class Languages extends CActiveRecord
         {
             return 'en-GB';
         }
+        
+        public static function getNameByPk($language_code)
+        {
+            return self::model()->findByPk($language_code)->title_native;
+        }
 }

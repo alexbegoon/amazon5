@@ -39,9 +39,16 @@ class ProductTranslations extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, language_code, product_name', 'required'),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`product_id`=:product_id',
+                            'params'=>array(
+                                ':product_id'=>$this->product_id
+                            )
+                        )),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
+			array('product_name, product_desc, product_s_desc', 'length', 'min'=>8),
 			array('product_name, meta_desc, meta_keywords, custom_title, slug', 'length', 'max'=>255),
 			array('product_desc, product_s_desc, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().

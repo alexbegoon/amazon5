@@ -129,14 +129,18 @@ return array(
     'Custom Title'=>'Título Personalizado',
     'Product SKU'=>'SKU del Producto',
     'Blocked'=>'Obstruido',
-    ''=>'',
-    
-    
+    'Product Price'=>'Precio del Producto',
+    'Override'=>'Anular',
+    'Product Override Price'=>'Anulación del Producto Precio ',
+    'Product Tax'=>'Impuesto Producto',
+    'Product Discount'=>'Descuento del Producto',
+    'Image'=>'Imagen',
+    'Product Images'=>'Imágenes del Producto',
+    'Product Meta Information'=>'Producto Meta Información',
+    'Add'=>'Añadir',
+    'Translation'=>'Traducción',
     
     'This SKU already exists'=>'Esta SKU ya existe',
-    
-    
-    
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
     'Fields with <span class="required">*</span> are required.'=>'Los campos que lleven <span class="required"> * </ span> son obligatorios.',
     'You may optionally enter a comparison operator'=>'También puede escribir un operador de comparación', 
@@ -147,16 +151,6 @@ return array(
     'You can not delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
     'You can not edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
-    
-    
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
     
 );
 ?>

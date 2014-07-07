@@ -19,9 +19,23 @@ class ProductsController extends Controller
                         'condition'=>'product_id='.$id
                     ),
                 ));
+                
+                $productTranslations = new CActiveDataProvider('ProductTranslations', array(
+                    'criteria'=>array(
+                        'condition'=>'product_id='.$id
+                    ),
+                ));
+                $productPrices = new CActiveDataProvider('ProductPrices', array(
+                    'criteria'=>array(
+                        'condition'=>'product_id='.$id
+                    ),
+                ));
+                
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
                         'productImages'=>$productImages,
+                        'productTranslations'=>$productTranslations,
+                        'productPrices'=>$productPrices,
 		));
 	}
 
@@ -243,4 +257,58 @@ class ProductsController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionUpdateTranslation()
+        {            
+            $model=ProductTranslations::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            
+
+            if(isset($_POST['ProductTranslations']))
+            {
+                $model->attributes=$_POST['ProductTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                    return;
+                }
+            }
+            $this->render('update_translations',array('model'=>$model));
+        }
+        
+        public function actionCreateTranslation()
+        {            
+            $model= new ProductTranslations;
+            
+            $model->setAttribute('product_id', CHttpRequest::getParam('product_id'));
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            if(isset($_POST['ProductTranslations']))
+            {
+                $model->attributes=$_POST['ProductTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                    return;
+                }
+            }
+            $this->render('create_translations',array('model'=>$model));
+        }
 }

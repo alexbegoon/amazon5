@@ -189,4 +189,9 @@ class WebShops extends CActiveRecord
         {
             return CHtml::listData(self::listWebShops(), 'id', 'shop_name');
         }
+        
+        public static function getNameByPk($web_shop_id)
+        {
+            return self::model()->findByPk($web_shop_id)->shop_name;
+        }
 }

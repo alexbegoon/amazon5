@@ -336,4 +336,9 @@ class Currencies extends CActiveRecord
         {
             return CHtml::listData(self::listCurrencies(), 'id', 'currency_name');
         }
+        
+        public static function getNameByPk($currencyId)
+        {
+            return self::model()->findByPk($currencyId)->currency_name;
+        }
 }
