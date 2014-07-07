@@ -58,7 +58,7 @@ class ProductPrices extends CActiveRecord
 			array('product_id, product_discount_id', 'length', 'max'=>11),
 			array('product_price, product_override_price','compare','compareValue'=>'0.00001',
                                                                                 'operator'=>'>',
-                                                                                'allowEmpty'=>false , 
+                                                                                'allowEmpty'=>true , 
                                                                                 'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
