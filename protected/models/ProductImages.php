@@ -25,14 +25,7 @@
 class ProductImages extends CActiveRecord
 {               
         public $image;
-        
-        // Thumb defaults
-        public $thumb_width = 150;
-        public $thumb_height = 150;
-        public $thumb_quality = 100;
-        
-        public $noImageFilename = 'noimage.png';
-
+        public $image_archive;
 
         /**
 	 * @return string the associated database table name
@@ -53,6 +46,7 @@ class ProductImages extends CActiveRecord
 			array('product_id, image_url, image', 'required'),
 			array('created_by, modified_by, locked_by, thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true),
                         array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true),
+                        array('image_archive', 'file','types'=>'zip', 'allowEmpty'=>true),
 			array('product_id', 'length', 'max'=>11),
 			array('image_url, image_url_thumb', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
@@ -83,6 +77,7 @@ class ProductImages extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'product_id' => Yii::t('common', 'Product'),
 			'image' => Yii::t('common', 'Product Image'),
+			'image_archive' => Yii::t('common', 'Image archive (.zip)'),
 			'image_url' => Yii::t('common', 'Image Url'),
 			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
 			'created_on' => Yii::t('common', 'Created On'),
@@ -146,14 +141,32 @@ class ProductImages extends CActiveRecord
               ));
         }
         
-        public function getImagesPath()
+        public function getThumb_width()
         {
-            return '/imgs/shop/';
+            return Yii::app()->params['defaultThumbWidth'];
+        }
+        public function getThumb_height()
+        {
+            return Yii::app()->params['defaultThumbHeight'];
+        }
+        public function getThumb_quality()
+        {
+            return Yii::app()->params['defaultThumbQuality'];
+        }
+        
+        public function getNoImageFilename()
+        {
+            return Yii::app()->params['noImageFilename'];
+        }
+
+        public function getImagesUrlPrefix()
+        {
+            return Yii::app()->params['shopImagesURL'];
         }
         
         public function getImagesUrl()
         {
-            return Yii::app()->request->baseUrl.$this->getImagesPath();
+            return Yii::app()->request->baseUrl.$this->getImagesUrlPrefix();
         }
         
         public function getImageUrl()

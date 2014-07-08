@@ -367,6 +367,30 @@ class ProductsController extends Controller
             }
             $this->render('update_prices',array('model'=>$model));
         }
+        
+        public function actionBatchUploadImages()
+        {
+            $model=new ProductImages;
+            
+            if(isset($_POST['ProductImages']))
+            {
+                $model->attributes=$_POST['ProductImages'];
+                
+                $uploadedFile=CUploadedFile::getInstance($model,'image_archive');
+                
+                if($uploadedFile)
+                {
+                    $zip=new ZipArchive();
+                }   
+
+                if($model->validate())
+                {
+//                    // form inputs are valid, do something here
+//                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('batch_upload_images',array('model'=>$model));
+        }
 
         private static function saveProductImage($model,$sku)
         {
@@ -383,8 +407,8 @@ class ProductsController extends Controller
                 $model->image = $fileName;
                 $model->image_url = $fileName;
                 $model->image_url_thumb = $thumbFileName;
-                $imagePath=Yii::app()->basePath."/../".$model->imagespath.$fileName;
-                $thumbImagePath=Yii::app()->basePath."/../".$model->imagespath.$thumbFileName;
+                $imagePath=$model->imagespath.$fileName;
+                $thumbImagePath=$model->imagespath.$thumbFileName;
             }
 
             if($model->validate())

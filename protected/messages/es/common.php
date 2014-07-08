@@ -139,6 +139,8 @@ return array(
     'Product Meta Information'=>'Producto Meta Información',
     'Add'=>'Añadir',
     'Translation'=>'Traducción',
+    'Batch Upload Images'=>'Carga por lotes Imágenes',
+    'Image archive (.zip)'=>'Archivo de Imágenes (.zip)',
     
     
     // Long text

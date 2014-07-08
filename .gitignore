@@ -4,3 +4,5 @@ nbproject
 /assets
 .idea
 shop
+/uploads/*
+!/uploads/.htaccess
