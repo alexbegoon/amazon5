@@ -141,9 +141,15 @@ return array(
     'Translation'=>'Traducción',
     'Batch Upload Images'=>'Carga por lotes Imágenes',
     'Image archive (.zip)'=>'Archivo de Imágenes (.zip)',
+    'Close'=>'Cerrar',
+    'Success'=>'Éxito',
+    'Info'=>'Información',
+    'Warning'=>'Advertencia',
+    'Danger'=>'Peligro',
     
     
     // Long text
+    'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',
     'This SKU already exists'=>'Esta SKU ya existe',
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',

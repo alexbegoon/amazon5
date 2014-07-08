@@ -166,4 +166,9 @@ class Products extends CActiveRecord
         {
             return self::model()->findByPk($product_id)->product_sku;
         }
+        
+        public static function findBySKU($product_sku)
+        {
+            return self::model()->find('product_sku=:product_sku',array(':product_sku'=>$product_sku));
+        }
 }

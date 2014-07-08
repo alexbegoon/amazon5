@@ -380,15 +380,70 @@ class ProductsController extends Controller
                 
                 if($uploadedFile)
                 {
+                    $filePath = Yii::app()->params['uploadsPath'].'batch_product_images.zip';
+                    $uploadedFile->saveAs($filePath);
                     $zip=new ZipArchive();
+                    if ($zip->open($filePath) === TRUE) 
+                    { 
+                         for($i = 0; $i < $zip->numFiles; $i++) 
+                         {   
+                            $fp = $zip->getStream($zip->getNameIndex($i));
+                            if(!$fp) throw new CHttpException(500,'Error reading file in zip-archive!');
+                            while (!feof($fp)) {
+                                $contents = fread($fp,20000000);
+                                
+                                if(preg_match('/^[^_].*\.(bmp|jpeg|gif|png|jpg)$/i', basename($zip->getNameIndex($i)))===1)
+                                {
+                                    $sku = file_ext_strip(basename($zip->getNameIndex($i)));
+                                }
+                                else 
+                                {
+                                    continue;
+                                }
+                                
+                                $product = Products::findBySKU($sku);
+                                
+                                if($product===null)
+                                {
+                                    $this->setWarningMsg(Yii::t('common', 'Product with SKU: {sku} not found',array('{sku}'=>$sku)));
+                                    continue;
+                                } 
+                                
+                                $image=new ProductImages;
+                                
+                                // generate random string
+                                $rnd  = str_random(10);
+                                $rnd2 = str_random(10); 
+                                
+                                // random number + file name
+                                $fileName = "{$sku}-{$rnd}.".file_ext(basename($zip->getNameIndex($i)));  
+                                $thumbFileName = "{$sku}-{$rnd2}-t.".file_ext(basename($zip->getNameIndex($i)));
+                                $image->product_id = $product->id;
+                                $image->image = $fileName;
+                                $image->image_url = $fileName;
+                                $image->image_url_thumb = $thumbFileName;
+                                $image->thumb_width = $model->thumb_width;
+                                $image->thumb_height = $model->thumb_height;
+                                $image->thumb_quality = $model->thumb_quality;
+                                $imagePath=$model->imagespath.$fileName;
+                                $thumbImagePath=$model->imagespath.$thumbFileName;
+                            }
+                            fclose($fp);
+                         }
+                    } 
+                    else 
+                    { 
+                        throw new CHttpException(500,'Error reading zip-archive!');
+                    } 
                 }   
 
-                if($model->validate())
+                if($model->validate(array('image_archive','thumb_width','thumb_height','thumb_quality')))
                 {
-//                    // form inputs are valid, do something here
-//                    $this->redirect(array('view','id'=>$model->product_id));
+                    
+//                    $this->redirect(array('index'));
                 }
             }
+                       
             $this->render('batch_upload_images',array('model'=>$model));
         }
 

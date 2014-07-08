@@ -48,3 +48,22 @@ function str_random($length=6,$lowercaseOnly=true)
  
     return $result;
 }
+
+/**
+ * Returns only the file extension (without the period).
+ * @param string $filename
+ * @return string
+ */
+function file_ext($filename) {
+	if( !preg_match('/\./', $filename) ) return '';
+	return preg_replace('/^.*\./', '', $filename);
+}
+
+/**
+ *  Returns the file name, less the extension.
+ * @param string $filename
+ * @return string
+ */
+function file_ext_strip($filename){
+    return preg_replace('/\.[^.]*$/', '', $filename);
+}

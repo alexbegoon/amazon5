@@ -13,8 +13,6 @@ $this->breadcrumbs=array(
 	Yii::t('common','Batch Upload Images'),
 );
 
-
-CVarDumper::dump($model->imagespath,10,true);
 ?>
 
 <h1 class="text-center"><?php echo Yii::t('common', 'Batch Upload Images');?></h1>

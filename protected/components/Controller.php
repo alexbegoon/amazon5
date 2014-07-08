@@ -21,6 +21,45 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
         
+        /**
+         * Messages that happens while action executes
+         * @var array 
+         */
+        public $flashMessages=array();
+        
+        public function setDangerMsg($msg)
+        {            
+            $this->flashMessages['dangers'][]=$msg;
+            Yii::app()->user->setFlash('danger', implode('<br>', 
+                    $this->flashMessages['dangers']));
+        }
+        
+        public function setErrorMsg($msg)
+        {            
+            $this->flashMessages['dangers'][]=$msg;
+            Yii::app()->user->setFlash('danger', implode('<br>', 
+                    $this->flashMessages['dangers']));
+        }
+        
+        public function setWarningMsg($msg)
+        {
+            $this->flashMessages['warnings'][]=$msg;
+            Yii::app()->user->setFlash('warning', implode('<br>', 
+                    $this->flashMessages['warnings']));
+        }
+        public function setInfoMsg($msg)
+        {
+            $this->flashMessages['infos'][]=$msg;
+            Yii::app()->user->setFlash('info', implode('<br>', 
+                    $this->flashMessages['infos']));
+        }
+        public function setSuccessMsg($msg)
+        {
+            $this->flashMessages['success'][]=$msg;
+            Yii::app()->user->setFlash('success', implode('<br>', 
+                    $this->flashMessages['success']));
+        }
+
         public function filters()
         {
             return array(

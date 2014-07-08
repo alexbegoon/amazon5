@@ -26,6 +26,17 @@ class ProductImages extends CActiveRecord
 {               
         public $image;
         public $image_archive;
+        
+        public $thumb_width;
+        public $thumb_height;
+        public $thumb_quality;
+        
+        public function init()
+        {
+            $this->thumb_width = Yii::app()->params['defaultThumbWidth'];
+            $this->thumb_height = Yii::app()->params['defaultThumbHeight'];
+            $this->thumb_quality = Yii::app()->params['defaultThumbQuality'];
+        }
 
         /**
 	 * @return string the associated database table name
@@ -44,7 +55,12 @@ class ProductImages extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, image_url, image', 'required'),
-			array('created_by, modified_by, locked_by, thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true),
+			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false),
+                        array('thumb_width, thumb_height, thumb_quality','compare','compareValue'=>'0',
+                                                                                'operator'=>'>',
+                                                                                'allowEmpty'=>false , 
+                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
                         array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true),
                         array('image_archive', 'file','types'=>'zip', 'allowEmpty'=>true),
 			array('product_id', 'length', 'max'=>11),
@@ -141,19 +157,11 @@ class ProductImages extends CActiveRecord
               ));
         }
         
-        public function getThumb_width()
+        public function getImagesPath()
         {
-            return Yii::app()->params['defaultThumbWidth'];
+            return Yii::app()->params['shopImagesPath'];
         }
-        public function getThumb_height()
-        {
-            return Yii::app()->params['defaultThumbHeight'];
-        }
-        public function getThumb_quality()
-        {
-            return Yii::app()->params['defaultThumbQuality'];
-        }
-        
+
         public function getNoImageFilename()
         {
             return Yii::app()->params['noImageFilename'];
