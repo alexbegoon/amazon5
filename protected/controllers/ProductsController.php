@@ -46,13 +46,13 @@ class ProductsController extends Controller
 	public function actionCreate()
 	{
             $model=new Products;
-            $productTranslation=new ProductTranslations;
+            $productTranslations=new ProductTranslations;
             $productManufaturers=new ProductManufacturers;
             $productPrices=new ProductPrices;
             $productImages=new ProductImages;
 
             // Uncomment the following line if AJAX validation is needed
-             $this->performAjaxValidation(array($model,$productTranslation,$productManufaturers,$productPrices,$productImages));
+             $this->performAjaxValidation(array($model,$productTranslations,$productManufaturers,$productPrices,$productImages));
 
             if(isset($_POST['Products'], 
                      $_POST['ProductTranslations'], 
@@ -66,7 +66,7 @@ class ProductsController extends Controller
                 $valid = true;
 
                 $model->attributes=$_POST['Products'];
-                $productTranslation->attributes=$_POST['ProductTranslations'];
+                $productTranslations->attributes=$_POST['ProductTranslations'];
                 $productManufaturers->attributes=$_POST['ProductManufacturers'];
                 $productPrices->attributes=$_POST['ProductPrices'];
                 $productImages->attributes=$_POST['ProductImages'];
@@ -82,20 +82,20 @@ class ProductsController extends Controller
 
                 if($valid)
                 {
-                    $productTranslation->setAttribute('product_id', $model->id);
+                    $productTranslations->setAttribute('product_id', $model->id);
                     $productManufaturers->setAttribute('product_id', $model->id);
                     $productPrices->setAttribute('product_id', $model->id);
                     $productImages->setAttribute('product_id', $model->id);
                 }
                 
                 if($productManufaturers->validate() &&
-                   $productTranslation->validate() &&
+                   $productTranslations->validate() &&
                    $productPrices->validate() && 
                    self::saveProductImage($productImages,$model->product_sku) && 
                    $valid )
                 {
                     $productManufaturers->save();
-                    $productTranslation->save();
+                    $productTranslations->save();
                     $productPrices->save();
                 }
                 else
@@ -117,7 +117,7 @@ class ProductsController extends Controller
 
             $this->render('create',array(
                     'model'=>$model,
-                    'productTranslation'=>$productTranslation,
+                    'productTranslations'=>$productTranslations,
                     'productManufaturers'=>$productManufaturers,
                     'productPrices'=>$productPrices,
                     'productImages'=>$productImages,
@@ -383,53 +383,84 @@ class ProductsController extends Controller
                     $filePath = Yii::app()->params['uploadsPath'].'batch_product_images.zip';
                     $uploadedFile->saveAs($filePath);
                     $zip=new ZipArchive();
+                    
                     if ($zip->open($filePath) === TRUE) 
                     { 
-                         for($i = 0; $i < $zip->numFiles; $i++) 
-                         {   
-                            $fp = $zip->getStream($zip->getNameIndex($i));
-                            if(!$fp) throw new CHttpException(500,'Error reading file in zip-archive!');
-                            while (!feof($fp)) {
-                                $contents = fread($fp,20000000);
-                                
-                                if(preg_match('/^[^_].*\.(bmp|jpeg|gif|png|jpg)$/i', basename($zip->getNameIndex($i)))===1)
-                                {
-                                    $sku = file_ext_strip(basename($zip->getNameIndex($i)));
-                                }
-                                else 
-                                {
-                                    continue;
-                                }
-                                
-                                $product = Products::findBySKU($sku);
-                                
-                                if($product===null)
-                                {
-                                    $this->setWarningMsg(Yii::t('common', 'Product with SKU: {sku} not found',array('{sku}'=>$sku)));
-                                    continue;
-                                } 
-                                
-                                $image=new ProductImages;
-                                
-                                // generate random string
-                                $rnd  = str_random(10);
-                                $rnd2 = str_random(10); 
-                                
-                                // random number + file name
-                                $fileName = "{$sku}-{$rnd}.".file_ext(basename($zip->getNameIndex($i)));  
-                                $thumbFileName = "{$sku}-{$rnd2}-t.".file_ext(basename($zip->getNameIndex($i)));
-                                $image->product_id = $product->id;
-                                $image->image = $fileName;
-                                $image->image_url = $fileName;
-                                $image->image_url_thumb = $thumbFileName;
-                                $image->thumb_width = $model->thumb_width;
-                                $image->thumb_height = $model->thumb_height;
-                                $image->thumb_quality = $model->thumb_quality;
-                                $imagePath=$model->imagespath.$fileName;
-                                $thumbImagePath=$model->imagespath.$thumbFileName;
+                        $zip->extractTo(Yii::app()->params['uploadsPath'].'batch_product_images');
+                        
+                        $images = CFileHelper::findFiles(Yii::app()->params['uploadsPath'].'batch_product_images');
+                        
+                        foreach($images as $uploadedImagePath) 
+                        {                              
+                            $contents = file_get_contents($uploadedImagePath);
+                            
+                            if(preg_match('/^[^_].*\.(bmp|jpeg|gif|png|jpg)$/i', basename($uploadedImagePath))===1)
+                            {
+                                $sku = file_ext_strip(basename($uploadedImagePath));
                             }
-                            fclose($fp);
-                         }
+                            else 
+                            {
+                                continue;
+                            }
+
+                            $product = Products::findBySKU($sku);
+
+                            if($product===null)
+                            {
+                                $this->setWarningMsg(Yii::t('common', 'Product with SKU: {sku} not found',array('{sku}'=>$sku)));
+                                continue;
+                            } 
+
+                            $image=new ProductImages;
+
+                            // generate random string
+                            $rnd  = str_random(10);
+                            $rnd2 = str_random(10); 
+
+                            // random number + file name
+                            $fileName = "{$sku}-{$rnd}.".file_ext(basename($uploadedImagePath));  
+                            $thumbFileName = "{$sku}-{$rnd2}-t.".file_ext(basename($uploadedImagePath));
+                            $image->product_id = $product->id;
+                            $image->image = $fileName;
+                            $image->image_url = $fileName;
+                            $image->image_url_thumb = $thumbFileName;
+                            $image->thumb_width = $model->thumb_width;
+                            $image->thumb_height = $model->thumb_height;
+                            $image->thumb_quality = $model->thumb_quality;
+                            $imagePath=$model->imagespath.$fileName;
+                            $thumbImagePath=$model->imagespath.$thumbFileName;
+                            
+                            if(!$image->save())
+                            {
+                                foreach ($image->getErrors() as $attr)
+                                {
+                                    foreach ($attr as $err)
+                                    {
+                                        $this->setWarningMsg(Yii::t('common', $err));
+                                    }
+                                }
+                                
+                                continue;
+                            }
+                            else
+                            {                                                            
+                                $сimage = Yii::app()->image->load($uploadedImagePath);
+                                $сimage->resize($model->thumb_width, $model->thumb_height)
+                                       ->quality($model->thumb_quality);
+                                $сimage->save($thumbImagePath);
+                                $сimage = Yii::app()->image->load($uploadedImagePath);                                
+                                $сimage->save($imagePath);
+                                
+                                // check if file not exists
+                                if(!Yii::app()->file->set($imagePath)->isFile || 
+                                   !Yii::app()->file->set($thumbImagePath)->isFile )
+                                {
+                                    throw new CHttpException(500,'Can\'t store the product images');
+                                }
+                                
+                                $this->setSuccessMsg(Yii::t('common', 'Product image for the product SKU: {sku}, successfully saved.', array('{sku}'=>$sku)));                                
+                            }
+                        }
                     } 
                     else 
                     { 
@@ -437,11 +468,7 @@ class ProductsController extends Controller
                     } 
                 }   
 
-                if($model->validate(array('image_archive','thumb_width','thumb_height','thumb_quality')))
-                {
-                    
-//                    $this->redirect(array('index'));
-                }
+                $model->validate(array('image_archive','thumb_width','thumb_height','thumb_quality'));
             }
                        
             $this->render('batch_upload_images',array('model'=>$model));

@@ -29,33 +29,33 @@ class Controller extends RController
         
         public function setDangerMsg($msg)
         {            
-            $this->flashMessages['dangers'][]=$msg;
+            $this->flashMessages['dangers'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
             Yii::app()->user->setFlash('danger', implode('<br>', 
                     $this->flashMessages['dangers']));
         }
         
         public function setErrorMsg($msg)
         {            
-            $this->flashMessages['dangers'][]=$msg;
+            $this->flashMessages['dangers'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
             Yii::app()->user->setFlash('danger', implode('<br>', 
                     $this->flashMessages['dangers']));
         }
         
         public function setWarningMsg($msg)
         {
-            $this->flashMessages['warnings'][]=$msg;
+            $this->flashMessages['warnings'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
             Yii::app()->user->setFlash('warning', implode('<br>', 
                     $this->flashMessages['warnings']));
         }
         public function setInfoMsg($msg)
         {
-            $this->flashMessages['infos'][]=$msg;
+            $this->flashMessages['infos'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
             Yii::app()->user->setFlash('info', implode('<br>', 
                     $this->flashMessages['infos']));
         }
         public function setSuccessMsg($msg)
         {
-            $this->flashMessages['success'][]=$msg;
+            $this->flashMessages['success'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
             Yii::app()->user->setFlash('success', implode('<br>', 
                     $this->flashMessages['success']));
         }

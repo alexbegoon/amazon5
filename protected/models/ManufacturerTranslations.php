@@ -36,6 +36,7 @@ class ManufacturerTranslations extends CActiveRecord
 		return array(
 			array('manufacturer_id, language_code, manufacturer_name', 'required'),
 			array('manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+                        array('slug','unique','allowEmpty'=>false),
 			array('language_code', 'length', 'max'=>5),
 			array('manufacturer_name, slug', 'length', 'max'=>255),
 			array('manufacturer_desc, created_on, modified_on, locked_on', 'safe'),
@@ -160,5 +161,19 @@ class ManufacturerTranslations extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate()
+        {
+            if(!empty($this->manufacturer_name) && empty($this->slug))
+            {
+                $this->slug = url_slug($this->manufacturer_name);
+            }
+            else 
+            {
+                $this->slug = url_slug($this->slug);
+            }
+            
+            return parent::beforeValidate();
         }
 }

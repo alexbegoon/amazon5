@@ -62,6 +62,9 @@ return array(
     'Sef'=>'Sef',
     'Image Url'=>'URL Imagen',
     'Image Url Thumb'=>'URL Imagen Pulgar',
+    'Thumb Width'=>'Ancho de la Icono',
+    'Thumb Height'=>'Altura de la Icono',
+    'Thumb Quality'=>'Calidad de la Icono',
     'Published'=>'Publicado',
     'Currency Name'=>'Nombre de Divisa',
     'Currency Code 2'=>'Código de moneda 2',
@@ -150,6 +153,7 @@ return array(
     
     // Long text
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
+    'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',
     'This SKU already exists'=>'Esta SKU ya existe',
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',

@@ -45,6 +45,7 @@ class ProductTranslations extends CActiveRecord
                                 ':product_id'=>$this->product_id
                             )
                         )),
+                        array('slug','unique','allowEmpty'=>false),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
@@ -147,5 +148,19 @@ class ProductTranslations extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate()
+        {
+            if(!empty($this->product_name) && empty($this->slug))
+            {
+                $this->slug = url_slug($this->product_name);
+            }
+            else 
+            {
+                $this->slug = url_slug($this->slug);
+            }
+            
+            return parent::beforeValidate();
         }
 }

@@ -20,7 +20,7 @@
 
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary(array($model,$productTranslation,$productManufaturers,$productPrices,$productImages), null, null, array('class'=>'alert alert-danger')); ?>
+	<?php echo $form->errorSummary(array($model,$productTranslations,$productManufaturers,$productPrices,$productImages), null, null, array('class'=>'alert alert-danger')); ?>
 
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'product_sku',array('class'=>'control-label')); ?>
@@ -29,45 +29,45 @@
 	</div>
         <hr>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'language_code',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($productTranslation,'language_code',  Languages::listData(),array('class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'language_code',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'language_code',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($productTranslations,'language_code',  Languages::listData(),array('class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'language_code',array('class'=>'label label-danger')); ?>
 	</div>
     
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'product_name',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($productTranslation,'product_name',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'product_name',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'product_name',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productTranslations,'product_name',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'product_name',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'product_desc',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($productTranslation,'product_desc',array('class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'product_desc',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'product_desc',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($productTranslations,'product_desc',array('class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'product_desc',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'product_s_desc',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($productTranslation,'product_s_desc',array('class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'product_s_desc',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'product_s_desc',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($productTranslations,'product_s_desc',array('class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'product_s_desc',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'meta_desc',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($productTranslation,'meta_desc',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'meta_desc',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'meta_desc',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productTranslations,'meta_desc',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'meta_desc',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'meta_keywords',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($productTranslation,'meta_keywords',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'meta_keywords',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'meta_keywords',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productTranslations,'meta_keywords',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'meta_keywords',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'custom_title',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($productTranslation,'custom_title',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'custom_title',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'custom_title',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productTranslations,'custom_title',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'custom_title',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslation,'slug',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($productTranslation,'slug',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslation,'slug',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($productTranslations,'slug',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($productTranslations,'slug',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'slug',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
         <div class="row form-group">
