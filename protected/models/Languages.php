@@ -171,6 +171,12 @@ class Languages extends CActiveRecord
             return self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
         }
         
+        public static function listAllTags()
+        {
+            return CHtml::listData(self::model()->findAll(array('select'=>'lang_code')),'lang_code','lang_code');
+        }
+
+
         /**
          * Return available languages in the system for dropdown list
          * @return mixed

@@ -35,6 +35,12 @@ class ManufacturerTranslations extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('manufacturer_id, language_code, manufacturer_name', 'required'),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`manufacturer_id`=:manufacturer_id',
+                            'params'=>array(
+                                ':manufacturer_id'=>$this->manufacturer_id
+                            )
+                        )),
 			array('manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
                         array('slug','unique','allowEmpty'=>false),
 			array('language_code', 'length', 'max'=>5),

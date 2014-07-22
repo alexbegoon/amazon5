@@ -78,6 +78,17 @@ $this->menu=array(
                 'name'=>  Yii::t('common', 'Products without description'),
                 'value'=>$totalProducts .' - count($data->productTranslations)',
             ),
+            array(
+                'class'=>'CButtonColumn',
+                'template'=>'{view}',
+                'buttons'=>array(
+                    'view' => array
+                    (
+                        'label'=>Yii::t("common", "View products without description"),
+                        'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/viewProductsWithoutDesc",$data)',
+                    )
+                ),
+            ),
         ),
     ));
     
@@ -92,6 +103,17 @@ $this->menu=array(
             array(
                 'name'=>  Yii::t('common', 'Products without short description'),
                 'value'=>$totalProducts.' - count($data->productTranslations)',
+            ),
+            array(
+                'class'=>'CButtonColumn',
+                'template'=>'{view}',
+                'buttons'=>array(
+                    'view' => array
+                    (
+                        'label'=>Yii::t("common", "View products without short description"),
+                        'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/viewProductsWithoutDesc",$data)',
+                    )
+                ),
             ),
         ),
     ));
@@ -176,7 +198,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'columns'=>array(
             'id',
             'product_sku',
-            'published',
+            array(
+                'name'=>Yii::t('common', 'Published'),
+                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
             'created_on',
             array
                 (
@@ -206,7 +231,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'columns'=>array(
             'id',
             'product_sku',
-            'published',
+            array(
+                'name'=>Yii::t('common', 'Published'),
+                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
             'created_on',
             array
                 (
@@ -236,7 +264,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'columns'=>array(
             'id',
             'product_sku',
-            'published',
+            array(
+                'name'=>Yii::t('common', 'Published'),
+                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
             'created_on',
             array
                 (

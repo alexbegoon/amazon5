@@ -164,6 +164,7 @@ return array(
     'Products with description'=>'Productos con descripción',
     'Products with short description'=>'Productos con descripción corta',
     'Descriptions statistic'=>'Descripciones estadística',
+    'View products without description'=>'Ver productos sin descripción',
     
     
     // Long text

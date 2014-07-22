@@ -543,7 +543,7 @@ class ProductsController extends Controller
                             'criteria'=>array(
                                 'with'=>array(
                                     'productTranslations'=>array(
-                                        'condition'=>'product_desc IS NOT NULL AND product_desc != ""',
+                                        'condition'=>'(product_desc IS NOT NULL AND product_desc != "") OR product_id IS NULL',
                                     ),
                                 ),
                                 'together'=>true,
@@ -554,7 +554,7 @@ class ProductsController extends Controller
                             'criteria'=>array(
                                 'with'=>array(
                                     'productTranslations'=>array(
-                                        'condition'=>'product_s_desc IS NOT NULL AND product_s_desc != ""',
+                                        'condition'=>'(product_s_desc IS NOT NULL AND product_s_desc != "") OR product_id IS NULL',
                                     ),
                                 ),
                                 'together'=>true,
@@ -576,6 +576,47 @@ class ProductsController extends Controller
                                                 'productsDescriptionStat'=>$productsDescriptionStat,
                                                 'productsShortDescriptionStat'=>$productsShortDescriptionStat,
                 ));
+        }
+        
+        public function actionViewProductsWithoutDesc()
+        {
+            $language_code = Yii::app()->request->getParam('lang_code');
+            $language_name = Languages::model()->findByPk($language_code)->title_native;
+            
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'language_code=:language_code';
+            $criteria->params = array(':language_code'=>$language_code);
+            
+            $excludePks = CHtml::listData(ProductTranslations::model()->findAll($criteria), 'product_id', 'product_id');
+                        
+            $productsWithoutDescription=new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'product_id NOT IN("'.implode('", "',$excludePks).'") OR product_id IS NULL OR (language_code=:language_code AND (product_desc IS NULL OR product_desc = ""))',
+                                        'params'=>array(':language_code'=>$language_code),
+                                    )
+                                ),
+                                'together'=>true,
+                            ),
+            ));
+            $productsWithoutShortDescription=new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'product_id NOT IN("'.implode('", "',$excludePks).'") OR product_id IS NULL OR (language_code=:language_code AND (product_s_desc IS NULL OR product_s_desc = ""))',
+                                        'params'=>array(':language_code'=>$language_code),
+                                    )
+                                ),
+                                'together'=>true,
+                            ),
+            ));
+            
+            $this->render('without_description',array(
+                'productsWithoutDescription'=>$productsWithoutDescription,
+                'productsWithoutShortDescription'=>$productsWithoutShortDescription,
+                'language_name'=>$language_name,
+            ));
         }
 
         private static function saveProductImage($model,$sku)
