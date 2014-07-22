@@ -6,3 +6,4 @@ nbproject
 shop
 /uploads/*
 !/uploads/.htaccess
+runtime
