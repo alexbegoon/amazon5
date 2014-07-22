@@ -77,7 +77,7 @@ class Languages extends CActiveRecord
 			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{manufacturer_translations}}(language_code, manufacturer_id)'),
 			'menus' => array(self::HAS_MANY, 'Menu', 'language_code'),
 			'amzni5PaymentMethods' => array(self::MANY_MANY, 'PaymentMethods', '{{payment_method_translations}}(language_code, payent_method_id)'),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_translations}}(language_code, product_id)'),
+			'productTranslations' => array(self::MANY_MANY, 'Products', '{{product_translations}}(language_code, product_id)'),
 			'amzni5ShippingMethods' => array(self::MANY_MANY, 'ShippingMethods', '{{shipping_method_translations}}(language_code, shipping_method_id)'),
 			'webShops' => array(self::HAS_MANY, 'WebShops', 'default_language'),
 		);

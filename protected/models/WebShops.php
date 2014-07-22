@@ -55,10 +55,12 @@ class WebShops extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('default_language, currency_id, shop_name, admin_email, shop_url, template_name', 'required'),
+			array('default_language, currency_id, shop_name, admin_email, shop_url, template_name, shop_code', 'required'),
 			array('currency_id, offline, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('shop_name', 'length', 'max'=>100),
 			array('shop_code', 'length', 'max'=>64),
+			array('shop_code', 'unique'),
+			array('shop_name', 'unique'),                        
 			array('template_name', 'length', 'max'=>15),
 			array('shop_url, email, email_header, email_subject, admin_email', 'length', 'max'=>255),
 			array('default_language', 'length', 'max'=>7),

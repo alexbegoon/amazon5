@@ -473,6 +473,110 @@ class ProductsController extends Controller
                        
             $this->render('batch_upload_images',array('model'=>$model));
         }
+        
+        public function actionStatistic()
+        {
+            $shopImages = CFileHelper::findFiles(Yii::app()->params['shopImagesPath']);
+            $shopImagesNames = array();
+            $dbImagesNames = array();
+            $dbImagesThumbNames = array();
+            
+            foreach ($shopImages as $img)
+            {
+                $shopImagesNames[] = basename($img);
+            }
+            
+            // Unset noimage file
+            $pos = array_search(Yii::app()->params['noImageFilename'], $shopImagesNames);
+            unset($shopImagesNames[$pos]);
+            
+            $totalImageFiles = count($shopImagesNames);
+            
+            $dbImages = ProductImages::model()->findAll(array('select'=>'image_url'));
+            $dbImagesThumb = ProductImages::model()->findAll(array('select'=>'image_url_thumb'));
+            
+            foreach ($dbImages as $img)
+            {
+                $dbImagesNames[] = $img->image_url;
+            }
+            foreach ($dbImagesThumb as $img)
+            {
+                $dbImagesThumbNames[] = $img->image_url_thumb;
+            }
+            
+            $notAssignedImages = array_diff($shopImagesNames, $dbImagesNames, $dbImagesThumbNames);
+            $lostFiles = array_diff(array_merge($dbImagesThumbNames,$dbImagesNames),$shopImagesNames);
+            
+            $productsWithoutImage= new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productImages'=>array(
+                                        'condition'=>'productImages.product_id IS NULL',
+                                    )
+                                ),
+                                'together'=>true,
+                            ),
+            ));
+            
+            $productsWithoutDescription=new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'productTranslations.product_desc IS NULL OR productTranslations.product_desc = ""',
+                                    )
+                                ),
+                                'together'=>true,
+                            ),
+            ));
+            $productsWithoutShortDescription=new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'productTranslations.product_s_desc IS NULL OR productTranslations.product_s_desc = ""',
+                                    )
+                                ),
+                                'together'=>true,
+                            ),
+            ));
+            
+            $productsDescriptionStat=new CActiveDataProvider('Languages',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'product_desc IS NOT NULL AND product_desc != ""',
+                                    ),
+                                ),
+                                'together'=>true,
+                            ),
+            )); 
+            
+            $productsShortDescriptionStat=new CActiveDataProvider('Languages',array(
+                            'criteria'=>array(
+                                'with'=>array(
+                                    'productTranslations'=>array(
+                                        'condition'=>'product_s_desc IS NOT NULL AND product_s_desc != ""',
+                                    ),
+                                ),
+                                'together'=>true,
+                            ),
+            )); 
+            
+//        CVarDumper::dump($productsDescriptionStat,10,true);
+            
+            $totalProducts = count(Products::model()->findAll());
+            
+            $this->render('statistics',array('totalImageFiles'=>$totalImageFiles,
+                                                'notAssignedImages'=>$notAssignedImages,
+                                                'lostFiles'=>$lostFiles,
+                                                'imagesPath'=>Yii::app()->params['shopImagesPath'],
+                                                'productsWithoutImage'=>$productsWithoutImage,
+                                                'totalProducts'=>$totalProducts,
+                                                'productsWithoutDescription'=>$productsWithoutDescription,
+                                                'productsWithoutShortDescription'=>$productsWithoutShortDescription,
+                                                'productsDescriptionStat'=>$productsDescriptionStat,
+                                                'productsShortDescriptionStat'=>$productsShortDescriptionStat,
+                ));
+        }
 
         private static function saveProductImage($model,$sku)
         {

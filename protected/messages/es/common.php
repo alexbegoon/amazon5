@@ -149,6 +149,21 @@ return array(
     'Info'=>'Información',
     'Warning'=>'Advertencia',
     'Danger'=>'Peligro',
+    'Statistic'=>'Estadística',
+    'Statistics'=>'Estadística',
+    'Image path'=>'Ruta de la Imagen',
+    'Images path'=>'Ruta de acceso a las Imágenes',
+    'Total image files'=>'Total de archivos de imagen',
+    'Not assigned images'=>'Las imágenes no asignadas',
+    'Lost image files'=>'Archivos de imágenes perdidas',
+    'See'=>'Ver',
+    'Products without image'=>'Productos sin imagen',
+    'Total products'=>'Total productos',
+    'Products without description'=>'Productos sin descripción',
+    'Products without short description'=>'Productos sin descripción corta',
+    'Products with description'=>'Productos con descripción',
+    'Products with short description'=>'Productos con descripción corta',
+    'Descriptions statistic'=>'Descripciones estadística',
     
     
     // Long text

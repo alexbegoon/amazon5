@@ -73,6 +73,7 @@ class Products extends CActiveRecord
 			'orderItemsHistories' => array(self::HAS_MANY, 'OrderItemsHistories', 'product_id'),
 			'amzni5Categories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
 			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
+			'productTranslations' => array(self::HAS_MANY, 'ProductTranslations', 'product_id'),
 			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
 			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
 			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
