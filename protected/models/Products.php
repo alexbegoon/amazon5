@@ -19,14 +19,14 @@
  * The followings are the available model relations:
  * @property OrderItems[] $orderItems
  * @property OrderItemsHistories[] $orderItemsHistories
- * @property Categories[] $amzni5Categories
+ * @property Categories[] $productCategories
  * @property ProductImages[] $productImages
- * @property Manufacturers[] $amzni5Manufacturers
+ * @property Manufacturers[] $productManufacturers
  * @property ProductPrices[] $productPrices
  * @property ProductReviews[] $productReviews
- * @property Languages[] $amzni5Languages
+ * @property Languages[] $productLanguages
  * @property ProviderOrderItems[] $providerOrderItems
- * @property Providers[] $amzni5Providers
+ * @property Providers[] $productProviders
  * @property ProviderProductsHistories[] $providerProductsHistories
  * @property Warehouse[] $warehouses
  */
@@ -71,15 +71,15 @@ class Products extends CActiveRecord
 		return array(
 			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'product_id'),
 			'orderItemsHistories' => array(self::HAS_MANY, 'OrderItemsHistories', 'product_id'),
-			'amzni5Categories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
+			'productCategories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
 			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
 			'productTranslations' => array(self::HAS_MANY, 'ProductTranslations', 'product_id'),
-			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
+			'productManufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
 			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
 			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
+			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
 			'providerOrderItems' => array(self::HAS_MANY, 'ProviderOrderItems', 'product_id'),
-			'amzni5Providers' => array(self::MANY_MANY, 'Providers', '{{provider_products}}(product_id, provider_id)'),
+			'productProviders' => array(self::MANY_MANY, 'Providers', '{{provider_products}}(product_id, provider_id)'),
 			'providerProductsHistories' => array(self::HAS_MANY, 'ProviderProductsHistories', 'product_id'),
 			'warehouses' => array(self::HAS_MANY, 'Warehouse', 'product_id'),
 		);

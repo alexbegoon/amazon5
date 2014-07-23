@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This is the model class for table "{{manufacturers}}".
+ * This is the model class for table "{{categories}}".
  *
- * The followings are the available columns in table '{{manufacturers}}':
- * @property integer $id
- * @property integer $hits
- * @property string $manufacturer_email
- * @property string $manufacturer_url
+ * The followings are the available columns in table '{{categories}}':
+ * @property string $id
+ * @property integer $web_shop_id
  * @property integer $published
+ * @property integer $hits
+ * @property string $outer_category_id
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -17,17 +17,21 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property Languages[] $productLanguages
+ * @property WebShops $webShop
+ * @property CategoryCategories[] $categoryCategories
+ * @property CategoryCategories[] $categoryCategories1
+ * @property CategoryImages[] $categoryImages
+ * @property Languages[] $amzni5Languages
  * @property Products[] $amzni5Products
  */
-class Manufacturers extends CActiveRecord
+class Categories extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{manufacturers}}';
+		return '{{categories}}';
 	}
 
 	/**
@@ -38,13 +42,13 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hits, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('manufacturer_email, manufacturer_url', 'length', 'max'=>255),
-			array('manufacturer_email','email'),
+			array('web_shop_id', 'required'),
+			array('web_shop_id, published, hits, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('outer_category_id', 'length', 'max'=>45),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, web_shop_id, published, hits, outer_category_id, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,9 +60,12 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
-			'translations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
+			'webShop' => array(self::BELONGS_TO, 'WebShops', 'web_shop_id'),
+			'categoryCategories' => array(self::HAS_MANY, 'CategoryCategories', 'parent_id'),
+			'categoryCategories1' => array(self::HAS_MANY, 'CategoryCategories', 'child_id'),
+			'categoryImages' => array(self::HAS_MANY, 'CategoryImages', 'category_id'),
+			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{category_translations}}(category_id, language_code)'),
+			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_categories}}(category_id, product_id)'),
 		);
 	}
 
@@ -69,10 +76,10 @@ class Manufacturers extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'hits' => Yii::t('common', 'Hits'),
-			'manufacturer_email' => Yii::t('common', 'Manufacturer Email'),
-			'manufacturer_url' => Yii::t('common', 'Manufacturer URL'),
+			'web_shop_id' => Yii::t('common', 'Web Shop'),
 			'published' => Yii::t('common', 'Published'),
+			'hits' => Yii::t('common', 'Hits'),
+			'outer_category_id' => Yii::t('common', 'Outer Category'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -100,11 +107,11 @@ class Manufacturers extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('hits',$this->hits);
-		$criteria->compare('manufacturer_email',$this->manufacturer_email,true);
-		$criteria->compare('manufacturer_url',$this->manufacturer_url,true);
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('web_shop_id',$this->web_shop_id);
 		$criteria->compare('published',$this->published);
+		$criteria->compare('hits',$this->hits);
+		$criteria->compare('outer_category_id',$this->outer_category_id,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -121,7 +128,7 @@ class Manufacturers extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Manufacturers the static model class
+	 * @return Categories the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -133,48 +140,5 @@ class Manufacturers extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
-        }
-        
-        public function getName()
-        {
-            $currentLang='';
-        
-            if(Yii::app()->user->hasState('applicationLanguage'))
-            {
-                $currentLang = Yii::app()->user->getState('applicationLanguage');
-            }
-            
-            if(!empty($currentLang))
-            {
-                $translation = ManufacturerTranslations::model()->findByPk(array('manufacturer_id'=>$this->primaryKey, 'language_code'=>$currentLang));
-            }
-            
-            if($translation!==NULL)
-            {
-                return $translation->manufacturer_name;
-            }
-            
-            $criteria = new CDbCriteria();
-            $criteria->condition='manufacturer_id=:id'; 
-            $criteria->params=array(':id'=>$this->primaryKey);
-            $translation = ManufacturerTranslations::model()->find($criteria);
-
-            if($translation!==NULL)
-                return $translation->manufacturer_name;
-            
-            return NULL;
-        }
-        
-        public static function listManufacturers()
-        {
-            return self::model()->findAll(array('condition'=>'published=1'));
-        }
-        
-        public static function listData()
-        {
-            $manufacturers = self::listManufacturers();
-            return CHtml::listData($manufacturers,'id',function($manufacturer) {
-                return CHtml::encode(Manufacturers::model()->findByPk($manufacturer->id)->name);
-            });
         }
 }
