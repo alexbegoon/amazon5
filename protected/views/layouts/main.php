@@ -12,8 +12,8 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <link rel="icon" href="<?php echo Yii::app()->request->baseUrl; ?>/imgs/favicon.ico" type="image/x-icon">
         
         <!-- Bootstrap framework -->
-        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/css/bootstrap-select.min.css">
         <!-- End Bootstrap framework -->
         
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -132,8 +132,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 <!-- Bootstrap framework -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap-select.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/js/bootstrap-select.min.js"></script>
 <!-- End Bootstrap framework -->
 
 </body>

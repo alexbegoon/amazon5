@@ -3,7 +3,8 @@ nbproject
 /protected/runtime/application.log
 /assets
 .idea
-shop
+/imgs/shop/*
 /uploads/*
 !/uploads/.htaccess
 runtime
+/imgs/categories/*

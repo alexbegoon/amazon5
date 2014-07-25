@@ -7,6 +7,6 @@
 ?>
 <?php echo CHtml::form(); ?>
     <div id="currencydrop">
-        <?php echo CHtml::dropDownList('currencyId', $currencyId, Currencies::listData(), array('submit' => '')); ?>
+        <?php echo CHtml::dropDownList('currencyId', $currencyId, Currencies::listData(), array('submit' => '','class'=>'form-control')); ?>
     </div>
 <?php echo CHtml::endForm(); ?>

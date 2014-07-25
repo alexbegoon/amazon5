@@ -20,6 +20,20 @@
  */
 class CategoryImages extends CActiveRecord
 {
+        public $image;
+        public $image_archive;
+        
+        public $thumb_width;
+        public $thumb_height;
+        public $thumb_quality;
+        
+        public function init()
+        {
+            $this->thumb_width = Yii::app()->params['categoryThumbWidth'];
+            $this->thumb_height = Yii::app()->params['categoryThumbHeight'];
+            $this->thumb_quality = Yii::app()->params['categoryThumbQuality'];
+        }
+        
 	/**
 	 * @return string the associated database table name
 	 */
@@ -36,7 +50,13 @@ class CategoryImages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('category_id', 'required'),
+			array('category_id, image, image_url', 'required'),
+                        array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true),
+                        array('thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false),
+                        array('thumb_width, thumb_height, thumb_quality','compare','compareValue'=>'0',
+                                                                                'operator'=>'>',
+                                                                                'allowEmpty'=>false , 
+                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('category_id', 'length', 'max'=>11),
 			array('image_url, image_url_thumb', 'length', 'max'=>255),
@@ -68,6 +88,7 @@ class CategoryImages extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'category_id' => Yii::t('common', 'Category'),
 			'image_url' => Yii::t('common', 'Image Url'),
+			'image' => Yii::t('common', 'Category Image'),
 			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -128,5 +149,82 @@ class CategoryImages extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function getImagesPath()
+        {
+            return Yii::app()->params['categoryImagesPath'];
+        }
+        
+        public function getNoImageFilename()
+        {
+            return Yii::app()->params['noImageFilename'];
+        }
+        
+        public function getImagesUrlPrefix()
+        {
+            return Yii::app()->params['categoryImagesURL'];
+        }
+        
+        public function getImagesUrl()
+        {
+            return Yii::app()->request->baseUrl.$this->getImagesUrlPrefix();
+        }
+        
+        public function getImageUrl()
+        {
+            if(empty($this->image_url))
+                return $this->NoImageUrl;
+                
+            return $this->imagesUrl.$this->image_url;
+        }
+        
+        public function getThumbImageUrl()
+        {
+            if(empty($this->image_url_thumb))
+                return $this->NoImageUrl;
+            
+            return $this->imagesUrl.$this->image_url_thumb;
+        }
+        
+        public function getNoImageUrl()
+        {
+            return $this->imagesUrl.$this->noImageFilename;
+        }
+        
+        public function getImageTag()
+        {
+            return CHtml::image($this->ImageUrl,'image for category id '.$this->category_id);
+        }
+        
+        public function getThumbImageTag()
+        {
+            return CHtml::image($this->ThumbImageUrl,'thumb image for product id '.$this->category_id);
+        }
+        
+        public static function listQualities()
+        {
+            return array(
+                100=>'100 %',
+                98=>'98 %',
+                95=>'95 %',
+                90=>'90 %',
+                85=>'85 %',
+                80=>'80 %',
+                75=>'75 %',
+                70=>'70 %',
+                65=>'65 %',
+                60=>'60 %',
+                50=>'50 %',
+                40=>'40 %',
+                30=>'30 %',
+                20=>'20 %',
+                10=>'10 %',
+           );
+        }
+        
+        public function getPopUpImage()
+        {        
+            return  CHtml::link($this->thumbImageTag, $this->imageUrl, array('class' => 'fancybox-image'));
         }
 }

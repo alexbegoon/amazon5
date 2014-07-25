@@ -165,6 +165,16 @@ return array(
     'Products with short description'=>'Productos con descripción corta',
     'Descriptions statistic'=>'Descripciones estadística',
     'View products without description'=>'Ver productos sin descripción',
+    'Category'=>'Categoría',
+    'Categories'=>'Categorías',
+    'Select WebShop'=>'Seleccionar Tienda',
+    'Root'=>'Raíz',
+    'Category Image'=>'Imagen de Categoría',
+    'Category Name'=>'Nombre de la Categoría',
+    'Category Short Description'=>'Categoría breve Descripción',
+    'Category Description'=>'Descripción de la Categoría',
+    'Parent Category'=>'Categoría Padre',
+    'Outer Category ID'=>'Exterior la Categoría ID',
     
     
     // Long text

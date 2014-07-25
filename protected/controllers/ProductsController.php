@@ -129,30 +129,30 @@ class ProductsController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-                
-                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-                $model->updateByPk($id,array(
-                    'locked_by'=>Yii::app()->user->getId(),
-                    'locked_on'=>date('Y-m-d H:i:s',time()),
-                ));
-                
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Products']))
-		{
-			$model->attributes=$_POST['Products'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
+//	public function actionUpdate($id)
+//	{
+//		$model=$this->loadModel($id);
+//                
+//                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
+//                $model->updateByPk($id,array(
+//                    'locked_by'=>Yii::app()->user->getId(),
+//                    'locked_on'=>date('Y-m-d H:i:s',time()),
+//                ));
+//                
+//		// Uncomment the following line if AJAX validation is needed
+//		// $this->performAjaxValidation($model);
+//
+//		if(isset($_POST['Products']))
+//		{
+//			$model->attributes=$_POST['Products'];
+//			if($model->save())
+//				$this->redirect(array('view','id'=>$model->id));
+//		}
+//
+//		$this->render('update',array(
+//			'model'=>$model,
+//		));
+//	}
 
 	/**
 	 * Deletes a particular model.

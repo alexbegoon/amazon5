@@ -18,15 +18,20 @@
  *
  * The followings are the available model relations:
  * @property WebShops $webShop
- * @property CategoryCategories[] $categoryCategories
- * @property CategoryCategories[] $categoryCategories1
+ * @property CategoryCategories[] $parentCategories
+ * @property CategoryCategories[] $childCategories
  * @property CategoryImages[] $categoryImages
- * @property Languages[] $amzni5Languages
- * @property Products[] $amzni5Products
+ * @property Languages[] $categoryTranslations
+ * @property Products[] $categoryProducts
  */
 class Categories extends CActiveRecord
 {
-	/**
+        public $categoryTree;
+        public $level;
+        public $childs;
+        public $parent;
+                
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -61,11 +66,11 @@ class Categories extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'webShop' => array(self::BELONGS_TO, 'WebShops', 'web_shop_id'),
-			'categoryCategories' => array(self::HAS_MANY, 'CategoryCategories', 'parent_id'),
-			'categoryCategories1' => array(self::HAS_MANY, 'CategoryCategories', 'child_id'),
+			'childCategories' => array(self::HAS_MANY, 'CategoryCategories', 'parent_id'),
+			'parentCategories' => array(self::HAS_MANY, 'CategoryCategories', 'child_id'),
 			'categoryImages' => array(self::HAS_MANY, 'CategoryImages', 'category_id'),
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{category_translations}}(category_id, language_code)'),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_categories}}(category_id, product_id)'),
+			'categoryTranslations' => array(self::MANY_MANY, 'Languages', '{{category_translations}}(category_id, language_code)'),
+			'categoryProducts' => array(self::MANY_MANY, 'Products', '{{product_categories}}(category_id, product_id)'),
 		);
 	}
 
@@ -79,7 +84,7 @@ class Categories extends CActiveRecord
 			'web_shop_id' => Yii::t('common', 'Web Shop'),
 			'published' => Yii::t('common', 'Published'),
 			'hits' => Yii::t('common', 'Hits'),
-			'outer_category_id' => Yii::t('common', 'Outer Category'),
+			'outer_category_id' => Yii::t('common', 'Outer Category ID'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -140,5 +145,129 @@ class Categories extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function getName()
+        {
+            $model=null;
+            if(Yii::app()->user->hasState('applicationLanguage'))
+            {
+                $currentLang = Yii::app()->user->getState('applicationLanguage');
+                $model = CategoryTranslations::model()->findByPk(array('category_id'=>$this->id,'language_code'=>$currentLang));
+            }
+            
+            if($model===null)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition='category_id=:category_id';
+                $criteria->params=array(':category_id'=>$this->id);
+                $model = CategoryTranslations::model()->find($criteria);
+            }
+            
+            if($model===null)
+            {
+                throw new CHttpException(500,'Model hasn\'t any translations');
+            }
+            
+            return $model->category_name;
+        }
+
+
+        private function getTree($webShopId=null,$categoryId=0,$limit=1000)
+        {
+            static $level = 0;
+            $childs = array();
+            if ($level==$limit || $webShopId===null) return null;
+            if($categoryId==0)
+            {
+                $category = self::model()->findByPk($categoryId);
+            }
+            else
+            {
+                $category = self::model()->cache(60,null,3)
+                                         ->with('childCategories')
+                                         ->find(array(
+                                             'condition'=>'id=:category_id AND web_shop_id=:web_shop_id',
+                                             'params'=>array(':category_id'=>$categoryId,
+                                                             ':web_shop_id'=>$webShopId),
+                                             ));
+            }
+            
+            if($category===null)
+                return null;
+                        
+            if(count($category->childCategories)>0)
+            {
+                $level++;
+                foreach ($category->childCategories as $child)
+                {
+                    $model = self::model()->cache(300,null,4)
+                                          ->with('childCategories','parentCategories','categoryProducts')
+                                          ->find('t.id=:category_id AND web_shop_id=:web_shop_id',
+                                                                 array(':category_id'=>$child->child_id,
+                                                                       ':web_shop_id'=>$webShopId));
+                    
+                    if($model!==null)
+                    {
+                        $model->level = $level;
+                        $model->childs = self::getTree($webShopId,$child->child_id);
+                        $childs[] = $model;
+                    }
+                }
+                $level--;
+                @usort($childs, function($a, $b)
+                {
+                    return strcmp($a->name, $b->name);
+                });
+                return $childs;
+            }
+            return null;
+        }
+        
+        public function getCategoryTree($webShopId=null,$categoryId=0,$limit=1000)
+        {
+            if(isset($this->categoryTree[$webShopId]))
+                return $this->categoryTree[$webShopId];
+            
+            $this->categoryTree[$webShopId] = $this->getTree($webShopId,$categoryId=0,$limit=1000);
+            
+            return $this->categoryTree[$webShopId];
+        }
+        
+        public function getCategoryTreeOptions($webShopId)
+        {
+            $str = CHtml::tag('option',array('value'=>0),
+                   CHtml::encode('- '.Yii::t('common', 'Root').' -'),true);
+            $tree = $this->getCategoryTree($webShopId);
+            
+            if(empty($tree))
+                return $str;
+                                    
+            $str .= self::iterateTree($tree);
+            
+            return $str;
+        }
+        
+        private static function iterateTree($tree)
+        {
+            $str = '';
+            
+            foreach($tree as $model)
+            {
+                $label = $model->name;
+                if($model->level>1)
+                {
+                    $label = str_repeat('|--', $model->level-1).$label;
+                }
+                $str .= CHtml::tag('option',
+                           array('value'=>$model->id),CHtml::encode($label),true);
+                
+                if(count($model->childs)>0)
+                {
+                    $str .= self::iterateTree($model->childs);
+                }
+            }
+            
+            return $str;
         }
 }

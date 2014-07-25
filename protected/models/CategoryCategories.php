@@ -56,8 +56,8 @@ class CategoryCategories extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'parent_id' => Yii::t('common', 'Parent'),
-			'child_id' => Yii::t('common', 'Child'),
+			'parent_id' => Yii::t('common', 'Parent Category'),
+			'child_id' => Yii::t('common', 'Child Category'),
 		);
 	}
 
@@ -103,5 +103,15 @@ class CategoryCategories extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate()
+        {
+            if(empty($this->parent_id))
+            {
+                $this->parent_id = 0;
+            }
+            
+            return parent::beforeValidate();
         }
 }

@@ -70,5 +70,10 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-barcode',
                         'label'=>Yii::t('common','Products'),
                         ),
+                    array(
+                        'url'=>'categories',
+                        'glyphicon'=>'glyphicon-list',
+                        'label'=>Yii::t('common','Categories'),
+                        ),
                 ),
 ))?>

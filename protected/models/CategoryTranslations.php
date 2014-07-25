@@ -38,10 +38,12 @@ class CategoryTranslations extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('category_id, language_code', 'required'),
+			array('category_id, language_code, category_name', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('category_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
+			array('category_name, slug', 'length', 'min'=>4),
+			array('slug', 'unique', 'allowEmpty'=>false),
 			array('category_name, category_s_desc, meta_desc, meta_keywords, custom_title, slug', 'length', 'max'=>255),
 			array('category_desc, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
@@ -70,9 +72,9 @@ class CategoryTranslations extends CActiveRecord
 			'category_id' => Yii::t('common', 'Category'),
 			'language_code' => Yii::t('common', 'Language Code'),
 			'category_name' => Yii::t('common', 'Category Name'),
-			'category_s_desc' => Yii::t('common', 'Category S Desc'),
-			'category_desc' => Yii::t('common', 'Category Desc'),
-			'meta_desc' => Yii::t('common', 'Meta Desc'),
+			'category_s_desc' => Yii::t('common', 'Category Short Description'),
+			'category_desc' => Yii::t('common', 'Category Description'),
+			'meta_desc' => Yii::t('common', 'Meta Description'),
 			'meta_keywords' => Yii::t('common', 'Meta Keywords'),
 			'custom_title' => Yii::t('common', 'Custom Title'),
 			'slug' => Yii::t('common', 'Slug'),
@@ -140,5 +142,19 @@ class CategoryTranslations extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate()
+        {
+            if(!empty($this->category_name) && empty($this->slug))
+            {
+                $this->slug = url_slug($this->category_name);
+            }
+            else 
+            {
+                $this->slug = url_slug($this->slug);
+            }
+            
+            return parent::beforeValidate();
         }
 }
