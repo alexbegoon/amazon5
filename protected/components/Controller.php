@@ -27,6 +27,12 @@ class Controller extends RController
          */
         public $flashMessages=array();
         
+        public function init() {
+            parent::init();
+            
+            new JsTrans('common',  Yii::app()->language);
+        }
+        
         public function setDangerMsg($msg)
         {            
             $this->flashMessages['dangers'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);

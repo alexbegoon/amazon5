@@ -175,9 +175,13 @@ return array(
     'Category Description'=>'Descripción de la Categoría',
     'Parent Category'=>'Categoría Padre',
     'Outer Category ID'=>'Exterior la Categoría ID',
+    'Expand this branch'=>'Ampliar esta rama',
+    'Collapse this branch'=>'Contraer esta rama',
     
     
     // Long text
+    '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
+    'has {n} product|has {n} products'=>'"tiene {n} producto|tiene {n} productos',
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',

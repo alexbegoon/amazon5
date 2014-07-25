@@ -11,7 +11,10 @@ function print_category($category)
         $class = 'glyphicon glyphicon-leaf';
     
     $str = '<li>
-                <span><i class="'.$class.'"></i> '.$category->name.'</span> <a href="">Goes somewhere</a>';
+                <span><i class="'.$class.'"></i> '.$category->name.'</span> ';
+    
+    $str .= Yii::t('common', 'has {n} product|has {n} products',
+                    array(count($category->categoryProducts), '{category_name}' => $category->name));
     if(count($category->childs)>0)
     {
         $str .='<ul>';
