@@ -201,8 +201,8 @@ class Categories extends CActiveRecord
                 $level++;
                 foreach ($category->childCategories as $child)
                 {
-                    $model = self::model()->cache(300,null,4)
-                                          ->with('childCategories','parentCategories','categoryProducts')
+                    $model = self::model()->cache(300,null,3)
+                                          ->with('childCategories','categoryProducts')
                                           ->find('t.id=:category_id AND web_shop_id=:web_shop_id',
                                                                  array(':category_id'=>$child->child_id,
                                                                        ':web_shop_id'=>$webShopId));
