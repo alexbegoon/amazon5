@@ -26,6 +26,7 @@
 		<?php echo $form->labelEx($model,'web_shop_id',array('class'=>'control-label')); ?>
 		<?php echo $form->dropDownList($model,'web_shop_id',  WebShops::listData(),
                         array('class'=>'form-control',
+                              'options'=>array(Yii::app()->request->getParam('web_shop_id',0)=>array('selected'=>true)),
                               'prompt'=>'- '.Yii::t('common', 'Select WebShop').' -',  
                                 'ajax' => array(
                                     'type'=>'POST', //request type
@@ -102,7 +103,11 @@
         <hr>
         <div class="row form-group">
 		<?php echo $form->labelEx($categoryCategories,'parent_id',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($categoryCategories,'parent_id', array(),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($categoryCategories,'parent_id', CHtml::listData(
+                                                                                    Categories::model()->getCategoryTreeArr(
+                                                                                            Yii::app()->request->getParam('web_shop_id',null)), 'category_id', 'category_name'),
+                        array('class'=>'form-control',
+                              'options'=>array(Yii::app()->request->getParam('parent_id',0)=>array('selected'=>true)))); ?>
 		<?php echo $form->error($categoryCategories,'parent_id',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>

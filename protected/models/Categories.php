@@ -28,8 +28,11 @@ class Categories extends CActiveRecord
 {
         public $categoryTree;
         public $level;
+        public $hasChilds;
         public $childs;
         public $parent;
+        public $name;
+        public $hasProducts;
                 
         /**
 	 * @return string the associated database table name
@@ -210,7 +213,10 @@ class Categories extends CActiveRecord
                     if($model!==null)
                     {
                         $model->level = $level;
+                        $model->name = $model->getName();
                         $model->childs = self::getTree($webShopId,$child->child_id);
+                        $model->hasChilds = count($model->childs)>0?true:false;
+                        $model->hasProducts = count($model->categoryProducts)>0?true:false;
                         $childs[] = $model;
                     }
                 }
@@ -243,14 +249,17 @@ class Categories extends CActiveRecord
             if(empty($tree))
                 return $str;
                                     
-            $str .= self::iterateTree($tree);
+            foreach(self::iterateTree($tree) as $category)
+            {
+                $str .= CHtml::tag('option',array('value'=>$category['category_id']),$category['category_name'],true);
+            }
             
             return $str;
         }
         
         private static function iterateTree($tree)
         {
-            $str = '';
+            static $finalTree;
             
             foreach($tree as $model)
             {
@@ -259,15 +268,38 @@ class Categories extends CActiveRecord
                 {
                     $label = str_repeat('|--', $model->level-1).$label;
                 }
-                $str .= CHtml::tag('option',
-                           array('value'=>$model->id),CHtml::encode($label),true);
+                $finalTree[] = array('category_id'=>$model->id, 
+                                     'category_name'=>CHtml::encode($label)
+                               );
                 
-                if(count($model->childs)>0)
+                if($model->hasChilds)
                 {
-                    $str .= self::iterateTree($model->childs);
+                    self::iterateTree($model->childs);
                 }
             }
             
-            return $str;
+            return $finalTree;
         }
+        
+        /**
+         * Return 1D category tree. Use only for flat list or dropdown
+         * @param int $webShopId
+         */
+        public function getCategoryTreeArr($webShopId)
+        {
+            $categoryArray = array();
+            
+            $categoryArray[] = array('category_id'=>0,
+                                     'category_name'=>CHtml::encode('- '.Yii::t('common', 'Root').' -')   
+                               );
+            
+            $tree = $this->getCategoryTree($webShopId);
+            
+            if(empty($tree))
+                return $categoryArray;
+            
+            return array_merge($categoryArray, self::iterateTree($tree));
+        }
+        
+        
 }

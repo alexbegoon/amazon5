@@ -7,6 +7,7 @@ $(function () {
             $(this).attr('title', Yii.t('common','Expand this branch')).find(' > i').addClass('glyphicon-folder-close').removeClass('glyphicon-folder-open');
         } else {
             children.show('fast');
+            setTimeout(function(){children.removeAttr('style')},150);
             $(this).attr('title', Yii.t('common','Collapse this branch')).find(' > i').addClass('glyphicon-folder-open').removeClass('glyphicon-folder-close');
         }
         e.stopPropagation();
