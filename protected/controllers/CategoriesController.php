@@ -53,10 +53,118 @@ class CategoriesController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $categoryTranslations = new CActiveDataProvider('CategoryTranslations', array(
+                    'criteria'=>array(
+                        'condition'=>'category_id=:category_id',
+                        'params'=>array(':category_id'=>$id),
+                    ),
+                ));
+                
+                $categoryImages = new CActiveDataProvider('CategoryImages', array(
+                    'criteria'=>array(
+                        'condition'=>'category_id=:category_id',
+                        'params'=>array(':category_id'=>$id),
+                    ),
+                ));
+                
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'categoryTranslations'=>$categoryTranslations,
+                        'categoryImages'=>$categoryImages,
 		));
 	}
+        
+        public function actionCreateTranslation()
+        {            
+            $model= new CategoryTranslations;
+            
+            $model->setAttribute('category_id', Yii::app()->request->getParam('category_id'));
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='category-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            if(isset($_POST['CategoryTranslations']))
+            {
+                $model->attributes=$_POST['CategoryTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->category_id));
+                }
+            }
+            $this->render('create_translations',array('model'=>$model));
+        }
+        
+        public function actionUpdateTranslation()
+        {            
+            $model=CategoryTranslations::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='category-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+
+            if(isset($_POST['CategoryTranslations']))
+            {
+                $model->attributes=$_POST['CategoryTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->category_id));
+                }
+            }
+            $this->render('update_translations',array('model'=>$model));
+        }
+        
+        public function actionCreateImage()
+        {
+            $model=new CategoryImages;
+            
+            $model->setAttribute('category_id', Yii::app()->request->getParam('category_id'));
+            $category_name = Categories::model()->findByPk(Yii::app()->request->getParam('category_id'))->getName();
+            
+            //  enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='category-images-_images-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+
+            if(isset($_POST['CategoryImages']))
+            {
+                $model->attributes=$_POST['CategoryImages'];
+
+                if(self::saveCategoryImage($model,$category_name))
+                {
+                    // form inputs are valid, do something here
+                    $this->redirect(array('view','id'=>$model->category_id));
+                }
+            }
+            $this->render('create_images',array('model'=>$model));
+        }
+        
+        public function actionDeleteImage($id)
+        {
+            $model=CategoryImages::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            $model->delete();
+
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
 
 	/**
 	 * Creates a new model.

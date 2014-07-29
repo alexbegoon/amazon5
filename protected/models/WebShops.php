@@ -188,7 +188,7 @@ class WebShops extends CActiveRecord
         
         public static function listWebShops()
         {
-            return self::model()->findAll(array('order'=>'shop_name'));
+            return self::model()->with('categories')->findAll(array('order'=>'shop_name'));
         }
         
         public static function listData()

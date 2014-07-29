@@ -177,11 +177,29 @@ return array(
     'Outer Category ID'=>'Exterior la Categoría ID',
     'Expand this branch'=>'Ampliar esta rama',
     'Collapse this branch'=>'Contraer esta rama',
-    
+    'Action'=>'Acción',
+    'Create category here'=>'Crear la categoría aquí',
+    'Manage this category'=>'Gestionar esta categoría',
+    'Assign products'=>'Asignar productos',
+    'Move this category'=>'Mover esta categoría',
+    'Revoke all products'=>'Revocar todos los productos',
+    'Remove this category'=>'Eliminar esta categoría',
+    'Remove all categories'=>'Retire todas las categorías',
+    'Copy category tree'=>'Copia Categoría de árbol',
+    'Manage this Web Shop'=>'Administrar esta Tienda Web',
+    'Category Meta Information'=>'Categoría Meta Información',
+    'Category Images'=>'Categoría Imágenes',
+ 
+
+ 
+ 
+
     
     // Long text
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
+    '"{webshop_name}" has {n} category|"{webshop_name}" has {n} categories'=>'"{webshop_name}" tiene {n} categoría|"{webshop_name}" tiene {n} categorías',
     'has {n} product|has {n} products'=>'"tiene {n} producto|tiene {n} productos',
+    'has {n} category|has {n} categories'=>'"tiene {n} categoría|tiene {n} categorías',
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',

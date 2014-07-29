@@ -24,6 +24,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <![endif]-->
         
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/font-awesome-4.1.0/css/font-awesome.min.css">
         
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>

@@ -172,6 +172,9 @@ class Categories extends CActiveRecord
                 throw new CHttpException(500,'Model hasn\'t any translations');
             }
             
+            if($model->category_name)
+                $this->name = $model->category_name;
+            
             return $model->category_name;
         }
 

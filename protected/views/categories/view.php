@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	Yii::t('common','Categories')=>array('index'),
-	$model->id,
+	$model->getName(),
 );
 
 $this->menu=array(
@@ -16,21 +16,202 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'View')?> <?php echo Yii::t('common', 'Categories')?> #<?php echo $model->id; ?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Category')?> "<?php echo $model->name; ?>"</h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'web_shop_id',
-		'published',
+		array(
+                    'name'=>  Yii::t('common', 'Web Shop'),
+                    'value'=> WebShops::getNameByPk($model->web_shop_id),
+                ),
+		array(
+                    'name'=>  Yii::t('common', 'Published'),
+                    'value'=>$model->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No"),
+                ),
 		'hits',
 		'outer_category_id',
 		'created_on',
-		'created_by',
+		array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                ),
 		'modified_on',
-		'modified_by',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                ),
 		'locked_on',
 		'locked_by',
 	),
 )); ?>
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Category Name')?></h3>
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$categoryTranslations,
+	'columns'=>array(
+                array(
+                    'name'=>  Yii::t('common', 'Language'),
+                    'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('category_id'=>$model->id))),
+                ),
+                'category_name',
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
+	),
+));
+?>
+
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Category Description')?></h3>
+
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$categoryTranslations,
+	'columns'=>array(
+                array(
+                    'name'=>  Yii::t('common', 'Language'),
+                    'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('category_id'=>$model->id))),
+                ),
+                'category_desc',
+                'category_s_desc',
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
+	),
+));
+?>
+
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Category Meta Information')?></h3>
+
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$categoryTranslations,
+	'columns'=>array(
+                array(
+                    'name'=>  Yii::t('common', 'Language'),
+                    'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('category_id'=>$model->id))),
+                ),
+                'meta_desc', 
+                'meta_keywords', 
+                'custom_title', 
+                'slug',
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
+	),
+));
+?>
+
+
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Category Images')?></h3>
+
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$categoryImages,
+	'columns'=>array(
+                array(
+                    'name'=>Yii::t('common', 'Image'),
+                    'value'=>'$data->popupImage',                  
+                    'type'=>'html',
+                    'htmlOptions'=>array('style'=>'text-align: center'),
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createImage",array('category_id'=>$model->id))),        
+                ),	
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                'id',
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{delete}',
+                    'buttons'=>array
+                    (
+                        'delete' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/deleteImage/",array("id"=>$data->id))',
+                        )
+                    ),
+                )
+	),
+));
+?>
+
+<hr>
+
+<?php $this->widget('application.extensions.fancybox.EFancyBox', array(
+                                'target'=>'a.fancybox-image',
+                                'config'=>array(),)
+            );
+?>
