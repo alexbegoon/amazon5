@@ -22,9 +22,9 @@ function print_category($category, $webShopId)
     <i class="caret"></i>
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->createUrl('categories/create', array('web_shop_id'=>$webShopId,'parent_id'=>$category->id)).'"><i class="glyphicon glyphicon-plus-sign"></i> '.Yii::t('common', 'Create category here').'</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->createUrl('categories/'.$category->id).'"><i class="glyphicon glyphicon-edit"></i> '.Yii::t('common', 'Manage this category').'</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="glyphicon glyphicon-barcode"></i> '.Yii::t('common', 'Assign products').'</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl('create', array('web_shop_id'=>$webShopId,'parent_id'=>$category->id)).'"><i class="glyphicon glyphicon-plus-sign"></i> '.Yii::t('common', 'Create category here').'</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl($category->id).'"><i class="glyphicon glyphicon-edit"></i> '.Yii::t('common', 'Manage this category').'</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl('products',array('id'=>$category->id)).'"><i class="glyphicon glyphicon-barcode"></i> '.Yii::t('common', 'Assign products').'</a></li>
     <li role="presentation" class="divider"></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="glyphicon glyphicon-move"></i> '.Yii::t('common', 'Move this category').'</a></li>
     <li role="presentation" class="divider"></li>

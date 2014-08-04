@@ -21,6 +21,7 @@ return array(
     'Countries'=>'Países',
     'States'=>'Unidos',
     'Manufacturers'=>'Fabricantes',
+    'Manufacturer'=>'Fabricante',
     'Manufacturer ID'=>'Fabricante ID',
     'Dashboard'=>'Salpicadero',
     'Manage'=>'Administrar',
@@ -136,6 +137,7 @@ return array(
     'Override'=>'Anular',
     'Product Override Price'=>'Anulación del Producto Precio ',
     'Product Tax'=>'Impuesto Producto',
+    'Product'=>'Producto',
     'Product Discount'=>'Descuento del Producto',
     'Image'=>'Imagen',
     'Product Images'=>'Imágenes del Producto',
@@ -189,6 +191,17 @@ return array(
     'Manage this Web Shop'=>'Administrar esta Tienda Web',
     'Category Meta Information'=>'Categoría Meta Información',
     'Category Images'=>'Categoría Imágenes',
+    'Category successfully published'=>'Categoría publicó con éxito',
+    'Category successfully unpublished'=>'Categoría con éxito desactivado',
+    'Product successfully published'=>'Producto publicó con éxito',
+    'Product successfully unpublished'=>'Producto con éxito desactivado',
+    'Product successfully blocked'=>'Producto bloqueado con éxito',
+    'Product successfully unblocked'=>'Producto desbloqueado con éxito',
+    'Unpublish'=>'Despublicar',
+    'Publish'=>'Publicar',
+    'Block'=>'Bloquear',
+    'Unblock'=>'Desbloquear',
+    'Products of the category'=>'Productos de la categoría',
  
 
  

@@ -165,8 +165,48 @@ class CategoriesController extends Controller
             if(!isset($_GET['ajax']))
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
+        
+        public function actionToggle($id)
+        {
+            $model=Categories::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->published = Yii::app()->request->getParam('published');
+                if($model->save())
+                {
+                    if($model->published==1)
+                    $this->setSuccessMsg(Yii::t('common', 'Category successfully published'));
+                    else
+                    $this->setSuccessMsg(Yii::t('common', 'Category successfully unpublished'));
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
+        
+        public function actionProducts($id)
+        {
+            $model=Categories::model()->findByPk($id);
+            
+            $products = new Products('search');
+            $products->unsetAttributes();  // clear any default values
+		if(isset($_GET['Products']))
+			$products->attributes=$_GET['Products'];
+            
+            $this->render('products',array(
+                'model'=>$model,
+                'products'=>$products,
+            ));
+        }
+        
+        public function actionRevokeProductFromCategory($id)
+        {
+            $category = Categories::model()->findByPk($id);
+        }
 
-	/**
+
+        /**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */

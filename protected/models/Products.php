@@ -32,7 +32,11 @@
  */
 class Products extends CActiveRecord
 {
-	/**
+    
+        public $product_name;
+        public $manufacturer_id;
+        
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -57,7 +61,7 @@ class Products extends CActiveRecord
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, product_parent_id, product_sku, published, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, product_name, manufacturer_id, product_parent_id, product_sku, published, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,6 +98,8 @@ class Products extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'product_parent_id' => Yii::t('common', 'Parent Product'),
 			'product_sku' => Yii::t('common', 'Product SKU'),
+			'product_name' => Yii::t('common', 'Product Name'),
+			'manufacturer_id' => Yii::t('common', 'Manufacturer'),
 			'published' => Yii::t('common', 'Published'),
 			'blocked' => Yii::t('common', 'Blocked'),
 			'created_on' => Yii::t('common', 'Created On'),
@@ -126,17 +132,31 @@ class Products extends CActiveRecord
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('product_parent_id',$this->product_parent_id,true);
 		$criteria->compare('product_sku',$this->product_sku,true);
-		$criteria->compare('published',$this->published);
-		$criteria->compare('blocked',$this->blocked);
-		$criteria->compare('created_on',$this->created_on,true);
-		$criteria->compare('created_by',$this->created_by);
-		$criteria->compare('modified_on',$this->modified_on,true);
-		$criteria->compare('modified_by',$this->modified_by);
-		$criteria->compare('locked_on',$this->locked_on,true);
-		$criteria->compare('locked_by',$this->locked_by);
+		$criteria->compare('t.published',$this->published);
+		$criteria->compare('t.blocked',$this->blocked);
+		$criteria->compare('t.created_on',$this->created_on,true);
+		$criteria->compare('t.created_by',$this->created_by);
+		$criteria->compare('t.modified_on',$this->modified_on,true);
+		$criteria->compare('t.modified_by',$this->modified_by);
+		$criteria->compare('t.locked_on',$this->locked_on,true);
+		$criteria->compare('t.locked_by',$this->locked_by);
+                
+                $criteria->with = array( 'productTranslations', 'productManufacturers' );
+                $criteria->together = true;
+                $criteria->compare( 'productTranslations.product_name', $this->product_name, true );
+                $criteria->compare( 'productManufacturers.id', $this->manufacturer_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'attributes'=>array(
+                                'product_name'=>array(
+                                    'asc'=>'productTranslations.product_name',
+                                    'desc'=>'productTranslations.product_name DESC',
+                                ),
+                                '*',
+                            ),
+                        ),
 		));
 	}
 
@@ -172,4 +192,46 @@ class Products extends CActiveRecord
         {
             return self::model()->find('product_sku=:product_sku',array(':product_sku'=>$product_sku));
         }
+        
+        public function getName()
+        {
+            $model=null;
+            if(Yii::app()->user->hasState('applicationLanguage'))
+            {
+                $currentLang = Yii::app()->user->getState('applicationLanguage');
+                $model = ProductTranslations::model()->findByPk(array('product_id'=>$this->id,'language_code'=>$currentLang));
+            }
+            
+            if($model===null)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition='product_id=:product_id';
+                $criteria->params=array(':product_id'=>$this->id);
+                $model = ProductTranslations::model()->find($criteria);
+            }
+            
+            if($model===null)
+            {
+                throw new CHttpException(500,'Model hasn\'t any translations');
+            }
+            
+            return $model->product_name;
+        }
+        
+        public static function itemAlias($type,$code=NULL) {
+		$_items = array(
+			'Published' => array(
+				'0' => Yii::t('yii','No'),
+				'1' => Yii::t('yii','Yes'),
+			),
+			'Blocked' => array(
+				'0' => Yii::t('yii','No'),
+				'1' => Yii::t('yii','Yes'),
+			),
+		);
+		if (isset($code))
+			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+		else
+			return isset($_items[$type]) ? $_items[$type] : false;
+	}
 }

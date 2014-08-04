@@ -578,6 +578,44 @@ class ProductsController extends Controller
                 ));
         }
         
+        public function actionToggle($id)
+        {
+            $model=Products::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->published = Yii::app()->request->getParam('published');
+                if($model->save())
+                {
+                    if($model->published==1)
+                    $this->setSuccessMsg(Yii::t('common', 'Product successfully published'));
+                    else
+                    $this->setSuccessMsg(Yii::t('common', 'Product successfully unpublished'));
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
+        
+        public function actionBlock($id)
+        {
+            $model=Products::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->blocked = Yii::app()->request->getParam('blocked');
+                if($model->save())
+                {
+                    if($model->blocked==1)
+                    $this->setSuccessMsg(Yii::t('common', 'Product successfully blocked'));
+                    else
+                    $this->setSuccessMsg(Yii::t('common', 'Product successfully unblocked'));
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
+        
         public function actionViewProductsWithoutDesc()
         {
             $language_code = Yii::app()->request->getParam('lang_code');

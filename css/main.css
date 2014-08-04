@@ -62,10 +62,19 @@ padding-top: 60px;
     border:1px solid #94a0b4;
     color:#000
 }
+.tree-hover{
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
 
 
 
 .red
 {
     color:#d14!important;
+}
+.green
+{
+    color:#5cb85c!important;
 }

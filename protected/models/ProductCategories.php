@@ -26,6 +26,13 @@ class ProductCategories extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, category_id', 'required'),
+                        array('product_id', 'unique', 'criteria'=>array(
+                                'condition'=>'`category_id`=:category_id',
+                                'params'=>array(
+                                    ':category_id'=>$this->category_id
+                                ),
+                            ),
+                        ),
 			array('product_id, category_id', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

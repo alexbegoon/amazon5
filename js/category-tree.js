@@ -12,4 +12,13 @@ $(function () {
         }
         e.stopPropagation();
     });
+    $('.tree li.tree-li.parent_li').find('> span').hover(
+            function() {
+              $( this ).addClass( "tree-hover" );
+              $( this ).parent().find('> ul.tree-ul span').addClass( "tree-hover" );
+            }, function() {
+              $( this ).removeClass( "tree-hover" );
+              $( this ).parent().find('> ul.tree-ul span').removeClass( "tree-hover" );
+            }
+          );
 });

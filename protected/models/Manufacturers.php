@@ -22,7 +22,7 @@
  */
 class Manufacturers extends CActiveRecord
 {
-	/**
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -161,7 +161,7 @@ class Manufacturers extends CActiveRecord
 
             if($translation!==NULL)
                 return $translation->manufacturer_name;
-            
+                
             return NULL;
         }
         
@@ -170,11 +170,22 @@ class Manufacturers extends CActiveRecord
             return self::model()->findAll(array('condition'=>'published=1'));
         }
         
-        public static function listData()
+        public static function listData($manufacturer_id=null)
         {
-            $manufacturers = self::listManufacturers();
-            return CHtml::listData($manufacturers,'id',function($manufacturer) {
-                return CHtml::encode(Manufacturers::model()->findByPk($manufacturer->id)->name);
-            });
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $manufacturers = self::listManufacturers();
+                $data = CHtml::listData($manufacturers,'id',function($manufacturer) {
+                    return CHtml::encode(Manufacturers::model()->findByPk($manufacturer->id)->name);
+                });
+                asort($data);
+            }
+            
+            if(!empty($manufacturer_id) && isset($data[$manufacturer_id]))
+                return $data[$manufacturer_id];
+            
+            return $data;
         }
 }

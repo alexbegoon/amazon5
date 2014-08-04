@@ -73,13 +73,17 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                 
             ));
             ?><!-- breadcrumbs -->
-        <?php endif ?>
+        <?php endif; ?>
+        <?php $i=1;?>
         <?php foreach(Yii::app()->user->getFlashes() as $key => $message):?>
             <div class="alert alert-<?php echo strtolower($key);?> alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Yii::t('common', 'Close');?></span></button>
-                <strong><?php echo Yii::t('Common', ucwords(strtolower($key)))?>!</strong><span>&nbsp;<?php echo Yii::t('common', $message);?></span>
+                <strong><?php echo Yii::t('Common', ucwords(strtolower($key)))?>!</strong><span id="flash-message-<?php echo $i;?>">&nbsp;<?php echo Yii::t('common', $message);?></span>
             </div>
+        <?php $i++;?>
         <?php endforeach;?>
+        <div id='Ajax-flash-message-success' class="alert alert-success alert-dismissible" style="display:none"></div>
+        <div id='Ajax-flash-message-error' class="alert alert-danger alert-dismissible" style="display:none"></div>
 
         <?php echo $content; ?>
 

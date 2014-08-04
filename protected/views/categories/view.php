@@ -9,9 +9,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Categories'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Categories'), 'url'=>array('create')),
-        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Categories'), 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Categories'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('common','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Category'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Category'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('common','Are you sure you want to delete this item?'))),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Categories'), 'url'=>array('admin')),
 );
 ?>
@@ -28,7 +27,9 @@ $this->menu=array(
                 ),
 		array(
                     'name'=>  Yii::t('common', 'Published'),
-                    'value'=>$model->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No"),
+                    'type'=>'html',
+                    'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
+                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Publish"))),
                 ),
 		'hits',
 		'outer_category_id',
@@ -44,7 +45,7 @@ $this->menu=array(
                 ),
 		'locked_on',
 		'locked_by',
-	),
+        )
 )); ?>
 <hr>
 <h3 class="text-center"><?php echo Yii::t('common', 'Category Name')?></h3>
