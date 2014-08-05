@@ -167,7 +167,7 @@ class Categories extends CActiveRecord
                 $criteria = new CDbCriteria;
                 $criteria->condition='category_id=:category_id';
                 $criteria->params=array(':category_id'=>$this->id);
-                $model = CategoryTranslations::model()->find($criteria);
+                $model = CategoryTranslations::model()->cache(3600)->find($criteria);
             }
             
             if($model===null)
@@ -185,6 +185,7 @@ class Categories extends CActiveRecord
         private function getTree($webShopId=null,$categoryId=0,$limit=1000)
         {
             static $level = 0;
+            
             $childs = array();
             if ($level==$limit || $webShopId===null) return null;
             if($categoryId==0)
@@ -193,8 +194,7 @@ class Categories extends CActiveRecord
             }
             else
             {
-                $category = self::model()->cache(300,null,3)
-                                         ->with('childCategories')
+                $category = self::model()->with('childCategories')
                                          ->find(array(
                                              'condition'=>'id=:category_id AND web_shop_id=:web_shop_id',
                                              'params'=>array(':category_id'=>$categoryId,
@@ -210,8 +210,7 @@ class Categories extends CActiveRecord
                 $level++;
                 foreach ($category->childCategories as $child)
                 {
-                    $model = self::model()->cache(300,null,3)
-                                          ->with('childCategories','categoryProducts')
+                    $model = self::model()->with('childCategories','categoryProducts')
                                           ->find('t.id=:category_id AND web_shop_id=:web_shop_id',
                                                                  array(':category_id'=>$child->child_id,
                                                                        ':web_shop_id'=>$webShopId));
@@ -220,7 +219,7 @@ class Categories extends CActiveRecord
                     {
                         $model->level = $level;
                         $model->name = $model->getName();
-                        $model->childs = self::getTree($webShopId,$child->child_id);
+                        $model->childs = self::getTree($webShopId,$child->child_id,null);
                         $model->hasChilds = count($model->childs)>0?true:false;
                         $model->hasProducts = count($model->categoryProducts)>0?true:false;
                         $childs[] = $model;
@@ -237,13 +236,16 @@ class Categories extends CActiveRecord
         }
         
         public function getCategoryTree($webShopId=null,$categoryId=0,$limit=1000)
-        {
-            if(isset($this->categoryTree[$webShopId]))
-                return $this->categoryTree[$webShopId];
-            
-            $this->categoryTree[$webShopId] = $this->getTree($webShopId,$categoryId=0,$limit=1000);
-            
-            return $this->categoryTree[$webShopId];
+        {         
+            $tree=Yii::app()->cache->get('CategoryTree'.$webShopId);
+            if($tree!==false)
+                return $tree;
+            Yii::app()->cache->set('CategoryTree'.$webShopId, 
+                    $this->getTree($webShopId,$categoryId=0,$limit=1000), 
+                    14400, 
+                    new CDbCacheDependency('SELECT MAX(id) FROM '.$this->tableName()));
+                        
+            return Yii::app()->cache->get('CategoryTree'.$webShopId);
         }
         
         public function getCategoryTreeOptions($webShopId)
