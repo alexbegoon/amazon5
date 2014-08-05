@@ -26,6 +26,7 @@ class ProductCategories extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, category_id', 'required'),
+			array('product_id, category_id', 'numerical', 'integerOnly'=>true),
                         array('product_id', 'unique', 'criteria'=>array(
                                 'condition'=>'`category_id`=:category_id',
                                 'params'=>array(
@@ -57,8 +58,8 @@ class ProductCategories extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'product_id' => Yii::t('common', 'Product'),
-			'category_id' => Yii::t('common', 'Category'),
+			'product_id' => Yii::t('common', 'Product ID'),
+			'category_id' => Yii::t('common', 'Category ID'),
 		);
 	}
 

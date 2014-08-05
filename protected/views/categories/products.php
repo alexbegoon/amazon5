@@ -13,14 +13,17 @@ $this->menu=array(
 //	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Categories'), 'url'=>array('admin')),
 );
 ?>
-<?php //CVarDumper::dump(Products::model()->findByPk(91)->search(),10,true); ?>
 <h1 class="text-center"><?php echo Yii::t('common', 'Products of the category');?> "<?php echo $model->getName()?>"</h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'products-grid',
 	'dataProvider'=>$products->search(),
 	'filter'=>$products,
 	'columns'=>array(
-		'id',
+		array(
+                    'name'=>'id',
+                    'value'=>'$data->id',
+                    'footer'=>CHtml::link(Yii::t('common', 'Add'),Yii::app()->controller->createUrl("assignProduct",array('id'=>$model->id))),
+                ),
 		'product_sku',
                 array(
                     'name'=>'product_name',
@@ -29,7 +32,6 @@ $this->menu=array(
                 array(
                     'name'=>'manufacturer_id',
                     'value'=>'Manufacturers::listData($data->productManufacturers[0]->id)',
-//                    'value'=>'CVarDumper::dump(($data->productManufacturers))',
                     'filter'=>Manufacturers::listData(),
                 ),
 		array(

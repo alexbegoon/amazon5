@@ -132,6 +132,8 @@ return array(
     'Meta Keywords'=>'Meta Keywords',
     'Custom Title'=>'Título Personalizado',
     'Product SKU'=>'SKU del Producto',
+    'Product ID'=>'Identificación del producto',
+    'Category ID'=>'Identificación de la categoría',
     'Blocked'=>'Obstruido',
     'Product Price'=>'Precio del Producto',
     'Override'=>'Anular',
@@ -209,6 +211,8 @@ return array(
 
     
     // Long text
+    'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
+    'Product assigned successfully'=>'Producto asignado correctamente',
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
     '"{webshop_name}" has {n} category|"{webshop_name}" has {n} categories'=>'"{webshop_name}" tiene {n} categoría|"{webshop_name}" tiene {n} categorías',
     'has {n} product|has {n} products'=>'"tiene {n} producto|tiene {n} productos',

@@ -187,12 +187,14 @@ class CategoriesController extends Controller
         
         public function actionProducts($id)
         {
-            $model=Categories::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             $products = new Products('search');
             $products->unsetAttributes();  // clear any default values
 		if(isset($_GET['Products']))
 			$products->attributes=$_GET['Products'];
+                
+            $products->parent_category_id = $model->id;
             
             $this->render('products',array(
                 'model'=>$model,
@@ -200,9 +202,53 @@ class CategoriesController extends Controller
             ));
         }
         
+        public function actionAssignProduct($id)
+        {
+            $category=$this->loadModel($id);
+            $productCategories=new ProductCategories;
+            
+            $productCategories->category_id=$id;
+            
+            if(isset($_POST['ProductCategories']))
+            {
+                if(preg_match('/-id::\d+$/', $_POST['ProductCategories']['product_id'], $matches)===1)
+                {
+                    $productCategories->product_id = (int)str_replace('-id::', '', $matches[0]);
+                }
+            }
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='assign_product-form')
+            {
+                CVarDumper::dump($productCategories,10,true);
+                    echo CActiveForm::validate($productCategories);
+                    Yii::app()->end();
+            }
+            
+            if(isset($_POST['ProductCategories']))
+            {
+                if($productCategories->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common','Product assigned successfully'));
+                }
+            }
+            
+            $this->render('assign_product',array(
+                        'model'=>$category,
+                        'productCategories'=>$productCategories,
+            ));
+        }
+        
         public function actionRevokeProductFromCategory($id)
         {
-            $category = Categories::model()->findByPk($id);
+            $category=$this->loadModel($id);
+            
+            $productCategories=ProductCategories::model()->findByPk(array('product_id'=>Yii::app()->request->getParam('product_id'),
+                                                                          'category_id'=>$category->id ));
+            
+            if($productCategories!==null)
+            {
+                $productCategories->delete();
+            }
         }
 
 

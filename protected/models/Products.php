@@ -35,6 +35,7 @@ class Products extends CActiveRecord
     
         public $product_name;
         public $manufacturer_id;
+        public $parent_category_id;
         
         /**
 	 * @return string the associated database table name
@@ -141,8 +142,14 @@ class Products extends CActiveRecord
 		$criteria->compare('t.locked_on',$this->locked_on,true);
 		$criteria->compare('t.locked_by',$this->locked_by);
                 
-                $criteria->with = array( 'productTranslations', 'productManufacturers' );
+                $criteria->with = array( 'productTranslations', 'productManufacturers', 'productCategories' );
                 $criteria->together = true;
+                
+                if(!empty($this->parent_category_id))
+                {
+                    $criteria->compare( 'productCategories_productCategories.category_id', $this->parent_category_id);
+                }
+                
                 $criteria->compare( 'productTranslations.product_name', $this->product_name, true );
                 $criteria->compare( 'productManufacturers.id', $this->manufacturer_id);
 

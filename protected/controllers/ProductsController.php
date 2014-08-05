@@ -153,7 +153,30 @@ class ProductsController extends Controller
 //			'model'=>$model,
 //		));
 //	}
-
+        
+        public function actionFind()
+        {
+            $criteria = new CDbCriteria();
+            
+            $criteria->compare('product_sku',Yii::app()->request->getParam('term'),true);
+            
+            $products = Products::model()->findAll($criteria);
+            
+            $data = CHtml::listData($products, 'name', 'id');
+            $res=array();
+            foreach ($data as $k=>$v)
+            {
+                $sku = Products::model()->findByPk($v)->product_sku;
+                $res[] = array(
+                    'label'=>$sku .' - '. $k,
+                    'value'=>$sku .' - '. $k.' -id::'.$v,
+                );
+            }
+            
+            echo CJSON::encode($res);
+            Yii::app()->end();
+        }
+        
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
