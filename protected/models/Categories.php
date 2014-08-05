@@ -152,6 +152,9 @@ class Categories extends CActiveRecord
         
         public function getName()
         {
+            if(!empty($this->name))
+                return $this->name;
+                
             $model=null;
             if(Yii::app()->user->hasState('applicationLanguage'))
             {
@@ -190,7 +193,7 @@ class Categories extends CActiveRecord
             }
             else
             {
-                $category = self::model()->cache(60,null,3)
+                $category = self::model()->cache(300,null,3)
                                          ->with('childCategories')
                                          ->find(array(
                                              'condition'=>'id=:category_id AND web_shop_id=:web_shop_id',
