@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{categories}}':
  * @property string $id
  * @property integer $web_shop_id
+ * @property integer $parent_id
  * @property integer $published
  * @property integer $hits
  * @property string $outer_category_id
@@ -30,7 +31,7 @@ class Categories extends CActiveRecord
         public $level;
         public $hasChilds;
         public $childs;
-        public $parent;
+        public $parent_id;
         public $name;
         public $hasProducts;
                 
@@ -218,6 +219,7 @@ class Categories extends CActiveRecord
                     if($model!==null)
                     {
                         $model->level = $level;
+                        $model->parent_id = $category->id;
                         $model->name = $model->getName();
                         $model->childs = self::getTree($webShopId,$child->child_id,null);
                         $model->hasChilds = count($model->childs)>0?true:false;
@@ -238,14 +240,21 @@ class Categories extends CActiveRecord
         public function getCategoryTree($webShopId=null,$categoryId=0,$limit=1000)
         {         
             $tree=Yii::app()->cache->get('CategoryTree'.$webShopId);
+            
             if($tree!==false)
                 return $tree;
+                
             Yii::app()->cache->set('CategoryTree'.$webShopId, 
                     $this->getTree($webShopId,$categoryId=0,$limit), 
                     604800, 
                     new CGlobalStateCacheDependency('CategoryTreeVersion'));
-                        
+                     
             return Yii::app()->cache->get('CategoryTree'.$webShopId);
+        }
+        
+        public function getParentsList($categoryId=0) 
+        {
+            
         }
 
         public function getCategoryTreeOptions($webShopId)
