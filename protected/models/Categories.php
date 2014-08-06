@@ -241,13 +241,13 @@ class Categories extends CActiveRecord
             if($tree!==false)
                 return $tree;
             Yii::app()->cache->set('CategoryTree'.$webShopId, 
-                    $this->getTree($webShopId,$categoryId=0,$limit=1000), 
-                    14400, 
-                    new CDbCacheDependency('SELECT MAX(id) FROM '.$this->tableName()));
+                    $this->getTree($webShopId,$categoryId=0,$limit), 
+                    604800, 
+                    new CGlobalStateCacheDependency('CategoryTreeVersion'));
                         
             return Yii::app()->cache->get('CategoryTree'.$webShopId);
         }
-        
+
         public function getCategoryTreeOptions($webShopId)
         {
             $str = CHtml::tag('option',array('value'=>0),
@@ -309,5 +309,15 @@ class Categories extends CActiveRecord
             return array_merge($categoryArray, self::iterateTree($tree));
         }
         
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
+        }
         
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
+        }
 }
