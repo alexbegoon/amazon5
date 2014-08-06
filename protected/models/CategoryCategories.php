@@ -30,12 +30,21 @@ class CategoryCategories extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('parent_id, child_id', 'required'),
+			array('parent_id', 'validateParent'),
 			array('parent_id, child_id', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('parent_id, child_id', 'safe', 'on'=>'search'),
 		);
 	}
+        
+        public function validateParent($attribute,$params)
+        {
+            if ($this->parent_id == $this->child_id)
+            {
+                $this->addError('parent_id', Yii::t('common', 'You can not assign this category to itself'));
+            }
+        }  
 
 	/**
 	 * @return array relational rules.

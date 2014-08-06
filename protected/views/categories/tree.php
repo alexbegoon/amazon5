@@ -26,7 +26,7 @@ function print_category($category, $webShopId)
     <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl($category->id).'"><i class="glyphicon glyphicon-edit"></i> '.Yii::t('common', 'Manage this category').'</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl('products',array('id'=>$category->id)).'"><i class="glyphicon glyphicon-barcode"></i> '.Yii::t('common', 'Assign products').'</a></li>
     <li role="presentation" class="divider"></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="glyphicon glyphicon-move"></i> '.Yii::t('common', 'Move this category').'</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl('move',array('id'=>$category->id,'web_shop_id'=>$webShopId,'parent_id'=>$category->parent_id)).'"><i class="glyphicon glyphicon-move"></i> '.Yii::t('common', 'Move this category').'</a></li>
     <li role="presentation" class="divider"></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" class="red" href="#"><i class="fa fa-trash-o"></i> '.Yii::t('common', 'Revoke all products').'</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" class="red" href="#"><i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove this category').'</a></li>
