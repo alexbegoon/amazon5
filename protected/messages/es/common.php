@@ -215,7 +215,7 @@ return array(
     'Product assigned successfully'=>'Producto asignado correctamente',
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
     '"{webshop_name}" has {n} category|"{webshop_name}" has {n} categories'=>'"{webshop_name}" tiene {n} categoría|"{webshop_name}" tiene {n} categorías',
-    'has {n} product|has {n} products'=>'"tiene {n} producto|tiene {n} productos',
+    'has {n} product|has {n} products'=>'tiene {n} producto|tiene {n} productos',
     'has {n} category|has {n} categories'=>'"tiene {n} categoría|tiene {n} categorías',
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
