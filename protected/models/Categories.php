@@ -239,22 +239,50 @@ class Categories extends CActiveRecord
         
         public function getCategoryTree($webShopId=null,$categoryId=0,$limit=1000)
         {         
-            $tree=Yii::app()->cache->get('CategoryTree'.$webShopId);
+            $key='CategoryTree'.$webShopId.$categoryId.Languages::getCurrent();
+            $tree=Yii::app()->cache->get($key);
             
             if($tree!==false)
                 return $tree;
                 
-            Yii::app()->cache->set('CategoryTree'.$webShopId, 
+            Yii::app()->cache->set($key, 
                     $this->getTree($webShopId,$categoryId=0,$limit), 
                     604800, 
                     new CGlobalStateCacheDependency('CategoryTreeVersion'));
                      
-            return Yii::app()->cache->get('CategoryTree'.$webShopId);
+            return Yii::app()->cache->get($key);
         }
         
-        public function getParentsList($categoryId=0) 
+        public function getParentId()
         {
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'child_id=:child_id';
+            $criteria->params = array(':child_id'=>$this->id);
+            return CategoryCategories::model()->find($criteria)->parent_id;
+        }
+        
+        public static function getParentsList($categoryId=0) 
+        {
+            if($categoryId==0)
+                return array();
+            $key        = 'ParentList'.$categoryId;
+            $parentList = Yii::app()->cache->get($key);
+            if($parentList)
+                return $parentList;
             
+            $parentId  = $categoryId;
+            
+            while($parentId!=='0')
+            {
+                $parentList[$parentId] = Categories::model()->findByPk($parentId)
+                                                            ->getParentId();
+                $parentId = $parentList[$parentId];
+            }
+            
+            Yii::app()->cache->set($key, $parentList, 604800, 
+                    new CGlobalStateCacheDependency('CategoryTreeVersion'));
+            
+            return $parentList;
         }
 
         public function getCategoryTreeOptions($webShopId)

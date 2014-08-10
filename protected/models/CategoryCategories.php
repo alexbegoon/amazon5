@@ -44,7 +44,13 @@ class CategoryCategories extends CActiveRecord
             {
                 $this->addError('parent_id', Yii::t('common', 'You can not assign this category to itself'));
             }
-        }  
+            $parents=Categories::getParentsList($this->parent_id);
+            
+            if(in_array($this->child_id, $parents))
+            {
+                $this->addError('parent_id', Yii::t('common', 'You can not assign to this category'));
+            }
+        }
 
 	/**
 	 * @return array relational rules.

@@ -213,6 +213,7 @@ return array(
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
     'You can not assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
+    'You can not assign to this category'=>'No se puede asignar a esta categoría',
     'Product assigned successfully'=>'Producto asignado correctamente',
     'Category "{category_name}" moved successfully'=>'Categoría "{category_name}" trasladó con éxito',
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
