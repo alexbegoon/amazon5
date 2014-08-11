@@ -166,6 +166,35 @@ class CategoriesController extends Controller
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
         
+        public function actionMove($id)
+        {
+            $category=$this->loadModel($id);
+            
+            $categoryCategories=CategoryCategories::model()->findByPk(array('parent_id'=>Yii::app()->request->getParam('parent_id',0),
+                                                                            'child_id'=>$category->id));
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='categories-move-form')
+            {
+                echo CActiveForm::validate($categoryCategories);
+                Yii::app()->end();
+            }
+            
+            if(isset($_POST['CategoryCategories']))
+            {
+                $categoryCategories->attributes = $_POST['CategoryCategories'];
+                
+                if($categoryCategories->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'Category "{category_name}" moved successfully',
+                                                array('{category_name}'=>$category->getName())));
+                    $this->redirect(array('index'));
+                }
+            }
+            
+            $this->render('move',array('categoryCategories'=>$categoryCategories,
+                                       'model'=>$category));
+        }
+
         public function actionToggle($id)
         {
             $model=Categories::model()->findByPk($id);
