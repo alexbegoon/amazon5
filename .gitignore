@@ -1,6 +1,7 @@
 /nbproject/private/
 nbproject
 /protected/runtime/application.log
+/protected/*
 /assets
 .idea
 /imgs/shop/*
