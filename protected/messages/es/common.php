@@ -195,6 +195,8 @@ return array(
     'Category Images'=>'Categoría Imágenes',
     'Category successfully published'=>'Categoría publicó con éxito',
     'Category successfully unpublished'=>'Categoría con éxito desactivado',
+    'Manufacturer successfully published'=>'Fabricante publicó con éxito',
+    'Manufacturer successfully unpublished'=>'Fabricante con éxito desactivado',
     'Product successfully published'=>'Producto publicó con éxito',
     'Product successfully unpublished'=>'Producto con éxito desactivado',
     'Product successfully blocked'=>'Producto bloqueado con éxito',

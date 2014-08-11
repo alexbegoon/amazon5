@@ -22,6 +22,9 @@
  */
 class Manufacturers extends CActiveRecord
 {
+    
+        public $manufacturer_name;
+    
         /**
 	 * @return string the associated database table name
 	 */
@@ -44,7 +47,7 @@ class Manufacturers extends CActiveRecord
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, manufacturer_name, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,8 +60,8 @@ class Manufacturers extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
-			'translations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
+			'manufacturerTranslations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
+			'manufacturerProducts' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
 		);
 	}
 
@@ -72,6 +75,7 @@ class Manufacturers extends CActiveRecord
 			'hits' => Yii::t('common', 'Hits'),
 			'manufacturer_email' => Yii::t('common', 'Manufacturer Email'),
 			'manufacturer_url' => Yii::t('common', 'Manufacturer URL'),
+                        'manufacturer_name' => Yii::t('common', 'Manufacturer Name'),
 			'published' => Yii::t('common', 'Published'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -100,20 +104,37 @@ class Manufacturers extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('hits',$this->hits);
-		$criteria->compare('manufacturer_email',$this->manufacturer_email,true);
-		$criteria->compare('manufacturer_url',$this->manufacturer_url,true);
-		$criteria->compare('published',$this->published);
-		$criteria->compare('created_on',$this->created_on,true);
-		$criteria->compare('created_by',$this->created_by);
-		$criteria->compare('modified_on',$this->modified_on,true);
-		$criteria->compare('modified_by',$this->modified_by);
-		$criteria->compare('locked_on',$this->locked_on,true);
-		$criteria->compare('locked_by',$this->locked_by);
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.hits',$this->hits);
+		$criteria->compare('t.manufacturer_email',$this->manufacturer_email,true);
+		$criteria->compare('t.manufacturer_url',$this->manufacturer_url,true);
+		$criteria->compare('t.published',$this->published);
+		$criteria->compare('t.created_on',$this->created_on,true);
+		$criteria->compare('t.created_by',$this->created_by);
+		$criteria->compare('t.modified_on',$this->modified_on,true);
+		$criteria->compare('t.modified_by',$this->modified_by);
+		$criteria->compare('t.locked_on',$this->locked_on,true);
+		$criteria->compare('t.locked_by',$this->locked_by);
+                
+                $criteria->with = array( 'manufacturerTranslations', 'manufacturerProducts');
+                $criteria->together = true;
+                
+                $criteria->compare( 'manufacturerTranslations.manufacturer_name', $this->manufacturer_name, true );
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'attributes'=>array(
+                                'manufacturer_name'=>array(
+                                    'asc'=>'manufacturerTranslations.manufacturer_name',
+                                    'desc'=>'manufacturerTranslations.manufacturer_name DESC',
+                                ),
+                                '*',
+                            ),
+                        ),
+                        'pagination'=>array(
+                            'pageSize'=>'20'
+                        )
 		));
 	}
 
@@ -188,4 +209,21 @@ class Manufacturers extends CActiveRecord
             
             return $data;
         }
+        
+        public static function itemAlias($type,$code=NULL) {
+		$_items = array(
+			'Published' => array(
+				'0' => Yii::t('yii','No'),
+				'1' => Yii::t('yii','Yes'),
+			),
+			'Blocked' => array(
+				'0' => Yii::t('yii','No'),
+				'1' => Yii::t('yii','Yes'),
+			),
+		);
+		if (isset($code))
+			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+		else
+			return isset($_items[$type]) ? $_items[$type] : false;
+	}
 }

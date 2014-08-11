@@ -164,6 +164,9 @@ class Products extends CActiveRecord
                                 '*',
                             ),
                         ),
+                        'pagination'=>array(
+                            'pageSize'=>'20'
+                        )
 		));
 	}
 
