@@ -6,5 +6,5 @@ nbproject
 /imgs/shop/*
 /uploads/*
 !/uploads/.htaccess
-runtime
+/protected/runtime/*
 /imgs/categories/*
