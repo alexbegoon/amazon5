@@ -458,23 +458,19 @@ class CategoriesController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
+        
+        public function actionCopyTree($id)
+        {
+            $webShop = WebShops::model()->findByPk($id);
+            if($webShop===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+            
+            $this->render('copy_tree',array(
+			'webShop'=>$webShop,
+            ));
+        }
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Categories('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Categories']))
-			$model->attributes=$_GET['Categories'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
+        /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded

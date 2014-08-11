@@ -76,7 +76,11 @@ function print_category($category, $webShopId)
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo Yii::app()->createUrl('categories/create', array('web_shop_id'=>$webShop->id,'parent_id'=>0))?>"><i class="glyphicon glyphicon-plus-sign"></i> <?php echo Yii::t('common', 'Create category here')?></a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo Yii::app()->createUrl('webShops/'.$webShop->id)?>"><i class="glyphicon glyphicon-edit"></i> <?php echo Yii::t('common', 'Manage this Web Shop')?></a></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-sitemap"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-sitemap"></i> <?php echo Yii::t('common', 'Copy category tree')?></a></li>
+                    <li role="presentation">
+                        <?php echo CHtml::link('<i class="fa fa-sitemap"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-sitemap"></i> '.Yii::t('common', 'Copy category tree'), 
+                                    Yii::app()->controller->createUrl('copyTree',array('id'=>$webShop->id)),
+                                    array('role'=>'menuitem',
+                                          'tabindex'=>'-1'))?></li>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation">
                         <?php echo CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove all categories'), 
