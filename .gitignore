@@ -1,11 +1,10 @@
 /nbproject/private/
 nbproject
 /protected/runtime/application.log
-/protected/*
 /assets
 .idea
 /imgs/shop/*
 /uploads/*
 !/uploads/.htaccess
-runtime
+/protected/runtime/*
 /imgs/categories/*
