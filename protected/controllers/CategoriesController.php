@@ -278,9 +278,29 @@ class CategoriesController extends Controller
             {
                 $productCategories->delete();
             }
+            
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
 
-
+        public function actionRevokeAllProductsFromCategory($id)
+        {
+            $category=$this->loadModel($id);
+            
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'category_id=:category_id';
+            $criteria->params = array(':category_id'=>$category->id);
+            
+            $deletedRows = ProductCategories::model()->deleteAll($criteria);
+            Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
+            $this->setSuccessMsg(Yii::t('common', 
+                    '{n} entry successfully removed|{n} entries successfully removed',
+                    array($deletedRows)));
+                        
+            $this->redirect(array('index'));
+        }
+        
         /**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -395,13 +415,38 @@ class CategoriesController extends Controller
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
+	{            
+		if($this->loadModel($id)->delete())
+                    $this->setSuccessMsg (Yii::t ('common', 
+                            '{n} entry successfully removed|{n} entries successfully removed',
+                            array(1)));
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
+        
+        public function actionRemoveAll($id)
+        {
+            $webShop = WebShops::model()->findByPk($id);
+            if($webShop===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+            
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'web_shop_id=:web_shop_id';
+            $criteria->params = array(':web_shop_id'=>$webShop->id);
+            
+            $deletedRows=Categories::model()->deleteAll($criteria);
+            
+            Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
+            $this->setSuccessMsg(Yii::t('common', 
+                    '{n} entry successfully removed|{n} entries successfully removed',
+                    array($deletedRows)));
+            
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
 
 	/**
 	 * Lists all models.
