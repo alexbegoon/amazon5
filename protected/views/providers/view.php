@@ -5,7 +5,7 @@
 $this->breadcrumbs=array(
     Yii::t('common','Accounting')=>array('/accounting'),
 	Yii::t('common','Providers')=>array('index'),
-	$model->id,
+	$model->provider_name,
 );
 
 $this->menu=array(
@@ -29,6 +29,10 @@ $this->menu=array(
 		'provider_url',
 		'provider_country',
 		'provider_address',
+                'provider_phone',
+                'provider_fax',
+                'sku_as_ean',
+                'discount',
 		'provider_type',
 		'vat',
                 array(
@@ -37,6 +41,15 @@ $this->menu=array(
                 ),
 		'sku_format',
 		'provider_email',
+                'service_url',
+                'sync_params',
+                'sync_enabled',
+                'sync_schedule',
+                'last_sync_date',
+                'send_csv',
+                'send_xls',
+                'csv_format',
+                'xls_format',
 		'created_on',
 		'created_by',
 		'modified_on',
