@@ -48,6 +48,10 @@ class ProviderProducts extends CActiveRecord
 			array('product_id', 'length', 'max'=>11),
 			array('provider_product_name, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url', 'length', 'max'=>255),
 			array('provider_price', 'length', 'max'=>15),
+                        array('provider_price','compare','compareValue'=>'0.00001',
+                                                                                'operator'=>'>',
+                                                                                'allowEmpty'=>true , 
+                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('inner_id, inner_sku', 'length', 'max'=>64),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
@@ -73,8 +77,8 @@ class ProviderProducts extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'provider_id' => Yii::t('common', 'Provider'),
-			'product_id' => Yii::t('common', 'Product'),
+			'provider_id' => Yii::t('common', 'Provider ID'),
+			'product_id' => Yii::t('common', 'Product ID'),
 			'provider_product_name' => Yii::t('common', 'Provider Product Name'),
 			'provider_price' => Yii::t('common', 'Provider Price'),
 			'quantity_in_stock' => Yii::t('common', 'Quantity In Stock'),
@@ -82,10 +86,10 @@ class ProviderProducts extends CActiveRecord
 			'provider_brand' => Yii::t('common', 'Provider Brand'),
 			'provider_category' => Yii::t('common', 'Provider Category'),
 			'provider_sex' => Yii::t('common', 'Provider Sex'),
-			'provider_image_url' => Yii::t('common', 'Provider Image Url'),
-			'provider_thumb_image_url' => Yii::t('common', 'Provider Thumb Image Url'),
-			'inner_id' => Yii::t('common', 'Inner'),
-			'inner_sku' => Yii::t('common', 'Inner Sku'),
+			'provider_image_url' => Yii::t('common', 'Provider Image URL'),
+			'provider_thumb_image_url' => Yii::t('common', 'Provider Thumb Image URL'),
+			'inner_id' => Yii::t('common', 'Inner ID'),
+			'inner_sku' => Yii::t('common', 'Inner SKU'),
 			'blocked' => Yii::t('common', 'Blocked'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),

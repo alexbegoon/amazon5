@@ -132,10 +132,10 @@ class Providers extends CActiveRecord
 			'sku_format' => Yii::t('common', 'SKU Format'),
 			'provider_email' => Yii::t('common', 'Provider Email'),
                         'service_url' => Yii::t('common', 'Service URL'),
-			'sync_params' => Yii::t('common', 'Syncronization Parameters'),
-			'sync_enabled' => Yii::t('common', 'Syncronization Enabled'),
-			'sync_schedule' => Yii::t('common', 'Syncronization Schedule'),
-			'last_sync_date' => Yii::t('common', 'Last Syncronization Date'),
+			'sync_params' => Yii::t('common', 'Synchronization Parameters'),
+			'sync_enabled' => Yii::t('common', 'Synchronization Enabled'),
+			'sync_schedule' => Yii::t('common', 'Synchronization Schedule'),
+			'last_sync_date' => Yii::t('common', 'Last Synchronization Date'),
 			'send_csv' => Yii::t('common', 'Send .CSV'),
 			'send_xls' => Yii::t('common', 'Send .XLS'),
 			'csv_format' => Yii::t('common', 'CSV Format'),
@@ -222,5 +222,11 @@ class Providers extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Providers synchronization');
+            return  $result.' - <span class="green">OK</span>';
         }
 }

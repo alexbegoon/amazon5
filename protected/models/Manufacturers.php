@@ -210,20 +210,27 @@ class Manufacturers extends CActiveRecord
             return $data;
         }
         
-        public static function itemAlias($type,$code=NULL) {
-		$_items = array(
-			'Published' => array(
-				'0' => Yii::t('yii','No'),
-				'1' => Yii::t('yii','Yes'),
-			),
-			'Blocked' => array(
-				'0' => Yii::t('yii','No'),
-				'1' => Yii::t('yii','Yes'),
-			),
-		);
-		if (isset($code))
-			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
-		else
-			return isset($_items[$type]) ? $_items[$type] : false;
+        public static function itemAlias($type,$code=NULL) 
+        {
+            $_items = array(
+                    'Published' => array(
+                            '0' => Yii::t('yii','No'),
+                            '1' => Yii::t('yii','Yes'),
+                    ),
+                    'Blocked' => array(
+                            '0' => Yii::t('yii','No'),
+                            '1' => Yii::t('yii','Yes'),
+                    ),
+            );
+            if (isset($code))
+                    return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+            else
+                    return isset($_items[$type]) ? $_items[$type] : false;
 	}
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Manufacturers synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
 }

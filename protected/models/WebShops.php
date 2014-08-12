@@ -200,4 +200,10 @@ class WebShops extends CActiveRecord
         {
             return self::model()->findByPk($web_shop_id)->shop_name;
         }
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Web Shops synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
 }

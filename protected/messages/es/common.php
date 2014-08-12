@@ -206,7 +206,16 @@ return array(
     'Block'=>'Bloquear',
     'Unblock'=>'Desbloquear',
     'Products of the category'=>'Productos de la categoría',
- 
+    'Synchronization'=>'Sincronización',
+    'Total execution time:'=>'El tiempo de ejecución total:',
+    'seconds'=>'segundos',
+    'Seconds'=>'Segundos',
+    
+    'Products synchronization'=>'Sincronización de los Productos',
+    'Categories synchronization'=>'Sincronización de los Categories',
+    'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
+    'Providers synchronization'=>'Sincronización de los Proveedores',
+    'Web Shops synchronization'=>'Sincronización de Tiendas Web',
 
  
  

@@ -244,4 +244,10 @@ class Products extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Products synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
 }
