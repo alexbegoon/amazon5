@@ -24,7 +24,13 @@
 		<?php echo $form->textField($model,'provider_name',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_name',array('class'=>'label label-danger')); ?>
 	</div>
-
+        
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'provider_type',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'provider_type',enumItem($model,'provider_type'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'provider_type',array('class'=>'label label-danger')); ?>
+	</div>
+    
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'cif',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'cif',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
@@ -55,11 +61,7 @@
 		<?php echo $form->error($model,'provider_address',array('class'=>'label label-danger')); ?>
 	</div>
 
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'provider_type',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'provider_type',enumItem($model,'provider_type'),array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'provider_type',array('class'=>'label label-danger')); ?>
-	</div>
+	
     
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
@@ -84,11 +86,17 @@
 		<?php echo $form->textField($model,'provider_fax',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_fax',array('class'=>'label label-danger')); ?>
 	</div>
-
+        <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'sku_as_ean',array('class'=>'control-label')); ?>
 		<?php echo $form->checkBox($model,'sku_as_ean'); ?>
 		<?php echo $form->error($model,'sku_as_ean',array('class'=>'label label-danger')); ?>
+	</div>
+    
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'sku_format',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'sku_format',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'sku_format',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
@@ -102,25 +110,55 @@
 		<?php echo $form->textField($model,'discount',array('size'=>15,'maxlength'=>15,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'discount',array('class'=>'label label-danger')); ?>
 	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'inactive',array('class'=>'control-label')); ?>
-		<?php echo $form->checkBox($model,'inactive'); ?>
-		<?php echo $form->error($model,'inactive',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'sku_format',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'sku_format',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
-		<?php echo $form->error($model,'sku_format',array('class'=>'label label-danger')); ?>
-	</div>
-
+        <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_email',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'provider_email',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_email',array('class'=>'label label-danger')); ?>
 	</div>
     
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'provider_email_copy_1',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'provider_email_copy_1',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'provider_email_copy_1',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'provider_email_copy_2',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'provider_email_copy_2',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'provider_email_copy_2',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'provider_email_hidden_copy',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'provider_email_hidden_copy',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'provider_email_hidden_copy',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'provider_email_hidden_copy_2',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'provider_email_hidden_copy_2',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'provider_email_hidden_copy_2',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'email_subject',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'email_subject',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'email_subject',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'email_body',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'email_body',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'email_body',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'sync_enabled',array('class'=>'control-label')); ?>
+		<?php echo $form->checkBox($model,'sync_enabled'); ?>
+		<?php echo $form->error($model,'sync_enabled',array('class'=>'label label-danger')); ?>
+	</div>
+        
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'service_url',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'service_url',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
@@ -129,14 +167,8 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'sync_params',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'sync_params',array('class'=>'form-control')); ?>
+		<?php echo $form->textArea($model,'sync_params',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'sync_params',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'sync_enabled',array('class'=>'control-label')); ?>
-		<?php echo $form->checkBox($model,'sync_enabled'); ?>
-		<?php echo $form->error($model,'sync_enabled',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
@@ -144,11 +176,17 @@
 		<?php echo $form->textArea($model,'sync_schedule',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'sync_schedule',array('class'=>'label label-danger')); ?>
 	</div>
-
+        <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'send_csv',array('class'=>'control-label')); ?>
 		<?php echo $form->checkBox($model,'send_csv'); ?>
 		<?php echo $form->error($model,'send_csv',array('class'=>'label label-danger')); ?>
+	</div>
+        
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'csv_format',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'csv_format',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'csv_format',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
@@ -158,15 +196,15 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->labelEx($model,'csv_format',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($model,'csv_format',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
-		<?php echo $form->error($model,'csv_format',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
 		<?php echo $form->labelEx($model,'xls_format',array('class'=>'control-label')); ?>
 		<?php echo $form->textArea($model,'xls_format',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'xls_format',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'inactive',array('class'=>'control-label')); ?>
+		<?php echo $form->checkBox($model,'inactive'); ?>
+		<?php echo $form->error($model,'inactive',array('class'=>'label label-danger')); ?>
 	</div>
     
 	<div class="row form-group buttons">

@@ -201,13 +201,15 @@ class CategoriesController extends Controller
             
             if($model!==null)
             {
-                $model->published = Yii::app()->request->getParam('published');
+                $model->attributes = $this->getActionParams();
                 if($model->save())
                 {
-                    if($model->published==1)
-                    $this->setSuccessMsg(Yii::t('common', 'Category successfully published'));
-                    else
-                    $this->setSuccessMsg(Yii::t('common', 'Category successfully unpublished'));
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
                 }
             }
             

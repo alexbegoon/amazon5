@@ -22,6 +22,12 @@
  * @property integer $inactive
  * @property string $sku_format
  * @property string $provider_email
+ * @property string $provider_email_copy_1
+ * @property string $provider_email_copy_2
+ * @property string $provider_email_hidden_copy
+ * @property string $provider_email_hidden_copy_2
+ * @property string $email_subject
+ * @property string $email_body
  * @property string $service_url
  * @property string $sync_params
  * @property integer $sync_enabled
@@ -68,23 +74,24 @@ class Providers extends CActiveRecord
 		return array(
                         array('cif, provider_name, vat, provider_type, provider_country, provider_email, currency_id, default_language', 'required'),
 			array('default_language','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> Yii::t('common','Language code must be in format \'xx-xx\', where \'x\' - letter.')),
-                        array('inactive, created_by, modified_by, locked_by, currency_id', 'numerical', 'integerOnly'=>true),
-			array('provider_name, provider_email', 'length', 'max'=>128),
-			array('cif, provider_desc, provider_url, provider_address, sku_format', 'length', 'max'=>255),
+                        array('sync_enabled, send_csv, send_xls, sku_as_ean, inactive, created_by, modified_by, locked_by, currency_id', 'numerical', 'integerOnly'=>true),
+			array('provider_name, provider_phone, provider_fax, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'length', 'max'=>128),
+			array('cif, provider_desc, provider_url, provider_address, sku_format, service_url', 'length', 'max'=>255),
 			array('provider_country', 'length', 'max'=>2),
-                        array('vat, discount','compare','compareValue'=>'0.00001',
+                        array('vat','compare','compareValue'=>'0.00001',
                                                                                 'operator'=>'>',
                                                                                 'allowEmpty'=>true , 
                                                                                 'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('provider_type', 'length', 'max'=>16),
-			array('provider_name', 'length', 'min'=>8),
-			array('provider_email', 'email'),
+			array('provider_name', 'length', 'min'=>5),
+			array('provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'email'),
 			array('provider_name, cif, provider_email', 'unique'),
 			array('vat', 'length', 'max'=>5),
-			array('created_on, modified_on, locked_on', 'safe'),
+			array('created_on, modified_on, locked_on, email_subject, email_body', 'safe'),
+                        array('discount', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_type, vat, inactive, sku_format, provider_email, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_type, provider_phone, provider_fax, sku_as_ean, vat, discount, currency_id, default_language, inactive, sku_format, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2, email_subject, email_body, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -131,6 +138,12 @@ class Providers extends CActiveRecord
 			'inactive' => Yii::t('common', 'Inactive'),
 			'sku_format' => Yii::t('common', 'SKU Format'),
 			'provider_email' => Yii::t('common', 'Provider Email'),
+                        'provider_email_copy_1' => Yii::t('common', 'Provider Email Copy 1'),
+			'provider_email_copy_2' => Yii::t('common', 'Provider Email Copy 2'),
+			'provider_email_hidden_copy' => Yii::t('common', 'Provider Email Hidden Copy'),
+			'provider_email_hidden_copy_2' => Yii::t('common', 'Provider Email Hidden Copy 2'),
+			'email_subject' => Yii::t('common', 'Email Subject'),
+			'email_body' => Yii::t('common', 'Email Body'),
                         'service_url' => Yii::t('common', 'Service URL'),
 			'sync_params' => Yii::t('common', 'Synchronization Parameters'),
 			'sync_enabled' => Yii::t('common', 'Synchronization Enabled'),
@@ -185,6 +198,12 @@ class Providers extends CActiveRecord
 		$criteria->compare('inactive',$this->inactive);
 		$criteria->compare('sku_format',$this->sku_format,true);
 		$criteria->compare('provider_email',$this->provider_email,true);
+                $criteria->compare('provider_email_copy_1',$this->provider_email_copy_1,true);
+		$criteria->compare('provider_email_copy_2',$this->provider_email_copy_2,true);
+		$criteria->compare('provider_email_hidden_copy',$this->provider_email_hidden_copy,true);
+		$criteria->compare('provider_email_hidden_copy_2',$this->provider_email_hidden_copy_2,true);
+		$criteria->compare('email_subject',$this->email_subject,true);
+		$criteria->compare('email_body',$this->email_body,true);
                 $criteria->compare('service_url',$this->service_url,true);
 		$criteria->compare('sync_params',$this->sync_params,true);
 		$criteria->compare('sync_enabled',$this->sync_enabled);

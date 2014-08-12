@@ -607,32 +607,15 @@ class ProductsController extends Controller
             
             if($model!==null)
             {
-                $model->published = Yii::app()->request->getParam('published');
+                $model->attributes = $this->getActionParams();
                 if($model->save())
                 {
-                    if($model->published==1)
-                    $this->setSuccessMsg(Yii::t('common', 'Product successfully published'));
-                    else
-                    $this->setSuccessMsg(Yii::t('common', 'Product successfully unpublished'));
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
                 }
-            }
-            
-            $this->redirect(array('view','id'=>$id));
-        }
-        
-        public function actionBlock($id)
-        {
-            $model=Products::model()->findByPk($id);
-            
-            if($model!==null)
-            {
-                $model->blocked = Yii::app()->request->getParam('blocked');
-                if($model->save())
+                else
                 {
-                    if($model->blocked==1)
-                    $this->setSuccessMsg(Yii::t('common', 'Product successfully blocked'));
-                    else
-                    $this->setSuccessMsg(Yii::t('common', 'Product successfully unblocked'));
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
                 }
             }
             

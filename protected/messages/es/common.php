@@ -195,6 +195,8 @@ return array(
     'Category Images'=>'Categoría Imágenes',
     'Category successfully published'=>'Categoría publicó con éxito',
     'Category successfully unpublished'=>'Categoría con éxito desactivado',
+    'Provider successfully activated'=>'Proveedor activado correctamente',
+    'Provider successfully deactivated'=>'Proveedor desactivado con éxito',
     'Manufacturer successfully published'=>'Fabricante publicó con éxito',
     'Manufacturer successfully unpublished'=>'Fabricante con éxito desactivado',
     'Product successfully published'=>'Producto publicó con éxito',
@@ -210,7 +212,9 @@ return array(
     'Total execution time:'=>'El tiempo de ejecución total:',
     'seconds'=>'segundos',
     'Seconds'=>'Segundos',
-    
+    'Activate'=>'Activar',
+    'Deactivate'=>'Desactivar',
+    'Storing SKU As EAN'=>'Almacenamiento SKU Como EAN',
     'Products synchronization'=>'Sincronización de los Productos',
     'Categories synchronization'=>'Sincronización de los Categories',
     'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
@@ -223,6 +227,8 @@ return array(
     
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
+    'The request is successfully processed'=>'La solicitud se ha procesado correctamente',
+    'The request was processed with errors'=>'La solicitud fue procesada con errores',
     'You can not assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
     'You can not assign to this category'=>'No se puede asignar a esta categoría',
     'Product assigned successfully'=>'Producto asignado correctamente',
