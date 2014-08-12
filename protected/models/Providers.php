@@ -123,7 +123,7 @@ class Providers extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'provider_name' => Yii::t('common', 'Provider Name'),
 			'cif' => Yii::t('common', 'CIF'),
-			'provider_desc' => Yii::t('common', 'Provider Desc'),
+			'provider_desc' => Yii::t('common', 'Provider Description'),
 			'provider_url' => Yii::t('common', 'Provider URL'),
 			'provider_country' => Yii::t('common', 'Provider Country'),
 			'provider_address' => Yii::t('common', 'Provider Address'),

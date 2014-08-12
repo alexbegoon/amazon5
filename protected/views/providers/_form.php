@@ -51,7 +51,7 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_country',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'provider_country',CHtml::listData(Countries::model()->findAll(array('order'=>'name')), 'code', 'name'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'provider_country',  Countries::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_country',array('class'=>'label label-danger')); ?>
 	</div>
 

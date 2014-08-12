@@ -27,8 +27,11 @@ $this->menu=array(
 		'cif',
                 'provider_type',
 		'provider_desc',
-		'provider_url',
-		'provider_country',
+		'provider_url',		
+                array(
+                    'name'=>'provider_country',
+                    'value'=>Countries::listData($model->provider_country),
+                ),
 		'provider_address',
                 'provider_phone',
                 'provider_fax',
@@ -63,10 +66,6 @@ $this->menu=array(
 		'email_subject',
 		'email_body',
                 'service_url',
-                array(
-                    'name'=>'sync_enabled',
-                    'value'=>$model->sync_enabled==1?Yii::t('common','Yes'):Yii::t('common','No'),
-                ),
                 array(
                     'name'=>'sync_enabled',
                     'type'=>'html',

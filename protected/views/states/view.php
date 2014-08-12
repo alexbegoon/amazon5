@@ -26,11 +26,22 @@ $this->menu=array(
 		'state_name',
 		'state_3_code',
 		'state_2_code',
-		'published',
+		array(
+                    'name'=>'published',
+                    'type'=>'html',
+                    'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
+                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Publish"))),
+                ),
 		'created_on',
-		'created_by',
+		array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                ),
 		'modified_on',
-		'modified_by',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                ),
 		'locked_on',
 		'locked_by',
 	),
