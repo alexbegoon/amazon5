@@ -11,11 +11,14 @@
  * @property string $provider_url
  * @property string $provider_country
  * @property string $provider_address
+ * @property string $provider_type
  * @property string $provider_phone
  * @property string $provider_fax
  * @property integer $sku_as_ean
  * @property string $vat
  * @property string $discount
+ * @property integer $currency_id
+ * @property string $default_language
  * @property integer $inactive
  * @property string $sku_format
  * @property string $provider_email
@@ -43,6 +46,7 @@
  * @property Products[] $amzni5Products
  * @property ProviderProductsHistories[] $providerProductsHistories
  * @property Warehouse[] $warehouses
+ * @property Languages $defaultLanguage
  */
 class Providers extends CActiveRecord
 {
@@ -62,13 +66,20 @@ class Providers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('cif, provider_name, vat, provider_type, provider_country, provider_email', 'required'),
-			array('inactive, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+                        array('cif, provider_name, vat, provider_type, provider_country, provider_email, currency_id, default_language', 'required'),
+			array('default_language','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> Yii::t('common','Language code must be in format \'xx-xx\', where \'x\' - letter.')),
+                        array('inactive, created_by, modified_by, locked_by, currency_id', 'numerical', 'integerOnly'=>true),
 			array('provider_name, provider_email', 'length', 'max'=>128),
 			array('cif, provider_desc, provider_url, provider_address, sku_format', 'length', 'max'=>255),
 			array('provider_country', 'length', 'max'=>2),
+                        array('vat, discount','compare','compareValue'=>'0.00001',
+                                                                                'operator'=>'>',
+                                                                                'allowEmpty'=>true , 
+                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('provider_type', 'length', 'max'=>16),
+			array('provider_name', 'length', 'min'=>8),
 			array('provider_email', 'email'),
+			array('provider_name, cif, provider_email', 'unique'),
 			array('vat', 'length', 'max'=>5),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
@@ -92,6 +103,7 @@ class Providers extends CActiveRecord
 			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{provider_products}}(provider_id, product_id)'),
 			'providerProductsHistories' => array(self::HAS_MANY, 'ProviderProductsHistories', 'provider_id'),
 			'warehouses' => array(self::HAS_MANY, 'Warehouse', 'provider_id'),
+                        'defaultLanguage' => array(self::BELONGS_TO, 'Languages', 'default_language'),
 		);
 	}
 
@@ -112,8 +124,10 @@ class Providers extends CActiveRecord
 			'provider_phone' => Yii::t('common', 'Provider Phone'),
 			'provider_fax' => Yii::t('common', 'Provider Fax'),
 			'sku_as_ean' => Yii::t('common', 'Storing SKU As EAN'),
-			'vat' => Yii::t('common', 'Vat'),
+			'vat' => Yii::t('common', 'VAT'),
 			'discount' => Yii::t('common', 'Discount'),
+                        'currency_id' => Yii::t('common', 'Provider Currency'),
+			'default_language' => Yii::t('common', 'Default Language'),
 			'inactive' => Yii::t('common', 'Inactive'),
 			'sku_format' => Yii::t('common', 'SKU Format'),
 			'provider_email' => Yii::t('common', 'Provider Email'),
@@ -166,6 +180,8 @@ class Providers extends CActiveRecord
 		$criteria->compare('sku_as_ean',$this->sku_as_ean);
 		$criteria->compare('vat',$this->vat,true);
 		$criteria->compare('discount',$this->discount,true);
+                $criteria->compare('currency_id',$this->currency_id);
+		$criteria->compare('default_language',$this->default_language,true);
 		$criteria->compare('inactive',$this->inactive);
 		$criteria->compare('sku_format',$this->sku_format,true);
 		$criteria->compare('provider_email',$this->provider_email,true);

@@ -181,9 +181,19 @@ class Languages extends CActiveRecord
          * Return available languages in the system for dropdown list
          * @return mixed
          */
-        public static function listData()
+        public static function listData($languageCode=null)
         {
-            return CHtml::listData(self::listLanguages(), 'lang_code','title');
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listLanguages(), 'lang_code','title');
+            }
+            
+            if(!empty($languageCode) && isset($data[$languageCode]))
+                return $data[$languageCode];
+            
+            return $data;
         }
         
         public static function getCurrent()

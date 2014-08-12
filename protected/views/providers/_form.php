@@ -62,6 +62,18 @@
 	</div>
     
         <div class="row form-group">
+		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'currency_id',  Currencies::listData(),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'currency_id',array('class'=>'label label-danger')); ?>
+	</div>
+
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'default_language',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'default_language', Languages::listData(),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
+	</div>
+    
+        <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_phone',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'provider_phone',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_phone',array('class'=>'label label-danger')); ?>
