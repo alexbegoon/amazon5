@@ -161,4 +161,56 @@ class ProviderProducts extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function syncProducts($model)
+        {
+            $serviceData = self::requestProviderData($model);
+            
+            $products = self::processProviderData($serviceData,$model);
+            
+//            CVarDumper::dump($serviceData,10,true);
+            
+            return true;
+        }
+        
+        private static function requestProviderData($model)
+        {
+            if(empty($model->service_url))
+                throw new CHttpException(500,
+                        '{attribute} is empty for the provider: {provider_name}',
+                        array('{provider_name}'=>$model->provider_name,
+                              '{attribute}'=>$model->getAttributeLabel('service_url')));
+            
+            if(empty($model->sync_params))
+                throw new CHttpException(500,Yii::t('common','{attribute} is empty for the provider: {provider_name}',
+                        array('{provider_name}'=>$model->provider_name,
+                              '{attribute}'=>$model->getAttributeLabel('sync_params'))));
+            
+            $data = file_get_contents($model->service_url);
+            
+            if(empty($data))
+                throw new CHttpException(500,
+                        Yii::t('common',
+                            'Service unavailable for the provider: {provider_name}. Please check this URL: {URL}. Provider contacts: Phone {Phone}, Email {Email}',
+                            array('{provider_name}'=>$model->provider_name,
+                                  '{URL}'=>$model->service_url,
+                                  '{Phone}'=>$model->provider_phone,
+                                  '{Email}'=>$model->provider_email,
+                                )));
+            
+            return $data;
+        }
+        
+        /**
+         * Return clean formatted array of the provider products
+         * @param type $serviceData
+         * @param type $model
+         * @return array
+         */
+        private static function processProviderData($serviceData,$model)
+        {
+            $data = array();
+            
+            return $data;
+        }
 }

@@ -84,10 +84,11 @@ class Providers extends CActiveRecord
                                                                                 'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('provider_type', 'length', 'max'=>16),
 			array('provider_name', 'length', 'min'=>5),
+			array('sync_params', 'validateSyncParameters', 'allowEmpty'=>true),
 			array('provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'email'),
 			array('provider_name, cif, provider_email', 'unique'),
 			array('vat', 'length', 'max'=>5),
-			array('created_on, modified_on, locked_on, email_subject, email_body', 'safe'),
+			array('csv_format, xls_format, sync_params, created_on, modified_on, locked_on, email_subject, email_body', 'safe'),
                         array('discount', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -246,6 +247,68 @@ class Providers extends CActiveRecord
         public static function sync()
         {
             $result = Yii::t('common', 'Providers synchronization');
+            
+            $providers = self::model()->findAll(array('condition'=>'sync_enabled=1'));
+            
+            foreach($providers as $model)
+            {
+                if(!ProviderProducts::syncProducts($model))
+                {
+                    throw new CHttpException(500,
+                            Yii::t('common','Can not sync products for the provider: {provider_name}',
+                            array('{provider_name}'=>$model->provider_name)));
+                }
+            }
+            
             return  $result.' - <span class="green">OK</span>';
+        }
+        
+        /**
+         * This method return available Sync Parameters.
+         * These parameters required for all providers, which enabled sync processor.
+         * System will check the existence of all of these parameters in the provider settings.
+         * @return array
+         */
+        private static function getSyncAvailableParameters()
+        {
+            return array(
+                'start_from_row',
+                'end_of_line',
+                'row_delimiter',
+                'provider_product_name',
+                'provider_price',
+                'quantity_in_stock',
+                'provider_brand',
+                'provider_category',
+                'provider_sex',
+                'provider_image_url',
+                'provider_thumb_image_url',
+                'inner_id',
+                'inner_sku',
+            );
+        }
+        
+        public function validateSyncParameters($attribute,$params)
+        {
+            foreach (self::getSyncAvailableParameters() as $param)
+            {
+                if(strpos($this->sync_params,'{'.$param.'}')===false 
+                        && !empty($this->sync_params))
+                    $this->addError('parent_id', Yii::t('common', 
+                        '{attribute} should have {{parameter}} parameter.',
+                        array(
+                            '{attribute}'=>$this->getAttributeLabel($attribute),
+                            '{parameter}'=>$param,
+                    )));
+            }
+            
+            $checkStr = preg_replace('/\{{1}[a-z0-9\_]{5,30}\}{1}\={1}[a-zA-Z0-9\\\\;]{1,15};{1}\s*/', '', $this->sync_params);
+            
+            if($checkStr!=='')
+                    $this->addError('parent_id', Yii::t('common', 
+                        '{attribute} malformed. Check this: {checkStr}',
+                        array('{attribute}'=>$this->getAttributeLabel($attribute),
+                              '{checkStr}'=>$checkStr  )
+                    ));
         }
 }

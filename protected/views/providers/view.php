@@ -65,13 +65,13 @@ $this->menu=array(
 		'provider_email_hidden_copy_2',
 		'email_subject',
 		'email_body',
-                'service_url',
                 array(
                     'name'=>'sync_enabled',
                     'type'=>'html',
                     'value'=>$model->sync_enabled==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("sync_enabled"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
                                                  :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("sync_enabled"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
                 ),
+                'service_url',
                 'sync_schedule',
                 'last_sync_date',
                 array(

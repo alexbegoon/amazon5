@@ -209,6 +209,7 @@ return array(
     'Unblock'=>'Desbloquear',
     'Products of the category'=>'Productos de la categoría',
     'Synchronization'=>'Sincronización',
+    'Synchronization Parameters'=>'Parámetros de Sincronización',
     'Total execution time:'=>'El tiempo de ejecución total:',
     'seconds'=>'segundos',
     'Seconds'=>'Segundos',
@@ -227,6 +228,8 @@ return array(
     
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
+    '{attribute} is empty for the provider: {provider_name}'=>'{attribute} está vacía para el proveedor: {provider_name}',
+    'Service unavailable for the provider: {provider_name}. Please check this URL: {URL}. Provider contacts: Phone {Phone}, Email {Email}'=>'Servicio no disponible para el proveedor: {provider_name}. Por favor, consulte la siguiente dirección URL: {URL}. Contactos Proveedor: Teléfono {Phone}, Email {Email}',
     'The request is successfully processed'=>'La solicitud se ha procesado correctamente',
     'The request was processed with errors'=>'La solicitud fue procesada con errores',
     'You can not assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
