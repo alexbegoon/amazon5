@@ -43,15 +43,16 @@ class ProviderProducts extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provider_id, product_id, currency_id', 'required'),
+			array('provider_id, product_id, currency_id, quantity_in_stock, provider_price, provider_product_name', 'required'),
 			array('provider_id, quantity_in_stock, currency_id, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
+			array('quantity_in_stock', 'numerical', 'integerOnly'=>true, 'min'=>0),
 			array('provider_product_name, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url', 'length', 'max'=>255),
 			array('provider_price', 'length', 'max'=>15),
                         array('provider_price','compare','compareValue'=>'0.00001',
-                                                                                'operator'=>'>',
-                                                                                'allowEmpty'=>true , 
-                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
+                                    'operator'=>'>',
+                                    'allowEmpty'=>true , 
+                                    'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('inner_id, inner_sku', 'length', 'max'=>64),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
@@ -210,7 +211,48 @@ class ProviderProducts extends CActiveRecord
         private static function processProviderData($serviceData,$model)
         {
             $data = array();
+                        
+            $rows = explode(str_replace("\\n","\n",$model->getSyncParamValue('end_of_line')), $serviceData);
             
+            if(empty($rows) || !is_array($rows))
+                throw new CHttpException(500,
+                        Yii::t('common', 'Provider data malformed. Provider: {provider_name}',
+                        array('{provider_name}'=>$model->provider_name)));
+
+            foreach ($rows as $k=>$row)
+            {
+                if($k < $model->getSyncParamValue('start_from_row'))
+                    continue;
+                if(empty($row))
+                    continue;
+                
+                $product = array();
+                $productMixedData = str_getcsv($row, $model->getSyncParamValue('row_delimiter'));
+                
+                foreach (Providers::getSyncAvailableParameters() as $param)
+                {
+                    if(isset($productMixedData[$model->getSyncParamValue($param)]))
+                    $product[$param] = trim(strip_tags($productMixedData[$model->getSyncParamValue($param)]));
+                    
+                    
+                }
+                
+                if(isset($product['provider_price']))
+                    $product['provider_price'] = (float)preg_replace('/,/', '.', $product['provider_price']);
+                
+                if(isset($model->discount)&&!empty($model->discount)&&$model->discount!=0)
+                    $product['provider_price'] *= (float)$model->discount;
+                
+                unset($product['start_from_row']);
+                unset($product['end_of_line']);
+                unset($product['row_delimiter']);
+                
+                $product['currency_id']=$model->currency_id;
+                $product['provider_id']=$model->id;
+                
+                $data[] = $product;
+            }
+            CVarDumper::dump($data,10,true);die;
             return $data;
         }
 }

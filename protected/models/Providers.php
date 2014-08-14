@@ -269,7 +269,7 @@ class Providers extends CActiveRecord
          * System will check the existence of all of these parameters in the provider settings.
          * @return array
          */
-        private static function getSyncAvailableParameters()
+        public static function getSyncAvailableParameters()
         {
             return array(
                 'start_from_row',
@@ -288,6 +288,28 @@ class Providers extends CActiveRecord
             );
         }
         
+        public function getSyncParamValue($parameter)
+        {   
+            static $params;
+            if(!in_array($parameter, Providers::getSyncAvailableParameters()))
+                return null;
+            
+            if(empty($this->sync_params))
+                throw new CHttpException(500,Yii::t('common','{attribute} is empty for the provider: {provider_name}',
+                        array('{provider_name}'=>$this->provider_name,
+                              '{attribute}'=>$this->getAttributeLabel('sync_params'))));
+            
+            preg_match('/\{{1}('.$parameter.')\}{1}\={1}([^=]{1,15});{1}/', $this->sync_params, $match);
+            
+            if (isset($match[2]))
+                $param[$this->id][$parameter]=$match[2];
+            else
+                $param[$this->id][$parameter]=NULL;
+            
+            return $param[$this->id][$parameter];
+        }
+
+
         public function validateSyncParameters($attribute,$params)
         {
             foreach (self::getSyncAvailableParameters() as $param)
@@ -302,7 +324,7 @@ class Providers extends CActiveRecord
                     )));
             }
             
-            $checkStr = preg_replace('/\{{1}[a-z0-9\_]{5,30}\}{1}\={1}[a-zA-Z0-9\\\\;]{1,15};{1}\s*/', '', $this->sync_params);
+            $checkStr = preg_replace('/\{{1}[a-z0-9\_]{5,30}\}{1}\={1}[^=]{1,15};{1}\s*/', '', $this->sync_params);
             
             if($checkStr!=='')
                     $this->addError('parent_id', Yii::t('common', 
