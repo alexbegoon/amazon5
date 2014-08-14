@@ -22,11 +22,17 @@ $this->menu=array(
             'provider_name',
             'cif',
             'provider_url',
-            'provider_country',
+            array(
+                'name'=>'provider_country',
+                'value'=>'Countries::listData($data->provider_country)',
+            ),
             'provider_address',
             'provider_type',
             'vat',
-            'inactive',
+            array(
+                'name'=>Yii::t('common', 'Inactive'),
+                'value'=>'$data->inactive==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
             'sku_format',
             'provider_email',
             array(

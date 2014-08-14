@@ -122,57 +122,71 @@ class ManufacturersController extends Controller
 	{
 		$model=$this->loadModel($id);
                 
-                $modelTranslation=ManufacturerTranslations::model()->getTranslation($id);
-                
-                $this->performAjaxValidation(array($model,$modelTranslation));
-                
-                $this->lockRows(array($model,$modelTranslation));		 
+                $this->performAjaxValidation(array($model));	 
 
-		if(isset($_POST['Manufacturers'],$_POST['ManufacturerTranslations']))
+		if(isset($_POST['Manufacturers']))
 		{
-                    // Start the transaction
-                    $transaction = Yii::app()->db->beginTransaction();
-
                     $model->attributes=$_POST['Manufacturers'];
-                    $modelTranslation->attributes=$_POST['ManufacturerTranslations'];
 
                     if($model->save())
-                    {
-                        $modelTranslation->setPrimaryKey(array(
-                            'manufacturer_id'=>$model->primaryKey,
-                            'language_code'=> $_POST['ManufacturerTranslations']['language_code'],                                
-                                ));
-                        
-                        if(!$modelTranslation->findByPk($modelTranslation->getPrimaryKey()))
-                            $modelTranslation->setIsNewRecord(true);
-                        
-                        if($modelTranslation->save())
-                        {
-                            $transaction->commit();
-                            $this->redirect(array('view','id'=>$model->id));
-                        }
-                        else
-                        {
-                            $transaction->rollback();
-                        }
-                    }
-                    else 
-                    {
-                        $transaction->rollback();
-                    }  
+                        $this->redirect(array('view','id'=>$model->id));
                 }
                                 
 		$this->render('update',array(
-			'model'=>$model,
-                        'modelTranslation'=>$modelTranslation,
-                        'dataProvider'=>new CActiveDataProvider('ManufacturerTranslations',array(
-                            'criteria'=>array(
-                                'condition'=>'manufacturer_id=:id',
-                                'params'=>array(':id'=>$id),
-                            ),
-                        )),
-		));
+			'model'=>$model
+                        ));
 	}
+        
+        public function actionCreateTranslation()
+        {            
+            $model= new ManufacturerTranslations;
+            
+            $model->setAttribute('manufacturer_id', Yii::app()->request->getParam('manufacturer_id'));
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='manufacturer-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            if(isset($_POST['ManufacturerTranslations']))
+            {
+                $model->attributes=$_POST['ManufacturerTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->manufacturer_id));
+                }
+            }
+            $this->render('create_translations',array('model'=>$model));
+        }
+        
+        public function actionUpdateTranslation()
+	{
+            $model=ManufacturerTranslations::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='manufacturer-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+
+            if(isset($_POST['ManufacturerTranslations']))
+            {
+                $model->attributes=$_POST['ManufacturerTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->manufacturer_id));
+                }
+            }
+            $this->render('update_translations',array('model'=>$model));
+        }
 
 	/**
 	 * Deletes a particular model.
@@ -213,6 +227,27 @@ class ManufacturersController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=Manufacturers::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

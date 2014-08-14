@@ -195,6 +195,10 @@ return array(
     'Category Images'=>'Categoría Imágenes',
     'Category successfully published'=>'Categoría publicó con éxito',
     'Category successfully unpublished'=>'Categoría con éxito desactivado',
+    'Provider successfully activated'=>'Proveedor activado correctamente',
+    'Provider successfully deactivated'=>'Proveedor desactivado con éxito',
+    'Manufacturer successfully published'=>'Fabricante publicó con éxito',
+    'Manufacturer successfully unpublished'=>'Fabricante con éxito desactivado',
     'Product successfully published'=>'Producto publicó con éxito',
     'Product successfully unpublished'=>'Producto con éxito desactivado',
     'Product successfully blocked'=>'Producto bloqueado con éxito',
@@ -204,7 +208,19 @@ return array(
     'Block'=>'Bloquear',
     'Unblock'=>'Desbloquear',
     'Products of the category'=>'Productos de la categoría',
- 
+    'Synchronization'=>'Sincronización',
+    'Synchronization Parameters'=>'Parámetros de Sincronización',
+    'Total execution time:'=>'El tiempo de ejecución total:',
+    'seconds'=>'segundos',
+    'Seconds'=>'Segundos',
+    'Activate'=>'Activar',
+    'Deactivate'=>'Desactivar',
+    'Storing SKU As EAN'=>'Almacenamiento SKU Como EAN',
+    'Products synchronization'=>'Sincronización de los Productos',
+    'Categories synchronization'=>'Sincronización de los Categories',
+    'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
+    'Providers synchronization'=>'Sincronización de los Proveedores',
+    'Web Shops synchronization'=>'Sincronización de Tiendas Web',
 
  
  
@@ -212,6 +228,10 @@ return array(
     
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
+    '{attribute} is empty for the provider: {provider_name}'=>'{attribute} está vacía para el proveedor: {provider_name}',
+    'Service unavailable for the provider: {provider_name}. Please check this URL: {URL}. Provider contacts: Phone {Phone}, Email {Email}'=>'Servicio no disponible para el proveedor: {provider_name}. Por favor, consulte la siguiente dirección URL: {URL}. Contactos Proveedor: Teléfono {Phone}, Email {Email}',
+    'The request is successfully processed'=>'La solicitud se ha procesado correctamente',
+    'The request was processed with errors'=>'La solicitud fue procesada con errores',
     'You can not assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
     'You can not assign to this category'=>'No se puede asignar a esta categoría',
     'Product assigned successfully'=>'Producto asignado correctamente',
@@ -219,12 +239,15 @@ return array(
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
     '"{webshop_name}" has {n} category|"{webshop_name}" has {n} categories'=>'"{webshop_name}" tiene {n} categoría|"{webshop_name}" tiene {n} categorías',
     'has {n} product|has {n} products'=>'tiene {n} producto|tiene {n} productos',
-    'has {n} category|has {n} categories'=>'"tiene {n} categoría|tiene {n} categorías',
+    'has {n} category|has {n} categories'=>'tiene {n} categoría|tiene {n} categorías',
+    '{n} entry successfully removed|{n} entries successfully removed'=>'{n} entrada ha eliminado correctamente|{n} entradas eliminado correctamente',
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',
     'This SKU already exists'=>'Esta SKU ya existe',
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
+    'Are you sure you want to delete these items?'=>'¿Seguro que quiere eliminar estos elementos?',
+    'Are you sure you want to delete this item?|Are you sure you want to delete these items?'=>'¿Está seguro que desea eliminar este artículo?|¿Seguro que quiere eliminar estos elementos?',
     'Fields with <span class="required">*</span> are required.'=>'Los campos que lleven <span class="required"> * </ span> son obligatorios.',
     'You may optionally enter a comparison operator'=>'También puede escribir un operador de comparación', 
     'at the beginning of each of your search values to specify how the comparison should be done.'=>'al principio de cada uno de los valores de búsqueda para especificar cómo se debe hacer la comparación.',
@@ -234,6 +257,7 @@ return array(
     'You can not delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
     'You can not edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
+    'This feature at the development stage. If you have any questions, please ask support.'=>'Esta característica en fase de desarrollo. Si tiene alguna duda, consulte a apoyo.',
     
 );
 ?>

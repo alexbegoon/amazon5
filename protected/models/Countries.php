@@ -144,4 +144,27 @@ class Countries extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listCountries($all=false)
+        {
+            if($all)
+                return self::model()->with('continentCode')->findAll(array('order'=>'t.name'));
+                
+            return self::model()->with('continentCode')->findAll(array('condition'=>'t.published=1 AND continentCode.published=1','order'=>'t.name'));
+        }
+        
+        public static function listData($countryCode=null)
+        {
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listCountries(), 'code', 'name', 'continentCode.name');
+            }
+            
+            if(!empty($countryCode))
+                return CHtml::listData(self::listCountries(true), 'code', 'name')[$countryCode];
+            
+            return $data;
+        }
 }

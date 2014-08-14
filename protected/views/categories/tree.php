@@ -28,8 +28,21 @@ function print_category($category, $webShopId)
     <li role="presentation" class="divider"></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="'.Yii::app()->controller->createUrl('move',array('id'=>$category->id,'web_shop_id'=>$webShopId,'parent_id'=>$category->parent_id)).'"><i class="glyphicon glyphicon-move"></i> '.Yii::t('common', 'Move this category').'</a></li>
     <li role="presentation" class="divider"></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" class="red" href="#"><i class="fa fa-trash-o"></i> '.Yii::t('common', 'Revoke all products').'</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" class="red" href="#"><i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove this category').'</a></li>
+    <li role="presentation">
+    '.CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Revoke all products'), 
+                    Yii::app()->controller->createUrl('RevokeAllProductsFromCategory',array('id'=>$category->id)),
+                    array('confirm'=>Yii::t('common','Are you sure you want to delete these items?'),
+                          'role'=>'menuitem',
+                          'tabindex'=>'-1',
+                          'class'=>'red')).'</li>
+                              <li role="presentation" class="divider"></li>
+    <li role="presentation">
+    '.CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove this category'), 
+                    Yii::app()->controller->createUrl('delete',array('id'=>$category->id)),
+                    array('confirm'=>Yii::t('zii','Are you sure you want to delete this item?'),
+                          'role'=>'menuitem',
+                          'tabindex'=>'-1',
+                          'class'=>'red')).'</li>
   </ul>
 </i>';
     
@@ -63,9 +76,20 @@ function print_category($category, $webShopId)
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo Yii::app()->createUrl('categories/create', array('web_shop_id'=>$webShop->id,'parent_id'=>0))?>"><i class="glyphicon glyphicon-plus-sign"></i> <?php echo Yii::t('common', 'Create category here')?></a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo Yii::app()->createUrl('webShops/'.$webShop->id)?>"><i class="glyphicon glyphicon-edit"></i> <?php echo Yii::t('common', 'Manage this Web Shop')?></a></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-sitemap"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-sitemap"></i> <?php echo Yii::t('common', 'Copy category tree')?></a></li>
+                    <li role="presentation">
+                        <?php echo CHtml::link('<i class="fa fa-sitemap"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-sitemap"></i> '.Yii::t('common', 'Copy category tree'), 
+                                    Yii::app()->controller->createUrl('copyTree',array('id'=>$webShop->id)),
+                                    array('role'=>'menuitem',
+                                          'tabindex'=>'-1'))?></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" class="red" href="#"><i class="fa fa-trash-o"></i> <?php echo Yii::t('common', 'Remove all categories')?></a></li>
+                    <li role="presentation">
+                        <?php echo CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove all categories'), 
+                                    Yii::app()->controller->createUrl('removeAll',array('id'=>$webShop->id)),
+                                    array('confirm'=>Yii::t('common','Are you sure you want to delete this item?|Are you sure you want to delete these items?',array(count($webShop->categories))),
+                                          'role'=>'menuitem',
+                                          'tabindex'=>'-1',
+                                          'class'=>'red'))?>
+                    </li>
                 </ul>
             </i>
             <ul class="tree-ul">

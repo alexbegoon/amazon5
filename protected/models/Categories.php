@@ -357,4 +357,10 @@ class Categories extends CActiveRecord
             
             Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
         }
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Categories synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
 }

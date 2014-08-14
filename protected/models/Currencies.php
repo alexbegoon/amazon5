@@ -327,14 +327,27 @@ class Currencies extends CActiveRecord
             return (int)$currencyId;
         }
         
-        public static function listCurrencies()
+        public static function listCurrencies($all=false)
         {
+            if($all)
+                return self::model()->findAll(array('order'=>'currency_name'));
+        
             return self::model()->findAll(array('condition'=>'published=1','order'=>'currency_name'));
         }
         
-        public static function listData()
+        public static function listData($currencyId=null)
         {
-            return CHtml::listData(self::listCurrencies(), 'id', 'currency_name');
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listCurrencies(), 'id', 'currency_name');
+            }
+            
+            if(!empty($currencyId))
+                return CHtml::listData(self::listCurrencies(true), 'id', 'currency_name')[$currencyId];
+            
+            return $data;
         }
         
         public static function getNameByPk($currencyId)
