@@ -192,8 +192,8 @@ class ProviderProducts extends CActiveRecord
                 $transaction = Yii::app()->db->beginTransaction();
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
-                self::assignToProducts($products);
-                $products = self::storeProducts($products);
+                $products = self::assignToProducts($products);
+                self::storeProducts($products);
                 
                 if ($transaction->active)
                 $transaction->commit();
