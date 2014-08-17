@@ -399,8 +399,7 @@ class ProviderProducts extends CActiveRecord
             $criteria->order = 'created_on DESC';
             
             $history = ProviderProductsHistories::model()->find($criteria);
-            CVarDumper::dump($attributes,10,true);
-            CVarDumper::dump($history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id')),10,true);die;
+            
             if($history===null)
             {
                 $history = new ProviderProductsHistories;
@@ -409,7 +408,11 @@ class ProviderProducts extends CActiveRecord
             }
             else
             {
-                if(count(array_diff_assoc($history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id')),$attributes))>0)
+                $historyAttributes = $history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id'));
+                $historyAttributes['provider_price'] = (float)$historyAttributes['provider_price'];
+                CVarDumper::dump($attributes,10,true);
+                CVarDumper::dump($historyAttributes,10,true);die;
+                if(count(array_diff_assoc($historyAttributes,$attributes))>0)
                 {
                     $history = new ProviderProductsHistories;
                     $history->attributes = $attributes;
