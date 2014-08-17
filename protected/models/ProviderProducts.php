@@ -399,7 +399,6 @@ class ProviderProducts extends CActiveRecord
             $criteria->order = 'created_on DESC';
             
             $history = ProviderProductsHistories::model()->find($criteria);
-            CVarDumper::dump($history,10,true);die;
             if($history===null)
             {
                 $history = new ProviderProductsHistories;
