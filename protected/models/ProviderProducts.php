@@ -387,7 +387,7 @@ class ProviderProducts extends CActiveRecord
             parent::afterSave();
             
             $attributes = $this->getAttributes();
-            
+            CVarDumper::dump($attributes,10,true);die;
             $criteria = new CDbCriteria;
             $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
             $criteria->params    = array(':provider_id'=>$attributes['provider_id'],
