@@ -399,7 +399,7 @@ class ProviderProducts extends CActiveRecord
             $criteria->order = 'created_on DESC';
             
             $history = ProviderProductsHistories::model()->find($criteria);
-            CVarDumper::dump($$attributes,10,true);
+            CVarDumper::dump($attributes,10,true);
             CVarDumper::dump($history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id')),10,true);die;
             if($history===null)
             {
