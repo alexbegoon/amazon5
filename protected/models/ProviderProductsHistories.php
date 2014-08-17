@@ -129,8 +129,8 @@ class ProviderProductsHistories extends CActiveRecord
         
         public function beforeValidate()
         {
-            parent::beforeValidate();
-            
             $this->created_on = date('Y-m-d H:i:s');
+            
+            return parent::beforeValidate();
         }
 }
