@@ -209,6 +209,10 @@ class ProviderProducts extends CActiveRecord
         {
             foreach ($products as $product)
             {
+                if(!isset($product['product_id']))
+                {
+                    CVarDumper::dump($product,10,true);die;
+                }
                 $criteria = new CDbCriteria;
                 $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
                 $criteria->params    = array(':provider_id'=>$product['provider_id'],
@@ -389,7 +393,7 @@ class ProviderProducts extends CActiveRecord
             parent::afterSave();
             
             $attributes = $this->getAttributes();
-            CVarDumper::dump($attributes,10,true);die;
+            
             $criteria = new CDbCriteria;
             $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
             $criteria->params    = array(':provider_id'=>$attributes['provider_id'],
