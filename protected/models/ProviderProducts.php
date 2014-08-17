@@ -72,7 +72,7 @@ class ProviderProducts extends CActiveRecord
         {
             static $provider;
             if(!isset($provider[$this->provider_id]))
-            $provider[$this->provider_id] = Providers::model()>findByPk($this->provider_id);
+            $provider[$this->provider_id] = Providers::model()->findByPk($this->provider_id);
             
             if($provider[$this->provider_id]->sku_as_ean != 0)
             {
