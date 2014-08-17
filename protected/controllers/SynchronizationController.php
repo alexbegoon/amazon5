@@ -2,26 +2,26 @@
 
 class SynchronizationController extends CController
 {
-        public function filters()
-        {
-            return array(
-                'accessControl',
-            );
-        }
-        
-        public function accessRules() 
-        {
-            return array(
-                array('allow',
-                'actions' => array('index'),
-                'ips' => array('127.0.0.1','::1'),
-               ),
-                array('deny',
-                    'actions' => array('index','view', 'create', 'update', 'manage'),
-                    'ips' => array('*'),
-                ),
-            );
-        }
+//        public function filters()
+//        {
+//            return array(
+//                'accessControl',
+//            );
+//        }
+//        
+//        public function accessRules() 
+//        {
+//            return array(
+//                array('allow',
+//                'actions' => array('index'),
+//                'ips' => array('127.0.0.1','::1'),
+//               ),
+//                array('deny',
+//                    'actions' => array('index','view', 'create', 'update', 'manage'),
+//                    'ips' => array('*'),
+//                ),
+//            );
+//        }
 	public function actionIndex()
 	{
             $items=array();
