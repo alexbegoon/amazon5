@@ -193,7 +193,7 @@ class ProviderProducts extends CActiveRecord
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
                 self::assignToProducts($products);
-                self::storeProducts($products);
+                $products = self::storeProducts($products);
                 
                 if ($transaction->active)
                 $transaction->commit();
@@ -294,6 +294,8 @@ class ProviderProducts extends CActiveRecord
                 
                 $products[$k]['product_id'] = $product->id;
             }
+            
+            return $products;
         }
         
         private static function requestProviderData($model)
