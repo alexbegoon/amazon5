@@ -197,6 +197,7 @@ class ProviderProducts extends CActiveRecord
                 
                 if ($transaction->active)
                 $transaction->commit();
+                unset($products);
                 return true;
             } catch (Exception $ex) {
                 if ($transaction->active)
