@@ -1,29 +1,32 @@
 <?php
 
 /**
- * This is the model class for table "{{provider_products_histories}}".
+ * This is the model class for table "{{provider_sync_logs}}".
  *
- * The followings are the available columns in table '{{provider_products_histories}}':
+ * The followings are the available columns in table '{{provider_sync_logs}}':
  * @property string $id
  * @property integer $provider_id
- * @property string $product_id
- * @property string $provider_price
- * @property integer $quantity_in_stock
- * @property integer $currency_id
+ * @property integer $code
+ * @property string $provider_product_sku
+ * @property string $message
  * @property string $created_on
+ * @property integer $created_by
+ * @property string $modified_on
+ * @property integer $modified_by
+ * @property string $locked_on
+ * @property integer $locked_by
  *
  * The followings are the available model relations:
  * @property Providers $provider
- * @property Products $product
  */
-class ProviderProductsHistories extends CActiveRecord
+class ProviderSyncLogs extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{provider_products_histories}}';
+		return '{{provider_sync_logs}}';
 	}
 
 	/**
@@ -34,18 +37,13 @@ class ProviderProductsHistories extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provider_id, product_id, currency_id, created_on, provider_price, quantity_in_stock', 'required'),
-			array('provider_id, quantity_in_stock, currency_id', 'numerical', 'integerOnly'=>true),
-			array('product_id', 'length', 'max'=>11),
-			array('provider_price', 'length', 'max'=>15),
-                        array('provider_price','compare','compareValue'=>'0.00001',
-                                                                        'operator'=>'>',
-                                                                        'allowEmpty'=>true , 
-                                                                        'message'=>Yii::t('common', '{attribute} must be greater than zero')),
-			array('created_on', 'safe'),
+			array('provider_id, provider_product_sku, code, message', 'required'),
+			array('provider_id, code, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('provider_product_sku', 'length', 'max'=>64),
+			array('message, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_id, product_id, provider_price, quantity_in_stock, currency_id, created_on', 'safe', 'on'=>'search'),
+			array('id, provider_id, code, provider_product_sku, message, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,7 +56,6 @@ class ProviderProductsHistories extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'provider' => array(self::BELONGS_TO, 'Providers', 'provider_id'),
-			'product' => array(self::BELONGS_TO, 'Products', 'product_id'),
 		);
 	}
 
@@ -69,12 +66,16 @@ class ProviderProductsHistories extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'provider_id' => Yii::t('common', 'Provider ID'),
-			'product_id' => Yii::t('common', 'Product ID'),
-			'provider_price' => Yii::t('common', 'Provider Price'),
-			'quantity_in_stock' => Yii::t('common', 'Quantity In Stock'),
-			'currency_id' => Yii::t('common', 'Currency'),
+			'provider_id' => Yii::t('common', 'Provider'),
+			'code' => Yii::t('common', 'Code'),
+			'provider_product_sku' => Yii::t('common', 'Provider Product Sku'),
+			'message' => Yii::t('common', 'Message'),
 			'created_on' => Yii::t('common', 'Created On'),
+			'created_by' => Yii::t('common', 'Created By'),
+			'modified_on' => Yii::t('common', 'Modified On'),
+			'modified_by' => Yii::t('common', 'Modified By'),
+			'locked_on' => Yii::t('common', 'Locked On'),
+			'locked_by' => Yii::t('common', 'Locked By'),
 		);
 	}
 
@@ -98,11 +99,15 @@ class ProviderProductsHistories extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('provider_id',$this->provider_id);
-		$criteria->compare('product_id',$this->product_id,true);
-		$criteria->compare('provider_price',$this->provider_price,true);
-		$criteria->compare('quantity_in_stock',$this->quantity_in_stock);
-		$criteria->compare('currency_id',$this->currency_id);
+		$criteria->compare('code',$this->code);
+		$criteria->compare('provider_product_sku',$this->provider_product_sku,true);
+		$criteria->compare('message',$this->message,true);
 		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->compare('created_by',$this->created_by);
+		$criteria->compare('modified_on',$this->modified_on,true);
+		$criteria->compare('modified_by',$this->modified_by);
+		$criteria->compare('locked_on',$this->locked_on,true);
+		$criteria->compare('locked_by',$this->locked_by);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -113,7 +118,7 @@ class ProviderProductsHistories extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ProviderProductsHistories the static model class
+	 * @return ProviderSyncLogs the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -127,11 +132,21 @@ class ProviderProductsHistories extends CActiveRecord
               ));
         }
         
-        public function beforeValidate()
+        /**
+         * Log action
+         * @param int $code 1 - product created, 2 - product updated, 3 - error
+         * @param type $provider_id
+         * @param type $provider_product_sku
+         * @param type $message
+         */
+        public static function log($code, $provider_id, $provider_product_sku, $message)
         {
-            parent::beforeValidate();
+            $logMsg = new ProviderSyncLogs;
+            $logMsg->code                   = $code;
+            $logMsg->provider_id            = $provider_id;
+            $logMsg->provider_product_sku   = $provider_product_sku;
+            $logMsg->message                = $message;
             
-            if(empty($this->created_on))
-            $this->created_on = date('Y-m-d H:i:s');
+            $logMsg->save();
         }
 }

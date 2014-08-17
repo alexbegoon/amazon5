@@ -201,6 +201,7 @@ return array(
     'Manufacturer successfully unpublished'=>'Fabricante con éxito desactivado',
     'Product successfully published'=>'Producto publicó con éxito',
     'Product successfully unpublished'=>'Producto con éxito desactivado',
+    'Product successfully created'=>'Producto creado con éxito',
     'Product successfully blocked'=>'Producto bloqueado con éxito',
     'Product successfully unblocked'=>'Producto desbloqueado con éxito',
     'Unpublish'=>'Despublicar',
@@ -216,11 +217,18 @@ return array(
     'Activate'=>'Activar',
     'Deactivate'=>'Desactivar',
     'Storing SKU As EAN'=>'Almacenamiento SKU Como EAN',
+    'SKU malformed'=>'SKU malformado',
+    'Notification sent'=>'Notificación enviada',
+    'Cannot create the new product. {errors}'=>'No se puede crear el nuevo producto. {errors}',
+    'Cannot update the product. {errors}'=>'No se puede actualizar el producto. {errors}',
+    'Product successfully updated'=>'Producto actualizado correctamente',
+    'Products malformed'=>'Productos malformados',
     'Products synchronization'=>'Sincronización de los Productos',
     'Categories synchronization'=>'Sincronización de los Categories',
     'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
     'Providers synchronization'=>'Sincronización de los Proveedores',
     'Web Shops synchronization'=>'Sincronización de Tiendas Web',
+    
 
  
  
@@ -232,8 +240,8 @@ return array(
     'Service unavailable for the provider: {provider_name}. Please check this URL: {URL}. Provider contacts: Phone {Phone}, Email {Email}'=>'Servicio no disponible para el proveedor: {provider_name}. Por favor, consulte la siguiente dirección URL: {URL}. Contactos Proveedor: Teléfono {Phone}, Email {Email}',
     'The request is successfully processed'=>'La solicitud se ha procesado correctamente',
     'The request was processed with errors'=>'La solicitud fue procesada con errores',
-    'You can not assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
-    'You can not assign to this category'=>'No se puede asignar a esta categoría',
+    'You Cannot assign this category to itself'=>'No se puede asignar esta categoría a sí mismo',
+    'You Cannot assign to this category'=>'No se puede asignar a esta categoría',
     'Product assigned successfully'=>'Producto asignado correctamente',
     'Category "{category_name}" moved successfully'=>'Categoría "{category_name}" trasladó con éxito',
     '"{category_name}" has {n} product|"{category_name}" has {n} products'=>'"{category_name}" tiene {n} producto|"{category_name}" tiene {n} productos',
@@ -254,8 +262,8 @@ return array(
     'Language code must be in format \'xx-xx\', where \'x\' - letter.'=>'Código de idioma debe estar en formato \'xx-xx\', donde \'x\' - carta.',
     'Continent code must be in format \'xx\', where \'x\' - letter.'=>'Código Continente debe estar en formato \'xx\', donde \'x\'- carta.',
     'Country code must be in format \'xx\', where \'x\' - letter.'=>'El código de país debe estar en formato \'xx\', donde \'x\'- carta.',
-    'You can not delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
-    'You can not edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
+    'You Cannot delete this. Record locked by {username}.'=>'No se puede eliminar esto. Registro bloqueado por {username}.',
+    'You Cannot edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
     'This feature at the development stage. If you have any questions, please ask support.'=>'Esta característica en fase de desarrollo. Si tiene alguna duda, consulte a apoyo.',
     

@@ -46,6 +46,12 @@ class ProviderProducts extends CActiveRecord
 			array('provider_id, product_id, currency_id, quantity_in_stock, provider_price, provider_product_name', 'required'),
 			array('provider_id, quantity_in_stock, currency_id, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
+                        array('product_id', 'unique', 'criteria'=>array(
+                              'condition'=>'`provider_id`=:provider_id',
+                              'params'=>array(
+                                  ':provider_id'=>$this->provider_id
+                              )
+                        )),
 			array('quantity_in_stock', 'numerical', 'integerOnly'=>true, 'min'=>0),
 			array('provider_product_name, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url', 'length', 'max'=>255),
 			array('provider_price', 'length', 'max'=>15),
@@ -54,12 +60,28 @@ class ProviderProducts extends CActiveRecord
                                     'allowEmpty'=>true , 
                                     'message'=>Yii::t('common', '{attribute} must be greater than zero')),
 			array('inner_id, inner_sku', 'length', 'max'=>64),
+			array('inner_sku', 'validateSku'),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('provider_id, product_id, provider_product_name, provider_price, quantity_in_stock, currency_id, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url, inner_id, inner_sku, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
+        
+        public function validateSku($attribute,$params)
+        {
+            static $provider;
+            if(!isset($provider[$this->provider_id]))
+            $provider[$this->provider_id] = Providers::model()>findByPk($this->provider_id);
+            
+            if($provider[$this->provider_id]->sku_as_ean != 0)
+            {
+                if(preg_match('/^\d{6,13}/', $this->inner_sku) !== 1)
+                {
+                    $this->addError('inner_sku', Yii::t('common', 'SKU malformed'));
+                }
+            }
+        }
 
 	/**
 	 * @return array relational rules.
@@ -160,18 +182,118 @@ class ProviderProducts extends CActiveRecord
         {
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
-              ));
+                ));
         }
         
         public static function syncProducts($model)
         {
-            $serviceData = self::requestProviderData($model);
+            try
+            {
+                $transaction = Yii::app()->db->beginTransaction();
+                $serviceData = self::requestProviderData($model);
+                $products = self::processProviderData($serviceData,$model);
+                self::assignToProducts($products);
+                self::storeProducts($products);
+                
+                if ($transaction->active)
+                $transaction->commit();
+                return true;
+            } catch (Exception $ex) {
+                if ($transaction->active)
+                $transaction->rollback();
+                return false;
+            }
+        }
+        
+        private static function storeProducts($products)
+        {
+            foreach ($products as $product)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
+                $criteria->params    = array(':provider_id'=>$product['provider_id'],
+                                             ':product_id'=>$product['product_id'] );
+                
+                $providerProduct = ProviderProducts::model()->find($criteria);
+                if($providerProduct!==null)
+                {
+                    $providerProduct->attributes = $product;
+                    if($providerProduct->save())
+                    {
+                        ProviderSyncLogs::log(2, 
+                                $product['provider_id'], 
+                                $product['inner_sku'], 
+                                Yii::t('common', 'Product successfully updated'));
+                    }
+                    else
+                    {
+                        ProviderSyncLogs::log(3, 
+                                $product['provider_id'], 
+                                $product['inner_sku'], 
+                                Yii::t('common', 'Cannot update the product. {errors}',
+                                    array('{errors}'=>get_validation_errors($providerProduct))));
+                    }
+                }
+                else 
+                {
+                    $providerProduct = new ProviderProducts;
+                    $providerProduct->attributes = $product;
+                    
+                    if($providerProduct->save())
+                    {
+                        ProviderSyncLogs::log(1, 
+                                $product['provider_id'], 
+                                $product['inner_sku'], 
+                                Yii::t('common', 'Product successfully created'));
+                    }
+                    else
+                    {
+                        ProviderSyncLogs::log(3, 
+                                $product['provider_id'], 
+                                $product['inner_sku'], 
+                                Yii::t('common', 'Cannot create the new product. {errors}',
+                                    array('{errors}'=>get_validation_errors($providerProduct))));
+                    }
+                }
+            }
+        }
+        
+        private static function assignToProducts($products)
+        {
+            if(!is_array($products)||empty($products))
+                throw new CHttpException(500,  Yii::t('common', 'Products malformed'));
             
-            $products = self::processProviderData($serviceData,$model);
+            static $providers;
             
-//            CVarDumper::dump($serviceData,10,true);
-            
-            return true;
+            foreach ($products as $k=>$providerProduct) 
+            {
+                if(!isset($providers[$providerProduct['provider_id']]))
+                    $providers[$providerProduct['provider_id']]=Providers::model()->findByPk($providerProduct['provider_id']);
+                
+                $sku = $providerProduct['inner_sku'];
+                
+                if($providers[$providerProduct['provider_id']]->sku_as_ean != 0)
+                {
+                    $sku = Products::fixProductSKU($providerProduct['inner_sku']);
+                }
+                
+                $product = Products::model()->findBySKU($sku);
+                
+                if($product===null)
+                {
+                    $product=new Products;
+                    $product->product_sku = $sku;
+                    if(!$product->save())
+                    {
+                        throw new CHttpException(500,
+                                Yii::t('common', 
+                                        'Cannot create the new product. {errors}', 
+                                        array('{errors}'=>get_validation_errors($product))));
+                    }    
+                }
+                
+                $products[$k]['product_id'] = $product->id;
+            }
         }
         
         private static function requestProviderData($model)
@@ -212,7 +334,11 @@ class ProviderProducts extends CActiveRecord
         {
             $data = array();
                         
-            $rows = explode(str_replace("\\n","\n",$model->getSyncParamValue('end_of_line')), $serviceData);
+            $rows = explode(
+                    str_replace(
+                            array("\\n","\\t"),
+                            array("\n","\t"),
+                            $model->getSyncParamValue('end_of_line')), $serviceData);
             
             if(empty($rows) || !is_array($rows))
                 throw new CHttpException(500,
@@ -227,14 +353,14 @@ class ProviderProducts extends CActiveRecord
                     continue;
                 
                 $product = array();
-                $productMixedData = str_getcsv($row, $model->getSyncParamValue('row_delimiter'));
+                $productMixedData = str_getcsv($row, str_replace(
+                            array("\\n","\\t"),
+                            array("\n","\t"),$model->getSyncParamValue('row_delimiter')));
                 
                 foreach (Providers::getSyncAvailableParameters() as $param)
                 {
                     if(isset($productMixedData[$model->getSyncParamValue($param)]))
                     $product[$param] = trim(strip_tags($productMixedData[$model->getSyncParamValue($param)]));
-                    
-                    
                 }
                 
                 if(isset($product['provider_price']))
@@ -252,7 +378,40 @@ class ProviderProducts extends CActiveRecord
                 
                 $data[] = $product;
             }
-            CVarDumper::dump($data,10,true);die;
+            
             return $data;
+        }
+        
+        public function afterSave() 
+        {
+            parent::afterSave();
+            
+            $attributes = $this->getAttributes();
+            
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
+            $criteria->params    = array(':provider_id'=>$attributes['provider_id'],
+                                         ':product_id' =>$attributes['product_id']
+                );
+            $criteria->limit = 1;
+            $criteria->order = 'created_on DESC';
+            
+            $history = ProviderProductsHistories::model()->find($criteria);
+            
+            if($history===null)
+            {
+                $history = new ProviderProductsHistories;
+                $history->attributes = $attributes;
+                $history->save();
+            }
+            else
+            {
+                if(count(array_diff_assoc($history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id')),$attributes))>0)
+                {
+                    $history = new ProviderProductsHistories;
+                    $history->attributes = $attributes;
+                    $history->save();
+                }
+            }
         }
 }

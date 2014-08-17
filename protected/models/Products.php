@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $product_parent_id
  * @property string $product_sku
+ * @property integer $notification_sent
  * @property integer $published
  * @property integer $blocked
  * @property string $created_on
@@ -55,7 +56,7 @@ class Products extends CActiveRecord
 		return array(
 			array('product_sku', 'required'),
 			array('product_sku', 'unique', 'message'=>Yii::t('common', 'This SKU already exists')),
-			array('product_parent_id, published, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('product_parent_id, notification_sent, published, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_parent_id', 'length', 'max'=>11),
 			array('product_sku', 'length', 'max'=>32),
 			array('product_sku', 'length', 'min'=>6),
@@ -102,6 +103,7 @@ class Products extends CActiveRecord
 			'product_name' => Yii::t('common', 'Product Name'),
 			'manufacturer_id' => Yii::t('common', 'Manufacturer'),
 			'published' => Yii::t('common', 'Published'),
+                        'notification_sent' => Yii::t('common', 'Notification sent'),
 			'blocked' => Yii::t('common', 'Blocked'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -135,6 +137,7 @@ class Products extends CActiveRecord
 		$criteria->compare('product_sku',$this->product_sku,true);
 		$criteria->compare('t.published',$this->published);
 		$criteria->compare('t.blocked',$this->blocked);
+                $criteria->compare('t.notification_sent',$this->notification_sent);
 		$criteria->compare('t.created_on',$this->created_on,true);
 		$criteria->compare('t.created_by',$this->created_by);
 		$criteria->compare('t.modified_on',$this->modified_on,true);
@@ -249,5 +252,15 @@ class Products extends CActiveRecord
         {
             $result = Yii::t('common', 'Products synchronization');
             return  $result.' - <span class="green">OK</span>';
+        }
+        
+        public static function fixProductSKU($sku)
+        {
+            if(preg_match("/\d{6,12}/", $sku) === 1)
+            {
+                return str_pad($sku, 13, '0', STR_PAD_LEFT);
+            }
+            
+            return $sku;
         }
 }

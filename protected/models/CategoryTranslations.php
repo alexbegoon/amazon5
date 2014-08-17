@@ -40,6 +40,12 @@ class CategoryTranslations extends CActiveRecord
 		return array(
 			array('category_id, language_code, category_name', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`category_id`=:category_id',
+                            'params'=>array(
+                                ':category_id'=>$this->category_id
+                            )
+                        )),
 			array('category_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
 			array('category_name, slug', 'length', 'min'=>4),

@@ -255,7 +255,7 @@ class Providers extends CActiveRecord
                 if(!ProviderProducts::syncProducts($model))
                 {
                     throw new CHttpException(500,
-                            Yii::t('common','Can not sync products for the provider: {provider_name}',
+                            Yii::t('common','Cannot sync products for the provider: {provider_name}',
                             array('{provider_name}'=>$model->provider_name)));
                 }
             }
