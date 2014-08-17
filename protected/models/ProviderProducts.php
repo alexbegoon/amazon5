@@ -410,8 +410,6 @@ class ProviderProducts extends CActiveRecord
             {
                 $historyAttributes = $history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id'));
                 $historyAttributes['provider_price'] = (float)$historyAttributes['provider_price'];
-                CVarDumper::dump($attributes,10,true);
-                CVarDumper::dump($historyAttributes,10,true);die;
                 if(count(array_diff_assoc($historyAttributes,$attributes))>0)
                 {
                     $history = new ProviderProductsHistories;
