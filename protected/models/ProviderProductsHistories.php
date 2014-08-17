@@ -131,7 +131,6 @@ class ProviderProductsHistories extends CActiveRecord
         {
             parent::beforeValidate();
             
-            if(empty($this->created_on))
             $this->created_on = date('Y-m-d H:i:s');
         }
 }
