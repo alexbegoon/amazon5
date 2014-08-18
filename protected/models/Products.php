@@ -225,7 +225,7 @@ class Products extends CActiveRecord
             
             if($model===null)
             {
-                throw new CHttpException(500,'Model hasn\'t any translations');
+                return Yii::t('common', '*no name*');
             }
             
             return $model->product_name;

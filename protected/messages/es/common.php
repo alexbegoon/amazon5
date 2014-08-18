@@ -228,6 +228,7 @@ return array(
     'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
     'Providers synchronization'=>'Sincronización de los Proveedores',
     'Web Shops synchronization'=>'Sincronización de Tiendas Web',
+    '*no name*'=>'*sin nombre*',
     
 
  
