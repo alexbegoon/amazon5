@@ -30,7 +30,7 @@ $this->menu=array(
                 ),
                 array(
                     'name'=>'manufacturer_id',
-                    'value'=>'Manufacturers::listData($data->productManufacturers[0]->id)',
+                    'value'=>'isset($data->productManufacturers[0])?Manufacturers::listData($data->productManufacturers[0]->id):Yii::t("common","*no name*")',
                     'filter'=>Manufacturers::listData(),
                 ),
 		array(
