@@ -24,6 +24,7 @@ class SynchronizationController extends CController
 //        }
 	public function actionIndex()
 	{
+            ini_set ('memory_limit', "1024M");
             $items=array();
             
             $items[] = Products::sync();
