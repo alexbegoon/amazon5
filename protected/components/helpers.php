@@ -215,7 +215,7 @@ function url_slug($str, $options = array()) {
 
 function file_get_contents_curl($url) 
 {
-    if(preg_match('#var/www/vhosts/amazoni5.amazonibuyin.com/httpdocs/uploads/#', $url) === 1)
+    if(preg_match('#'.Yii::app()->params['uploadsPath'].'#', $url) === 1)
     {
         return file_get_contents($url);
     }
