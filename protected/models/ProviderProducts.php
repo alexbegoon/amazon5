@@ -418,7 +418,10 @@ class ProviderProducts extends CActiveRecord
             if($history===null)
             {
                 $history = new ProviderProductsHistories;
-                $history->attributes = $attributes;
+                foreach ($validAttrs as $attr)
+                {
+                    $history->setAttribute($attr, $attributes[$attr]);
+                }
                 $history->save();
             }
             else
