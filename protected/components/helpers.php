@@ -226,7 +226,7 @@ function file_get_contents_curl($url)
     // Now set some options (most are optional)
 
     // Set URL to download
-    curl_setopt($ch, CURLOPT_URL, $Url);
+    curl_setopt($ch, CURLOPT_URL, $url);
 
     // Set a referer
     //curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
