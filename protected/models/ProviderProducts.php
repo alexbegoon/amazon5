@@ -204,7 +204,8 @@ class ProviderProducts extends CActiveRecord
             } catch (Exception $ex) {
                 if ($transaction->active)
                 $transaction->rollback();
-                return false;
+            throw new CHttpException(500,$ex->getMessage());
+            return false;
             }
         }
         
