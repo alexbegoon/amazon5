@@ -260,7 +260,7 @@ class Providers extends CActiveRecord
                 }
                 
                 $model->last_sync_date = date('Y-m-d H:i:s');
-                $model->saveAttribute('last_sync_date');
+                $model->saveAttributes(array('last_sync_date'));
             }
             
             return  $result.' - <span class="green">OK</span>';
