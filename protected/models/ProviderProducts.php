@@ -189,6 +189,12 @@ class ProviderProducts extends CActiveRecord
         {
             try
             {
+                $currentTransaction = Yii::app()->db->getCurrentTransaction();
+                if ($currentTransaction !== null) 
+                {
+                    // Transaction already started outside
+                    $currentTransaction = null;
+                }
                 $transaction = Yii::app()->db->beginTransaction();
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
