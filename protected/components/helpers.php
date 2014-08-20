@@ -215,7 +215,7 @@ function url_slug($str, $options = array()) {
 
 function file_get_contents_curl($url) 
 {
-    if(strpos(Yii::app()->params['uploadsPath'], $url) !== false)
+    if(strpos($url,Yii::app()->params['uploadsPath']) !== false)
     {
         return file_get_contents($url);
     }
