@@ -193,7 +193,9 @@ class Manufacturers extends CActiveRecord
         
         public static function listData($manufacturer_id=null)
         {
+            static $data=array();
             $key='ManufacturersList'.Languages::getCurrent();
+            if(empty($data))
             $data = Yii::app()->cache->get($key);
             
             if(empty($data))
