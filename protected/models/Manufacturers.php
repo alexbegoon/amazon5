@@ -270,6 +270,8 @@ class Manufacturers extends CActiveRecord
                             $product['provider_id'], 
                             $product['inner_sku'], 
                             get_validation_errors($manufacturerTranslation));
+                    
+                    Manufacturers::model()->deleteByPk($manufacturerId);
                 }
             }
             else 
