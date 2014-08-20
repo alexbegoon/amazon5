@@ -248,7 +248,7 @@ class Providers extends CActiveRecord
         {
             $result = Yii::t('common', 'Providers synchronization');
             
-            $providers = self::model()->findAll(array('condition'=>'sync_enabled=1'));
+            $providers = self::model()->findAll(array('condition'=>'sync_enabled=1 AND inactive=0'));
             
             foreach($providers as $model)
             {
