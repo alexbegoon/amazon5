@@ -193,6 +193,7 @@ class ProviderProducts extends CActiveRecord
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
                 $products = self::assignToProducts($products);
+                $products = self::assignToManufacturers($products);
                 self::storeProducts($products);
                 
                 if ($transaction->active)
@@ -206,6 +207,19 @@ class ProviderProducts extends CActiveRecord
             }
         }
         
+        private static function assignToManufacturers($products)
+        {
+            foreach ($products as $product)
+            {
+                // Assign Manufacturer
+                if(!empty($product['provider_brand']))
+                {
+                    Manufacturers::assignToProduct($product);
+                }
+            }
+            return $product;
+        }
+
         private static function storeProducts($products)
         {
             foreach ($products as $product)

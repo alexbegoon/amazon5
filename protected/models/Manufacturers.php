@@ -233,4 +233,62 @@ class Manufacturers extends CActiveRecord
             $result = Yii::t('common', 'Manufacturers synchronization');
             return  $result.' - <span class="green">OK</span>';
         }
+        
+        public static function assignToProduct($product)
+        {
+            static $providers;
+            $valid = true;
+            if(!isset($providers[$product['provider_id']]))
+                    $providers[$product['provider_id']]=Providers::model()->findByPk($product['provider_id']);
+            
+            $q = new CDbCriteria();
+            $q->condition = 'manufacturer_name=:match';
+            $q->params = array(':match'=>$product['provider_brand']);
+
+            $manufacturer = ManufacturerTranslations::model()->find( $q );
+
+            if($manufacturer===null)
+            {
+                $manufacturer = new Manufacturers;
+                $valid = $manufacturer->save();
+                if(!$valid)
+                {
+                    ProviderSyncLogs::log(3, 
+                            $product['provider_id'], 
+                            $product['inner_sku'], 
+                            get_validation_errors($manufacturer));
+                }
+                $manufacturerTranslation = new ManufacturerTranslations;
+                $manufacturerTranslation->manufacturer_name = $product['provider_brand'];
+                $manufacturerTranslation->manufacturer_id = $manufacturer->id;
+                $manufacturerTranslation->language_code = $providers[$product['provider_id']]->default_language;
+                $valid = $manufacturerTranslation->save();
+                if(!$valid)
+                {
+                    ProviderSyncLogs::log(3, 
+                            $product['provider_id'], 
+                            $product['inner_sku'], 
+                            get_validation_errors($manufacturerTranslation));
+                }
+            }
+            
+            if($valid)
+            {
+                $productManufacturers = new ProductManufacturers;
+                $productManufacturers->product_id = $product['product_id'];
+                $productManufacturers->manufacturer_id = $manufacturer->id;
+                $valid = $productManufacturers->save();
+                if(!$valid)
+                {
+                    ProviderSyncLogs::log(3, 
+                            $product['provider_id'], 
+                            $product['inner_sku'], 
+                            get_validation_errors($productManufacturers));
+                }
+            }
+            
+            if($valid)
+                return $manufacturer->id;
+                 
+        }
 }

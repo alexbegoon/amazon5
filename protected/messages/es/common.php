@@ -65,6 +65,8 @@ return array(
     'Image Url Thumb'=>'URL Imagen Pulgar',
     'Thumb Width'=>'Ancho de la Icono',
     'Thumb Height'=>'Altura de la Icono',
+    'Width'=>'Ancho',
+    'Height'=>'Altura',
     'Thumb Quality'=>'Calidad de la Icono',
     'Published'=>'Publicado',
     'Currency Name'=>'Nombre de Divisa',

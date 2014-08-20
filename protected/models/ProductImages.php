@@ -8,6 +8,10 @@
  * @property string $product_id
  * @property string $image_url
  * @property string $image_url_thumb
+ * @property integer $width
+ * @property integer $height
+ * @property integer $thumb_width
+ * @property integer $thumb_height
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -57,6 +61,7 @@ class ProductImages extends CActiveRecord
 			array('product_id, image_url, image', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false),
+			array('width, height', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
                         array('thumb_width, thumb_height, thumb_quality','compare','compareValue'=>'0',
                                                                                 'operator'=>'>',
                                                                                 'allowEmpty'=>false , 
@@ -95,6 +100,8 @@ class ProductImages extends CActiveRecord
 			'image' => Yii::t('common', 'Product Image'),
 			'image_archive' => Yii::t('common', 'Image archive (.zip)'),
 			'image_url' => Yii::t('common', 'Image Url'),
+                        'width' => Yii::t('common', 'Width'),
+			'height' => Yii::t('common', 'Height'),
 			'thumb_width' => Yii::t('common', 'Thumb Width'),
 			'thumb_height' => Yii::t('common', 'Thumb Height'),
 			'thumb_quality' => Yii::t('common', 'Thumb Quality'),
@@ -130,6 +137,10 @@ class ProductImages extends CActiveRecord
 		$criteria->compare('product_id',$this->product_id,true);
 		$criteria->compare('image_url',$this->image_url,true);
 		$criteria->compare('image_url_thumb',$this->image_url_thumb,true);
+                $criteria->compare('width',$this->width);
+		$criteria->compare('height',$this->height);
+		$criteria->compare('thumb_width',$this->thumb_width);
+		$criteria->compare('thumb_height',$this->thumb_height);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -206,6 +217,16 @@ class ProductImages extends CActiveRecord
             return CHtml::image($this->ImageUrl,'image for product id '.$this->product_id);
         }
         
+        public function getImagePath()
+        {
+            return $this->imagesPath.$this->image_url;
+        }
+        
+        public function getImageThumbPath()
+        {
+            return $this->imagesPath.$this->image_url_thumb;
+        }
+
         public function getThumbImageTag()
         {
             return CHtml::image($this->ThumbImageUrl,'thumb image for product id '.$this->product_id);
@@ -235,5 +256,17 @@ class ProductImages extends CActiveRecord
         public function getPopUpImage()
         {        
             return  CHtml::link($this->thumbImageTag, $this->imageUrl, array('class' => 'fancybox-image'));
+        }
+        
+        public function afterSave() 
+        {
+            parent::afterSave();
+            if ($this->isNewRecord) 
+            {
+                list($this->width, $this->height) = getimagesize($this->imagePath);
+                list($this->thumb_width, $this->thumb_height) = getimagesize($this->imageThumbPath);
+                $this->isNewRecord = false;
+                $this->saveAttributes(array('width','height','thumb_width','thumb_height'));
+            }
         }
 }
