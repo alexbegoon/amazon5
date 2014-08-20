@@ -193,15 +193,18 @@ class Manufacturers extends CActiveRecord
         
         public static function listData($manufacturer_id=null)
         {
-            static $data=array();
+            $key='ManufacturersList'.Languages::getCurrent();
+            $data = Yii::app()->cache->get($key);
             
             if(empty($data))
             {
                 $manufacturers = self::listManufacturers();
                 $data = CHtml::listData($manufacturers,'id',function($manufacturer) {
-                    return CHtml::encode(Manufacturers::model()->findByPk($manufacturer->id)->name);
+                    return CHtml::encode($manufacturer->name);
                 });
                 asort($data);
+                Yii::app()->cache->set($key, $data, 604800,
+                        new CGlobalStateCacheDependency('ManufacturersList'));
             }
             
             if(!empty($manufacturer_id) && isset($data[$manufacturer_id]))
@@ -297,5 +300,17 @@ class Manufacturers extends CActiveRecord
             if($valid)
                 return $manufacturerId;
                  
+        }
+        
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
+        }
+        
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
         }
 }

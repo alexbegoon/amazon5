@@ -182,4 +182,16 @@ class ManufacturerTranslations extends CActiveRecord
             
             return parent::beforeValidate();
         }
+        
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
+        }
+        
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
+        }
 }
