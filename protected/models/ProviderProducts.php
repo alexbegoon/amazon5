@@ -217,7 +217,7 @@ class ProviderProducts extends CActiveRecord
                     Manufacturers::assignToProduct($product);
                 }
             }
-            return $product;
+            return $products;
         }
 
         private static function storeProducts($products)
