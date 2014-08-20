@@ -404,7 +404,7 @@ class ProviderProducts extends CActiveRecord
             parent::afterSave();
             
             $attributes = $this->getAttributes();
-            
+            $validAttrs = array('provider_id','product_id','provider_price','quantity_in_stock','currency_id');
             $criteria = new CDbCriteria;
             $criteria->condition = 'provider_id=:provider_id AND product_id=:product_id';
             $criteria->params    = array(':provider_id'=>$attributes['provider_id'],
@@ -423,12 +423,15 @@ class ProviderProducts extends CActiveRecord
             }
             else
             {
-                $historyAttributes = $history->getAttributes(array('provider_id','product_id','provider_price','quantity_in_stock','currency_id'));
+                $historyAttributes = $history->getAttributes($validAttrs);
                 $historyAttributes['provider_price'] = (float)$historyAttributes['provider_price'];
                 if(count(array_diff_assoc($historyAttributes,$attributes))>0)
                 {
                     $history = new ProviderProductsHistories;
-                    $history->attributes = $attributes;
+                    foreach ($validAttrs as $attr)
+                    {
+                        $history->setAttribute($attr, $attributes[$attr]);
+                    }
                     $history->save();
                 }
             }
