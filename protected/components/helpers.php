@@ -217,8 +217,7 @@ function file_get_contents_curl($url)
 {
     if(preg_match('#var/www/vhosts/amazoni5.amazonibuyin.com/httpdocs/uploads/#', $url) === 1)
     {
-        $file = CFile::getInstance($url);
-        return $file->getContents();
+        return file_get_contents($url);
     }
     
     $ch = curl_init();
