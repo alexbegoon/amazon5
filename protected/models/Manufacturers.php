@@ -245,9 +245,9 @@ class Manufacturers extends CActiveRecord
             $q->condition = 'manufacturer_name=:match';
             $q->params = array(':match'=>$product['provider_brand']);
 
-            $manufacturer = ManufacturerTranslations::model()->find( $q );
+            $manufacturerTranslations = ManufacturerTranslations::model()->find( $q );
 
-            if($manufacturer===null)
+            if($manufacturerTranslations===null)
             {
                 $manufacturer = new Manufacturers;
                 $valid = $manufacturer->save();
@@ -258,9 +258,10 @@ class Manufacturers extends CActiveRecord
                             $product['inner_sku'], 
                             get_validation_errors($manufacturer));
                 }
+                $manufacturerId = $manufacturer->id;
                 $manufacturerTranslation = new ManufacturerTranslations;
                 $manufacturerTranslation->manufacturer_name = $product['provider_brand'];
-                $manufacturerTranslation->manufacturer_id = $manufacturer->id;
+                $manufacturerTranslation->manufacturer_id = $manufacturerId;
                 $manufacturerTranslation->language_code = $providers[$product['provider_id']]->default_language;
                 $valid = $manufacturerTranslation->save();
                 if(!$valid)
@@ -271,12 +272,16 @@ class Manufacturers extends CActiveRecord
                             get_validation_errors($manufacturerTranslation));
                 }
             }
+            else 
+            {
+                $manufacturerId = $manufacturerTranslations->manufacturer_id;
+            }
             
             if($valid)
             {
                 $productManufacturers = new ProductManufacturers;
                 $productManufacturers->product_id = $product['product_id'];
-                $productManufacturers->manufacturer_id = $manufacturer->id;
+                $productManufacturers->manufacturer_id = $manufacturerId;
                 $valid = $productManufacturers->save();
                 if(!$valid)
                 {
