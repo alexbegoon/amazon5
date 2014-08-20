@@ -193,7 +193,6 @@ class ProviderProducts extends CActiveRecord
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
                 $products = self::assignToProducts($products);
-                CVarDumper::dump($products);die;
                 self::assignToManufacturers($products);
                 self::storeProducts($products);
                 
