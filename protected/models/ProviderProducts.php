@@ -193,13 +193,15 @@ class ProviderProducts extends CActiveRecord
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
                 $products = self::assignToProducts($products);
-//                self::assignToManufacturers($products);
+                self::assignToManufacturers($products);
                 self::storeProducts($products);
                 
+                if ($transaction->active)
                 $transaction->commit();
-                unset($products);
+//                unset($products);
                 return true;
             } catch (Exception $ex) {
+                if ($transaction->active)
                 $transaction->rollback();
                 return false;
             }
