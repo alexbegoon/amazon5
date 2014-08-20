@@ -258,6 +258,9 @@ class Providers extends CActiveRecord
                             Yii::t('common','Cannot sync products for the provider: {provider_name}',
                             array('{provider_name}'=>$model->provider_name)));
                 }
+                
+                $model->last_sync_date = date('Y-m-d H:i:s');
+                $model->save();
             }
             
             return  $result.' - <span class="green">OK</span>';
