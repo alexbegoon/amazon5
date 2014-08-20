@@ -38,7 +38,8 @@ function get_validation_errors($model)
     $callbackFcn=function(&$v, $k, &$t){
         $t->aFlat[] = $v;
     };
-    array_walk_recursive($model->getErrors(), $callbackFcn, $objTmp);                
+    $errors = $model->getErrors();
+    array_walk_recursive($errors, $callbackFcn, $objTmp);                
     $errors = $objTmp->aFlat;
     
     foreach ($errors as $error)
