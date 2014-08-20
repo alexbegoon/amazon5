@@ -116,7 +116,7 @@ class Manufacturers extends CActiveRecord
 		$criteria->compare('t.locked_on',$this->locked_on,true);
 		$criteria->compare('t.locked_by',$this->locked_by);
                 
-                $criteria->with = array( 'manufacturerTranslations', 'manufacturerProducts');
+                $criteria->with = array( 'manufacturerTranslations');
                 $criteria->together = true;
                 
                 $criteria->compare( 'manufacturerTranslations.manufacturer_name', $this->manufacturer_name, true );
@@ -242,8 +242,8 @@ class Manufacturers extends CActiveRecord
                     $providers[$product['provider_id']]=Providers::model()->findByPk($product['provider_id']);
             
             $q = new CDbCriteria();
-            $q->condition = 'manufacturer_name=:match';
-            $q->params = array(':match'=>$product['provider_brand']);
+            $q->condition = 'LOWER(manufacturer_name)=:match';
+            $q->params = array(':match'=>  strtolower($product['provider_brand']));
 
             $manufacturerTranslations = ManufacturerTranslations::model()->find( $q );
 
