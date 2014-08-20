@@ -195,13 +195,10 @@ class ProviderProducts extends CActiveRecord
                 $products = self::assignToProducts($products);
                 self::assignToManufacturers($products);
                 self::storeProducts($products);
-                
-                if ($transaction->active)
                 $transaction->commit();
                 unset($products);
                 return true;
             } catch (Exception $ex) {
-                if ($transaction->active)
                 $transaction->rollback();
                 throw new CHttpException(500,$ex->getMessage());
             }
