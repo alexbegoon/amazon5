@@ -34,7 +34,7 @@ function get_validation_errors($model)
 {
     $result = '';
     $objTmp = (object) array('aFlat' => array());
-    array_walk_recursive($model->getErrors(), create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+    array_walk_recursive($model->getErrors(), create_function('$v, $k, $t', '$t->aFlat[] = $v;'), $objTmp);                
     $errors = $objTmp->aFlat;
     
     foreach ($errors as $error)
