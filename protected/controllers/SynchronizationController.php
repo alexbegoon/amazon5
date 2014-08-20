@@ -26,7 +26,7 @@ class SynchronizationController extends CController
 	{
             ini_set ('memory_limit', "1024M");
             ini_set('max_execution_time', 300);
-            ini_set('base_dir', '');
+            ini_set('base_dir', NULL);
             $items=array();
             
             $items[] = Products::sync();
