@@ -326,7 +326,7 @@ class ProviderProducts extends CActiveRecord
                         array('{provider_name}'=>$model->provider_name,
                               '{attribute}'=>$model->getAttributeLabel('sync_params'))));
             
-            $data = file_get_contents($model->service_url);
+            $data = file_get_contents_curl($model->service_url);
             
             if(empty($data))
                 throw new CHttpException(500,
