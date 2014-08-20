@@ -279,7 +279,7 @@ class ProviderProducts extends CActiveRecord
                 throw new CHttpException(500,  Yii::t('common', 'Products malformed'));
             
             static $providers;
-            CVarDumper::dump($products,10,true);die;
+            
             foreach ($products as $k=>$providerProduct) 
             {
                 if(!isset($providers[$providerProduct['provider_id']]))
@@ -291,6 +291,16 @@ class ProviderProducts extends CActiveRecord
                 {
                     $sku = preg_replace('/^#/', '', $sku);
                     $sku = Products::fixProductSKU($providerProduct['inner_sku']);
+                    
+                    if(preg_match('/^\d{13}$/', $sku) !== 1)
+                    {
+                        ProviderSyncLogs::log(3, 
+                                $providerProduct['provider_id'], 
+                                $providerProduct['inner_sku'], 
+                                Yii::t('common', 'SKU malformed'));
+                        unset($products[$k]);
+                        continue;
+                    }
                 }
                 
                 $product = Products::model()->findBySKU($sku);
