@@ -293,7 +293,7 @@ class Manufacturers extends CActiveRecord
             }
             
             if($valid)
-                return $manufacturer->id;
+                return $manufacturerId;
                  
         }
 }
