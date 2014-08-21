@@ -310,10 +310,13 @@ class ProviderProducts extends CActiveRecord
                     $product->product_sku = $sku;
                     if(!$product->save())
                     {
-                        throw new CHttpException(500,
-                                Yii::t('common', 
-                                        'Cannot create the new product. {errors}', 
-                                        array('{errors}'=>get_validation_errors($product))));
+                        ProviderSyncLogs::log(3, 
+                                $product['provider_id'], 
+                                $product['inner_sku'], 
+                                Yii::t('common', 'Cannot create the new product. {errors}',
+                                    array('{errors}'=>get_validation_errors($product))));
+                        unset($products[$k]);
+                        continue;
                     }    
                 }
                 
