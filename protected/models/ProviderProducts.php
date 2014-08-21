@@ -82,11 +82,13 @@ class ProviderProducts extends CActiveRecord
             
             if($provider[$this->provider_id]->sku_as_ean != 0)
             {
-                if(preg_match('/^\d{6,13}/', $this->inner_sku) !== 1)
+                if(preg_match('/^\d{6,13}|^#\d{6,13}/', $this->inner_sku) !== 1)
                 {
                     $this->addError('inner_sku', Yii::t('common', 'SKU malformed'));
                 }
             }
+            
+            return true;
         }
 
 	/**
@@ -204,9 +206,9 @@ class ProviderProducts extends CActiveRecord
                 $transaction = Yii::app()->db->beginTransaction();
                 $serviceData = self::requestProviderData($model);
                 $products = self::processProviderData($serviceData,$model);
-                $products = self::assignToProducts($products);
-                self::assignToManufacturers($products);
-                self::storeProducts($products);
+                $products = self::assignToProducts($products,$model);
+                self::assignToManufacturers($products,$model);
+                self::storeProducts($products,$model);
                 $transaction->commit();
                 unset($products);
                 return true;
@@ -282,23 +284,17 @@ class ProviderProducts extends CActiveRecord
             }
         }
         
-        private static function assignToProducts($products)
+        private static function assignToProducts($products,$model)
         {
             if(!is_array($products)||empty($products))
                 throw new CHttpException(500,  Yii::t('common', 'Products malformed'));
-            
-            static $providers;
-            
+                        
             foreach ($products as $k=>$providerProduct) 
-            {
-                if(!isset($providers[$providerProduct['provider_id']]))
-                    $providers[$providerProduct['provider_id']]=Providers::model()->findByPk($providerProduct['provider_id']);
-                
+            {                
                 $sku = $providerProduct['inner_sku'];
                 
-                if($providers[$providerProduct['provider_id']]->sku_as_ean != 0)
+                if($model->sku_as_ean != 0)
                 {
-                    $sku = preg_replace('/^#/', '', $sku);
                     $sku = Products::fixProductSKU($providerProduct['inner_sku']);
                 }
                 
@@ -396,7 +392,7 @@ class ProviderProducts extends CActiveRecord
                 if(isset($product['provider_price']))
                     $product['provider_price'] = (float)preg_replace('/,/', '.', $product['provider_price']);
                 
-                if(isset($model->discount)&&!empty($model->discount)&&$model->discount!=0)
+                if(isset($model->discount)&&!empty($model->discount)&&$model->discount>0)
                     $product['provider_price'] *= (float)$model->discount;
                 
                 unset($product['start_from_row']);

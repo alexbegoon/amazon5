@@ -237,6 +237,13 @@ return array(
     'Web Shops synchronization'=>'Sincronización de Tiendas Web',
     'Product Sources'=>'Fuentes del Producto',
     '*no name*'=>'*sin nombre*',
+    'Error'=>'Error',
+    'Provider Synchronization Logs'=>'Registros de sincronización del proveedor',
+    'Provider Product SKU'=>'Proveedor del producto SKU',
+    'Message'=>'Mensaje',
+    ''=>'',
+    ''=>'',
+    ''=>'',
     
 
  

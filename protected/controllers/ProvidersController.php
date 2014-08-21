@@ -53,8 +53,14 @@ class ProvidersController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $providerSyncLogs = new ProviderSyncLogs('search');
+                $providerSyncLogs->unsetAttributes();  // clear any default values
+                if(isset($_GET['ProviderSyncLogs']))
+                    $providerSyncLogs->attributes=$_GET['ProviderSyncLogs'];
+                $providerSyncLogs->provider_id = $id;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'providerSyncLogs'=>$providerSyncLogs
 		));
 	}
 

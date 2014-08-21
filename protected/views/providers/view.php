@@ -102,3 +102,29 @@ $this->menu=array(
 //		'locked_by',
 	),
 )); ?>
+
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Provider Synchronization Logs')?></h3>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'products-grid',
+	'dataProvider'=>$providerSyncLogs->search(),
+	'filter'=>$providerSyncLogs,
+	'columns'=>array(
+		'id',
+                array(
+                    'name'=>'code',
+                    'value'=>'ProviderSyncLogs::itemAlias("Code",$data->code)',
+                    'filter'=>ProviderSyncLogs::itemAlias("Code"),
+                ),
+                'provider_product_sku',
+                'message',
+		'created_on',
+		/*
+		'created_by',
+		'modified_on',
+		'modified_by',
+		'locked_on',
+		'locked_by',
+		*/
+	),
+)); ?>

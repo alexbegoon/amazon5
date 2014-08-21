@@ -68,7 +68,7 @@ class ProviderSyncLogs extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'provider_id' => Yii::t('common', 'Provider'),
 			'code' => Yii::t('common', 'Code'),
-			'provider_product_sku' => Yii::t('common', 'Provider Product Sku'),
+			'provider_product_sku' => Yii::t('common', 'Provider Product SKU'),
 			'message' => Yii::t('common', 'Message'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -149,4 +149,19 @@ class ProviderSyncLogs extends CActiveRecord
             
             $logMsg->save();
         }
+        
+        public static function itemAlias($type,$code=NULL) 
+        {
+            $_items = array(
+                    'Code' => array(
+                            '1' => Yii::t('common','Product successfully created'),
+                            '2' => Yii::t('common','Product successfully updated'),
+                            '3' => Yii::t('common','Error'),
+                    ),
+            );
+            if (isset($code))
+                    return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+            else
+                    return isset($_items[$type]) ? $_items[$type] : false;
+	}
 }
