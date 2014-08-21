@@ -202,7 +202,7 @@ class Manufacturers extends CActiveRecord
             {
                 $manufacturers = self::listManufacturers();
                 $data = CHtml::listData($manufacturers,'id',function($manufacturer) {
-                    return CHtml::encode($manufacturer->name);
+                    return $manufacturer->name;
                 });
                 asort($data);
                 Yii::app()->cache->set($key, $data, 604800,

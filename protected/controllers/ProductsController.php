@@ -578,6 +578,7 @@ class ProductsController extends Controller
         
         public function actionStatistic()
         {
+            ini_set ('memory_limit', "256M");
             $shopImages = CFileHelper::findFiles(Yii::app()->params['shopImagesPath']);
             $shopImagesNames = array();
             $dbImagesNames = array();
