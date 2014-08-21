@@ -289,14 +289,7 @@ class Manufacturers extends CActiveRecord
                 $productManufacturers = new ProductManufacturers;
                 $productManufacturers->product_id = $product['product_id'];
                 $productManufacturers->manufacturer_id = $manufacturerId;
-                $valid = $productManufacturers->save();
-                if(!$valid)
-                {
-                    ProviderSyncLogs::log(3, 
-                            $product['provider_id'], 
-                            $product['inner_sku'], 
-                            get_validation_errors($productManufacturers));
-                }
+                $productManufacturers->save();
             }
             
             if($valid)
