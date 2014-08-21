@@ -296,6 +296,16 @@ class ProviderProducts extends CActiveRecord
                 if($model->sku_as_ean != 0)
                 {
                     $sku = Products::fixProductSKU($sku);
+                    
+                    if(preg_match('/^\d{13}$/', $sku)!==1)
+                    {
+                        ProviderSyncLogs::log(3, 
+                                $providerProduct['provider_id'], 
+                                $providerProduct['inner_sku'], 
+                                Yii::t('common', 'SKU malformed'));
+                        unset($products[$k]);
+                        continue;
+                    }        
                 }
                 
                 $product = Products::model()->findBySKU($sku);
