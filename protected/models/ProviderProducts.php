@@ -297,7 +297,7 @@ class ProviderProducts extends CActiveRecord
                 {
                     $sku = Products::fixProductSKU($sku);
                 }
-                
+                CVarDumper::dump($sku,10,true);die;
                 $product = Products::model()->findBySKU($sku);
                 
                 if($product===null)
