@@ -258,7 +258,7 @@ class Products extends CActiveRecord
         {
             if(preg_match("/^\d{6,12}$|^#\d{6,12}$/", $sku) === 1)
             {
-                $sku = preg_replace('/^#{1}/', '', $sku);
+                $sku = preg_replace('/^#/', '', $sku);
                 return str_pad($sku, 13, '0', STR_PAD_LEFT);
             }
             

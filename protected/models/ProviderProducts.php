@@ -295,7 +295,7 @@ class ProviderProducts extends CActiveRecord
                 
                 if($model->sku_as_ean != 0)
                 {
-                    $sku = Products::fixProductSKU($providerProduct['inner_sku']);
+                    $sku = Products::fixProductSKU($sku);
                 }
                 
                 $product = Products::model()->findBySKU($sku);
