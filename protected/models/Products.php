@@ -254,11 +254,16 @@ class Products extends CActiveRecord
             return  $result.' - <span class="green">OK</span>';
         }
         
+        /**
+         * Make SKU as 13 numbers EAN code
+         * @param type $sku
+         * @return string
+         */
         public static function fixProductSKU($sku)
         {
+            $sku = str_replace('#', '', $sku);
             if(preg_match("/^\d{6,12}$|^#\d{6,12}$/", $sku) === 1)
             {
-                $sku = str_replace('#', '', $sku);
                 return str_pad($sku, 13, '0', STR_PAD_LEFT);
             }
             
