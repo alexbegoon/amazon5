@@ -16,18 +16,27 @@ class ProductsController extends Controller
 	{       
                 $productImages = new CActiveDataProvider('ProductImages', array(
                     'criteria'=>array(
-                        'condition'=>'product_id='.$id
+                        'condition'=>'product_id=:id',
+                        'params'=>array(':id'=>$id)
                     ),
                 ));
                 
                 $productTranslations = new CActiveDataProvider('ProductTranslations', array(
                     'criteria'=>array(
-                        'condition'=>'product_id='.$id
+                        'condition'=>'product_id=:id',
+                        'params'=>array(':id'=>$id)
                     ),
                 ));
                 $productPrices = new CActiveDataProvider('ProductPrices', array(
                     'criteria'=>array(
-                        'condition'=>'product_id='.$id
+                        'condition'=>'product_id=:id',
+                        'params'=>array(':id'=>$id)
+                    ),
+                ));
+                $productProviders = new CActiveDataProvider('ProviderProducts', array(
+                    'criteria'=>array(
+                        'condition'=>'product_id=:id',
+                        'params'=>array(':id'=>$id)
                     ),
                 ));
                 
@@ -36,6 +45,7 @@ class ProductsController extends Controller
                         'productImages'=>$productImages,
                         'productTranslations'=>$productTranslations,
                         'productPrices'=>$productPrices,
+                        'productProviders'=>$productProviders,
 		));
 	}
 
@@ -190,6 +200,21 @@ class ProductsController extends Controller
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
+        
+        public function actionDeleteSource()
+        {
+                $model=  ProviderProducts::model()->findByPk(array(
+                    'product_id'=>Yii::app()->request->getParam('product_id'),
+                    'provider_id'=>Yii::app()->request->getParam('provider_id')
+                ));
+                    if($model===null)
+                            throw new CHttpException(404,'The requested page does not exist.');
+
+                $model->delete();
+                // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
 
 	/**
 	 * Lists all models.
@@ -325,6 +350,31 @@ class ProductsController extends Controller
             $this->render('create_images',array('model'=>$model));
         }
         
+        public function actionCreateSource()
+        {
+            $model= new ProviderProducts;
+            
+            $model->setAttribute('product_id', Yii::app()->request->getParam('product_id'));
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-providers-_providers-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            if(isset($_POST['ProviderProducts']))
+            {
+                $model->attributes=$_POST['ProviderProducts'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('create_providers',array('model'=>$model));
+        }
+        
         public function actionDeleteImage($id)
         {
             $model=ProductImages::model()->findByPk($id);
@@ -364,6 +414,35 @@ class ProductsController extends Controller
             }
             $this->render('update_prices',array('model'=>$model));
         }
+        
+        
+        public function actionUpdateSource()
+        {
+            $model=ProviderProducts::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-providers-_providers-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            
+
+            if(isset($_POST['ProviderProducts']))
+            {
+                $model->attributes=$_POST['ProviderProducts'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->product_id));
+                }
+            }
+            $this->render('update_providers',array('model'=>$model));
+        }
+        
         
         public function actionCreatePrice()
         {

@@ -52,6 +52,12 @@ class ProviderProducts extends CActiveRecord
                                   ':provider_id'=>$this->provider_id
                               )
                         )),
+                        array('provider_id', 'unique', 'criteria'=>array(
+                              'condition'=>'`product_id`=:product_id',
+                              'params'=>array(
+                                  ':product_id'=>$this->product_id
+                              )
+                        )),
 			array('quantity_in_stock', 'numerical', 'integerOnly'=>true, 'min'=>0),
 			array('provider_product_name, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url', 'length', 'max'=>255),
 			array('provider_price', 'length', 'max'=>15),
@@ -294,16 +300,6 @@ class ProviderProducts extends CActiveRecord
                 {
                     $sku = preg_replace('/^#/', '', $sku);
                     $sku = Products::fixProductSKU($providerProduct['inner_sku']);
-                    
-                    if(preg_match('/^\d{13}$/', $sku) !== 1)
-                    {
-                        ProviderSyncLogs::log(3, 
-                                $providerProduct['provider_id'], 
-                                $providerProduct['inner_sku'], 
-                                Yii::t('common', 'SKU malformed'));
-                        unset($products[$k]);
-                        continue;
-                    }
                 }
                 
                 $product = Products::model()->findBySKU($sku);

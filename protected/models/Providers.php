@@ -336,4 +336,62 @@ class Providers extends CActiveRecord
                               '{checkStr}'=>$checkStr  )
                     ));
         }
+        
+        public static function getNameById($providerId)
+        {
+            static $name = array();
+            
+            if(isset($name[$providerId]))
+                return $name[$providerId];
+            
+            $provider = Providers::model()->findByPk($providerId);
+            
+            if($provider !== null)
+            {
+                $name[$providerId] = $provider->provider_name;
+            }
+            
+            return $name[$providerId];
+        }
+        
+        public static function listProviders()
+        {
+            return self::model()->findAll();
+        }
+        
+        public static function listData($providerId=null)
+        {
+            static $data=array();
+            $key='ProvidersList'.Languages::getCurrent();
+            if(empty($data))
+            $data = Yii::app()->cache->get($key);
+            
+            if(empty($data))
+            {
+                $providers = self::listProviders();
+                $data = CHtml::listData($providers,'id',function($provider) {
+                    return CHtml::encode($provider->provider_name);
+                });
+                asort($data);
+                Yii::app()->cache->set($key, $data, 604800,
+                        new CGlobalStateCacheDependency('ProvidersList'));
+            }
+            
+            if(!empty($providerId) && isset($data[$providerId]))
+                return $data[$providerId];
+            
+            return $data;
+        }
+        
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('ProvidersList', date(DATE_W3C));
+        }
+        
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('ProvidersList', date(DATE_W3C));
+        }
 }

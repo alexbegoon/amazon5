@@ -221,6 +221,65 @@ $this->menu=array(
 ?>
 
 <hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Product Sources')?></h3>
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$productProviders,
+	'columns'=>array(
+                array(
+                    'header'=>Yii::t('common', 'Provider Name'),
+                    'name'=>'provider_name',
+                    'value'=>  'Providers::getNameById($data->provider_id)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createSource",array('product_id'=>$model->id))),        
+                ),	
+                'provider_product_name',
+                array(
+                    'header'=>  Yii::t('common', 'Provider Price'),
+                    'name'=> 'provider_price',
+                    'value'=> 'Currencies::priceDisplay($data->provider_price,$data->currency_id)',
+                ),
+                'quantity_in_stock',
+                
+                array(
+                    'header'=>  Yii::t('common', 'Blocked'),
+                    'name'=>'blocked',
+                    'value'=>  '$data->blocked==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                ),
+                'inner_id',
+                'inner_sku',
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}&nbsp;&nbsp;&nbsp;{delete}',
+                    'buttons'=>array
+                    (
+                        'delete' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/deleteSource/",array("product_id"=>$data->product_id,"provider_id"=>$data->provider_id))',
+                        ),
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateSource/",array("product_id"=>$data->product_id,"provider_id"=>$data->provider_id))',
+                        )
+                    ),
+                )
+	),
+));
+?>
+
+
+
+<hr>
 <h3 class="text-center"><?php echo Yii::t('common', 'Product Images')?></h3>
 
 <?php 

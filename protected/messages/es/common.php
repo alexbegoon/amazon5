@@ -110,6 +110,11 @@ return array(
     'Provider Address'=>'Proveedor Dirección',
     'Provider Type'=>'Tipo de Proveedor',
     'Provider Email'=>'Proveedor Email',
+    'Provider Price'=>'Proveedor Precio',
+    'Quantity In Stock'=>'Cantidad En Stock',
+    'Provider Product Name'=>'Proveedor Nombre del Producto',
+    'Inner ID'=>'ID interior',
+    'Inner SKU'=>'SKU interior',
     'VAT'=>'Iva Soportado',
     'Inactive'=>'Inactivo',
     'SKU Format'=>'SKU Formato',
@@ -230,6 +235,7 @@ return array(
     'Manufacturers synchronization'=>'Sincronización de los Fabricantes',
     'Providers synchronization'=>'Sincronización de los Proveedores',
     'Web Shops synchronization'=>'Sincronización de Tiendas Web',
+    'Product Sources'=>'Fuentes del Producto',
     '*no name*'=>'*sin nombre*',
     
 
