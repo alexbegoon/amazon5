@@ -261,12 +261,11 @@ class Products extends CActiveRecord
          */
         public static function fixProductSKU($sku)
         {
-            $sku = str_replace('#', '', $sku);
-            if(preg_match("/^\d{6,12}$|^#\d{6,12}$/", $sku) === 1)
+            if(preg_match("/^\d{6,13}$|^#\d{6,13}$/", $sku) === 1)
             {
+                $sku = str_replace('#', '', $sku);
                 return str_pad($sku, 13, '0', STR_PAD_LEFT);
             }
-            
             return $sku;
         }
 }
