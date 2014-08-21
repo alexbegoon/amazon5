@@ -311,8 +311,8 @@ class ProviderProducts extends CActiveRecord
                     if(!$product->save())
                     {
                         ProviderSyncLogs::log(3, 
-                                $product['provider_id'], 
-                                $product['inner_sku'], 
+                                $providerProduct['provider_id'], 
+                                $providerProduct['inner_sku'], 
                                 Yii::t('common', 'Cannot create the new product. {errors}',
                                     array('{errors}'=>get_validation_errors($product))));
                         unset($products[$k]);
