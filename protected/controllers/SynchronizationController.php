@@ -76,14 +76,14 @@ class SynchronizationController extends CController
                     
                     $productTranslation = new ProductTranslations;
                     
-                    $productTranslation->product_id = $product->id;
-                    $productTranslation->language_code = isset($row_data[2])?$row_data[2]:NULL;
-                    $productTranslation->product_name = isset($row_data[3])?$row_data[3]:NULL;
-                    $productTranslation->product_desc = isset($row_data[4])?$row_data[4]:NULL;
-                    $productTranslation->product_s_desc = isset($row_data[5])?$row_data[5]:NULL;
-                    $productTranslation->meta_desc = isset($row_data[6])?$row_data[6]:NULL;
-                    $productTranslation->meta_keywords = isset($row_data[7])?$row_data[7]:NULL;
-                    $productTranslation->custom_title = isset($row_data[8])?$row_data[8]:NULL;
+                    $productTranslation->setAttribute('product_id', $product->id);
+                    $productTranslation->setAttribute('language_code',isset($row_data[2])?$row_data[2]:NULL);
+                    $productTranslation->setAttribute('product_name',isset($row_data[3])?$row_data[3]:NULL);
+                    $productTranslation->setAttribute('product_desc',isset($row_data[4])?$row_data[4]:NULL);
+                    $productTranslation->setAttribute('product_s_desc',isset($row_data[5])?$row_data[5]:NULL);
+                    $productTranslation->setAttribute('meta_desc',isset($row_data[6])?$row_data[6]:NULL);
+                    $productTranslation->setAttribute('meta_keywords',isset($row_data[7])?$row_data[7]:NULL);
+                    $productTranslation->setAttribute('custom_title',isset($row_data[8])?$row_data[8]:NULL);
                     
                     $productTranslation->save();
                     
