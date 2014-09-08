@@ -58,6 +58,8 @@ class SynchronizationController extends CController
                 }
                 $transaction = Yii::app()->db->beginTransaction();
                 
+                
+                $i = 0;
                 foreach ($rows as $row)
                 {
                     $row_data = str_getcsv($row);   
@@ -84,6 +86,16 @@ class SynchronizationController extends CController
                     $productTranslation->custom_title = isset($row_data[8])?$row_data[8]:NULL;
                     
                     $productTranslation->save();
+                    
+                    
+                    if($i>100)
+                    {
+                        $transaction->commit();
+                        $transaction = Yii::app()->db->beginTransaction();
+                        $i=0;
+                    }
+                    
+                    $i++;
                 }
                 
                 $transaction->commit();
