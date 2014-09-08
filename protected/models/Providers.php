@@ -11,7 +11,6 @@
  * @property string $provider_url
  * @property string $provider_country
  * @property string $provider_address
- * @property string $provider_type
  * @property string $provider_phone
  * @property string $provider_fax
  * @property integer $sku_as_ean
@@ -72,7 +71,7 @@ class Providers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('cif, provider_name, vat, provider_type, provider_country, provider_email, currency_id, default_language', 'required'),
+                        array('cif, provider_name, vat, provider_country, provider_email, currency_id, default_language', 'required'),
 			array('default_language','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> Yii::t('common','Language code must be in format \'xx-xx\', where \'x\' - letter.')),
                         array('sync_enabled, send_csv, send_xls, sku_as_ean, inactive, created_by, modified_by, locked_by, currency_id', 'numerical', 'integerOnly'=>true),
 			array('provider_name, provider_phone, provider_fax, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'length', 'max'=>128),
@@ -82,7 +81,7 @@ class Providers extends CActiveRecord
                                                                                 'operator'=>'>',
                                                                                 'allowEmpty'=>true , 
                                                                                 'message'=>Yii::t('common', '{attribute} must be greater than zero')),
-			array('provider_type', 'length', 'max'=>16),
+			
 			array('provider_name', 'length', 'min'=>5),
 			array('sync_params', 'validateSyncParameters', 'allowEmpty'=>true),
 			array('provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'email'),
@@ -92,7 +91,7 @@ class Providers extends CActiveRecord
                         array('discount', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_type, provider_phone, provider_fax, sku_as_ean, vat, discount, currency_id, default_language, inactive, sku_format, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2, email_subject, email_body, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_phone, provider_fax, sku_as_ean, vat, discount, currency_id, default_language, inactive, sku_format, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2, email_subject, email_body, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -127,8 +126,7 @@ class Providers extends CActiveRecord
 			'provider_desc' => Yii::t('common', 'Provider Description'),
 			'provider_url' => Yii::t('common', 'Provider URL'),
 			'provider_country' => Yii::t('common', 'Provider Country'),
-			'provider_address' => Yii::t('common', 'Provider Address'),
-			'provider_type' => Yii::t('common', 'Provider Type'),
+			'provider_address' => Yii::t('common', 'Provider Address'),			
 			'provider_phone' => Yii::t('common', 'Provider Phone'),
 			'provider_fax' => Yii::t('common', 'Provider Fax'),
 			'sku_as_ean' => Yii::t('common', 'Storing SKU As EAN'),
@@ -188,7 +186,6 @@ class Providers extends CActiveRecord
 		$criteria->compare('provider_url',$this->provider_url,true);
 		$criteria->compare('provider_country',$this->provider_country,true);
 		$criteria->compare('provider_address',$this->provider_address,true);
-		$criteria->compare('provider_type',$this->provider_type,true);
 		$criteria->compare('provider_phone',$this->provider_phone,true);
 		$criteria->compare('provider_fax',$this->provider_fax,true);
 		$criteria->compare('sku_as_ean',$this->sku_as_ean);

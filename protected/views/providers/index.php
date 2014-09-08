@@ -27,7 +27,6 @@ $this->menu=array(
                 'value'=>'Countries::listData($data->provider_country)',
             ),
             'provider_address',
-            'provider_type',
             'vat',
             array(
                 'name'=>Yii::t('common', 'Inactive'),

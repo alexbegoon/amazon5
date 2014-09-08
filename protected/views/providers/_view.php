@@ -34,9 +34,6 @@
 	<br />
 
 	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('provider_type')); ?>:</b>
-	<?php echo CHtml::encode($data->provider_type); ?>
-	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('vat')); ?>:</b>
 	<?php echo CHtml::encode($data->vat); ?>

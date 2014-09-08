@@ -24,12 +24,6 @@
 		<?php echo $form->textField($model,'provider_name',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'provider_name',array('class'=>'label label-danger')); ?>
 	</div>
-        
-        <div class="row form-group">
-		<?php echo $form->labelEx($model,'provider_type',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'provider_type',enumItem($model,'provider_type'),array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'provider_type',array('class'=>'label label-danger')); ?>
-	</div>
     
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'cif',array('class'=>'control-label')); ?>

@@ -49,11 +49,6 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->label($model,'provider_type',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_type',array('size'=>16,'maxlength'=>16,'class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
 		<?php echo $form->label($model,'vat',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'vat',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
 	</div>

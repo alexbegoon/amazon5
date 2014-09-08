@@ -25,7 +25,6 @@ $this->menu=array(
 		'id',
 		'provider_name',
 		'cif',
-                'provider_type',
 		'provider_desc',
 		'provider_url',		
                 array(
