@@ -77,16 +77,25 @@ class SynchronizationController extends CController
                     $productTranslation = new ProductTranslations;
                     
                     $productTranslation->setAttribute('product_id', $product->id);
+                    if(isset($row_data[2]))
                     $productTranslation->setAttribute('language_code',isset($row_data[2])?$row_data[2]:NULL);
+                    if(isset($row_data[3]))
                     $productTranslation->setAttribute('product_name',isset($row_data[3])?$row_data[3]:NULL);
+                    if(isset($row_data[4]))
                     $productTranslation->setAttribute('product_desc',isset($row_data[4])?$row_data[4]:NULL);
+                    if(isset($row_data[5]))
                     $productTranslation->setAttribute('product_s_desc',isset($row_data[5])?$row_data[5]:NULL);
+                    if(isset($row_data[6]))
                     $productTranslation->setAttribute('meta_desc',isset($row_data[6])?$row_data[6]:NULL);
+                    if(isset($row_data[7]))
                     $productTranslation->setAttribute('meta_keywords',isset($row_data[7])?$row_data[7]:NULL);
+                    if(isset($row_data[8]))
                     $productTranslation->setAttribute('custom_title',isset($row_data[8])?$row_data[8]:NULL);
                     
-                    $productTranslation->save();
-                    
+                    if(!$productTranslation->save())
+                    {
+//                        throw new Exception(get_validation_errors($productTranslation));
+                    }
                     
                     if($i>100)
                     {
