@@ -12,22 +12,22 @@ $this->breadcrumbs=array(
                 'items' => array(
                     array(
                         'url'=>'user',
-                        'glyphicon'=>'glyphicon-user',
+                        'fa'=>'fa-users',
                         'label'=>Yii::t('common','Users'),
                         ),
                     array(
                         'url'=>'rights',
-                        'glyphicon'=>'glyphicon-eye-open',
+                        'fa'=>'fa-eye-slash',
                         'label'=>Yii::t('common','Rights'),
                         ),
                     array(
                         'url'=>'orders',
-                        'glyphicon'=>'glyphicon-shopping-cart',
+                        'fa'=>'fa-shopping-cart',
                         'label'=>Yii::t('common','Orders'),
                         ),
                     array(
                         'url'=>'languages',
-                        'glyphicon'=>'glyphicon-flag',
+                        'fa'=>'fa-bullhorn',
                         'label'=>Yii::t('common','Languages'),
                         ),
                     array(
@@ -47,12 +47,12 @@ $this->breadcrumbs=array(
                         ),
                     array(
                         'url'=>'countries',
-                        'glyphicon'=>'glyphicon-globe',
+                        'glyphicon'=>'glyphicon-flag',
                         'label'=>Yii::t('common','Countries'),
                         ),
                     array(
                         'url'=>'states',
-                        'glyphicon'=>'glyphicon-globe',
+                        'glyphicon'=>'glyphicon-flag',
                         'label'=>Yii::t('common','States'),
                         ),
                     array(
@@ -62,8 +62,23 @@ $this->breadcrumbs=array(
                         ),
                     array(
                         'url'=>'accounting',
-                        'glyphicon'=>'glyphicon-briefcase',
+                        'fa'=>'fa-briefcase',
                         'label'=>Yii::t('common','Accounting'),
+                        ),
+                    array(
+                        'url'=>'products',
+                        'glyphicon'=>'glyphicon-barcode',
+                        'label'=>Yii::t('common','Products'),
+                        ),
+                    array(
+                        'url'=>'categories',
+                        'fa'=>'fa-sitemap',
+                        'label'=>Yii::t('common','Categories'),
+                        ),
+                    array(
+                        'url'=>'synchronization',
+                        'fa'=>'fa-refresh fa-spin',
+                        'label'=>Yii::t('common','Synchronization'),
                         ),
                 ),
 ))?>

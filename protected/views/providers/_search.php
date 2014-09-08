@@ -49,11 +49,6 @@
 	</div>
 
 	<div class="row form-group">
-		<?php echo $form->label($model,'provider_type',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_type',array('size'=>8,'maxlength'=>8,'class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
 		<?php echo $form->label($model,'vat',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'vat',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
 	</div>
@@ -71,31 +66,6 @@
 	<div class="row form-group">
 		<?php echo $form->label($model,'provider_email',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'provider_email',array('size'=>60,'maxlength'=>128,'class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->label($model,'service_url',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'service_url',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->label($model,'sync_params',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'sync_params',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->label($model,'sync_enabled',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'sync_enabled',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->label($model,'sync_schedule',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($model,'sync_schedule',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->label($model,'last_sync_date',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'last_sync_date',array('class'=>'form-control')); ?>
 	</div>
 
 	<div class="row form-group">

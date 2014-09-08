@@ -21,6 +21,122 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
         
+        /**
+         * Messages that happens while action executes
+         * @var array 
+         */
+        public $flashMessages=array();
+        
+        public function init() {
+            parent::init();
+            
+            new JsTrans('common',  Yii::app()->language);
+        }
+        
+        public function setDangerMsg($msg)
+        {       
+            if(is_array($msg))
+            {
+                $objTmp = (object) array('aFlat' => array());
+                array_walk_recursive($msg, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+                $errors = $objTmp->aFlat;
+            }
+            else 
+            {
+                $errors = array($msg);
+            }
+            
+            foreach ($errors as $msg)
+            {
+            $this->flashMessages['dangers'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
+            Yii::app()->user->setFlash('danger', implode('<br>', 
+                    $this->flashMessages['dangers']));
+            }
+        }
+        
+        public function setErrorMsg($msg)
+        {   
+            if(is_array($msg))
+            {
+                $objTmp = (object) array('aFlat' => array());
+                array_walk_recursive($msg, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+                $errors = $objTmp->aFlat;
+            }
+            else 
+            {
+                $errors = array($msg);
+            }
+            
+            foreach ($errors as $msg)
+            {
+                $this->flashMessages['dangers'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
+                Yii::app()->user->setFlash('danger', implode('<br>', 
+                        $this->flashMessages['dangers']));
+            }
+            
+        }
+        
+        public function setWarningMsg($msg)
+        {
+            if(is_array($msg))
+            {
+                $objTmp = (object) array('aFlat' => array());
+                array_walk_recursive($msg, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+                $errors = $objTmp->aFlat;
+            }
+            else 
+            {
+                $errors = array($msg);
+            }
+            
+            foreach ($errors as $msg)
+            {
+            $this->flashMessages['warnings'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
+            Yii::app()->user->setFlash('warning', implode('<br>', 
+                    $this->flashMessages['warnings']));
+            }
+        }
+        public function setInfoMsg($msg)
+        {
+            if(is_array($msg))
+            {
+                $objTmp = (object) array('aFlat' => array());
+                array_walk_recursive($msg, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+                $errors = $objTmp->aFlat;
+            }
+            else 
+            {
+                $errors = array($msg);
+            }
+            
+            foreach ($errors as $msg)
+            {
+            $this->flashMessages['infos'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
+            Yii::app()->user->setFlash('info', implode('<br>', 
+                    $this->flashMessages['infos']));
+            }
+        }
+        public function setSuccessMsg($msg)
+        {
+            if(is_array($msg))
+            {
+                $objTmp = (object) array('aFlat' => array());
+                array_walk_recursive($msg, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);                
+                $errors = $objTmp->aFlat;
+            }
+            else 
+            {
+                $errors = array($msg);
+            }
+            
+            foreach ($errors as $msg)
+            {
+            $this->flashMessages['success'][]=CHtml::tag('span',array('class'=>'flash-message-content'),$msg);
+            Yii::app()->user->setFlash('success', implode('<br>', 
+                    $this->flashMessages['success']));
+            }
+        }
+
         public function filters()
         {
             return array(

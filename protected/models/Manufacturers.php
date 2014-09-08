@@ -17,12 +17,15 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property Languages[] $amzni5Languages
+ * @property Languages[] $productLanguages
  * @property Products[] $amzni5Products
  */
 class Manufacturers extends CActiveRecord
 {
-	/**
+    
+        public $manufacturer_name;
+    
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -44,7 +47,7 @@ class Manufacturers extends CActiveRecord
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, manufacturer_name, hits, manufacturer_email, manufacturer_url, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,9 +59,9 @@ class Manufacturers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
-			'translations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
+			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{manufacturer_translations}}(manufacturer_id, language_code)'),
+			'manufacturerTranslations' => array(self::HAS_MANY, 'ManufacturerTranslations', array('manufacturer_id'=>'id')),
+			'manufacturerProducts' => array(self::MANY_MANY, 'Products', '{{product_manufacturers}}(manufacturer_id, product_id)'),
 		);
 	}
 
@@ -72,6 +75,7 @@ class Manufacturers extends CActiveRecord
 			'hits' => Yii::t('common', 'Hits'),
 			'manufacturer_email' => Yii::t('common', 'Manufacturer Email'),
 			'manufacturer_url' => Yii::t('common', 'Manufacturer URL'),
+                        'manufacturer_name' => Yii::t('common', 'Manufacturer Name'),
 			'published' => Yii::t('common', 'Published'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
@@ -100,20 +104,37 @@ class Manufacturers extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('hits',$this->hits);
-		$criteria->compare('manufacturer_email',$this->manufacturer_email,true);
-		$criteria->compare('manufacturer_url',$this->manufacturer_url,true);
-		$criteria->compare('published',$this->published);
-		$criteria->compare('created_on',$this->created_on,true);
-		$criteria->compare('created_by',$this->created_by);
-		$criteria->compare('modified_on',$this->modified_on,true);
-		$criteria->compare('modified_by',$this->modified_by);
-		$criteria->compare('locked_on',$this->locked_on,true);
-		$criteria->compare('locked_by',$this->locked_by);
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.hits',$this->hits);
+		$criteria->compare('t.manufacturer_email',$this->manufacturer_email,true);
+		$criteria->compare('t.manufacturer_url',$this->manufacturer_url,true);
+		$criteria->compare('t.published',$this->published);
+		$criteria->compare('t.created_on',$this->created_on,true);
+		$criteria->compare('t.created_by',$this->created_by);
+		$criteria->compare('t.modified_on',$this->modified_on,true);
+		$criteria->compare('t.modified_by',$this->modified_by);
+		$criteria->compare('t.locked_on',$this->locked_on,true);
+		$criteria->compare('t.locked_by',$this->locked_by);
+                
+                $criteria->with = array( 'manufacturerTranslations');
+                $criteria->together = true;
+                
+                $criteria->compare( 'manufacturerTranslations.manufacturer_name', $this->manufacturer_name, true );
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'attributes'=>array(
+                                'manufacturer_name'=>array(
+                                    'asc'=>'manufacturerTranslations.manufacturer_name',
+                                    'desc'=>'manufacturerTranslations.manufacturer_name DESC',
+                                ),
+                                '*',
+                            ),
+                        ),
+                        'pagination'=>array(
+                            'pageSize'=>'20'
+                        )
 		));
 	}
 
@@ -161,7 +182,130 @@ class Manufacturers extends CActiveRecord
 
             if($translation!==NULL)
                 return $translation->manufacturer_name;
-            
+                
             return NULL;
+        }
+        
+        public static function listManufacturers()
+        {
+            return self::model()->findAll(array('condition'=>'published=1'));
+        }
+        
+        public static function listData($manufacturer_id=null)
+        {
+            static $data=array();
+            $key='ManufacturersList'.Languages::getCurrent();
+            if(empty($data))
+            $data = Yii::app()->cache->get($key);
+            
+            if(empty($data))
+            {
+                $manufacturers = self::listManufacturers();
+                $data = CHtml::listData($manufacturers,'id',function($manufacturer) {
+                    return $manufacturer->name;
+                });
+                asort($data);
+                Yii::app()->cache->set($key, $data, 604800,
+                        new CGlobalStateCacheDependency('ManufacturersList'));
+            }
+            
+            if(!empty($manufacturer_id) && isset($data[$manufacturer_id]))
+                return $data[$manufacturer_id];
+            
+            return $data;
+        }
+        
+        public static function itemAlias($type,$code=NULL) 
+        {
+            $_items = array(
+                    'Published' => array(
+                            '0' => Yii::t('yii','No'),
+                            '1' => Yii::t('yii','Yes'),
+                    ),
+                    'Blocked' => array(
+                            '0' => Yii::t('yii','No'),
+                            '1' => Yii::t('yii','Yes'),
+                    ),
+            );
+            if (isset($code))
+                    return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+            else
+                    return isset($_items[$type]) ? $_items[$type] : false;
+	}
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Manufacturers synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
+        
+        public static function assignToProduct($product)
+        {
+            static $providers;
+            $valid = true;
+            if(!isset($providers[$product['provider_id']]))
+                    $providers[$product['provider_id']]=Providers::model()->findByPk($product['provider_id']);
+            
+            $q = new CDbCriteria();
+            $q->condition = 'LOWER(manufacturer_name)=:match';
+            $q->params = array(':match'=>  strtolower($product['provider_brand']));
+
+            $manufacturerTranslations = ManufacturerTranslations::model()->find( $q );
+
+            if($manufacturerTranslations===null)
+            {
+                $manufacturer = new Manufacturers;
+                $valid = $manufacturer->save();
+                if(!$valid)
+                {
+                    ProviderSyncLogs::log(3, 
+                            $product['provider_id'], 
+                            $product['inner_sku'], 
+                            get_validation_errors($manufacturer));
+                }
+                $manufacturerId = $manufacturer->id;
+                $manufacturerTranslation = new ManufacturerTranslations;
+                $manufacturerTranslation->manufacturer_name = $product['provider_brand'];
+                $manufacturerTranslation->manufacturer_id = $manufacturerId;
+                $manufacturerTranslation->language_code = $providers[$product['provider_id']]->default_language;
+                $valid = $manufacturerTranslation->save();
+                if(!$valid)
+                {
+                    ProviderSyncLogs::log(3, 
+                            $product['provider_id'], 
+                            $product['inner_sku'], 
+                            get_validation_errors($manufacturerTranslation));
+                    
+                    Manufacturers::model()->deleteByPk($manufacturerId);
+                }
+            }
+            else 
+            {
+                $manufacturerId = $manufacturerTranslations->manufacturer_id;
+            }
+            
+            if($valid)
+            {
+                $productManufacturers = new ProductManufacturers;
+                $productManufacturers->product_id = $product['product_id'];
+                $productManufacturers->manufacturer_id = $manufacturerId;
+                $productManufacturers->save();
+            }
+            
+            if($valid)
+                return $manufacturerId;
+                 
+        }
+        
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
+        }
+        
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
         }
 }

@@ -55,11 +55,17 @@ class WebShops extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('default_language, currency_id, shop_name, admin_email, shop_url, template_name', 'required'),
+			array('default_language, currency_id, shop_name, admin_email, shop_url, template_name, shop_code', 'required'),
 			array('currency_id, offline, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('shop_name', 'length', 'max'=>100),
 			array('shop_code', 'length', 'max'=>64),
+			array('shop_name', 'length', 'min'=>8),
+			array('shop_code', 'length', 'min'=>5),
+			array('shop_code', 'unique'),
+			array('shop_name', 'unique'),          
+                        array('admin_email, email', 'email'),
 			array('template_name', 'length', 'max'=>15),
+			array('template_name', 'length', 'min'=>5),
 			array('shop_url, email, email_header, email_subject, admin_email', 'length', 'max'=>255),
 			array('default_language', 'length', 'max'=>7),
 			array('email_footer, created_on, modified_on, locked_on', 'safe'),
@@ -172,4 +178,32 @@ class WebShops extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function behaviors()
+        {
+            return array( 'CBuyinArBehavior' => array(
+                'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
+            ));
+        }
+        
+        public static function listWebShops()
+        {
+            return self::model()->with('categories')->findAll(array('order'=>'shop_name'));
+        }
+        
+        public static function listData()
+        {
+            return CHtml::listData(self::listWebShops(), 'id', 'shop_name');
+        }
+        
+        public static function getNameByPk($web_shop_id)
+        {
+            return self::model()->findByPk($web_shop_id)->shop_name;
+        }
+        
+        public static function sync()
+        {
+            $result = Yii::t('common', 'Web Shops synchronization');
+            return  $result.' - <span class="green">OK</span>';
+        }
 }

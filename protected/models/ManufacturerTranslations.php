@@ -35,7 +35,14 @@ class ManufacturerTranslations extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('manufacturer_id, language_code, manufacturer_name', 'required'),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`manufacturer_id`=:manufacturer_id',
+                            'params'=>array(
+                                ':manufacturer_id'=>$this->manufacturer_id
+                            )
+                        )),
 			array('manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+                        array('slug','unique','allowEmpty'=>false),
 			array('language_code', 'length', 'max'=>5),
 			array('manufacturer_name, slug', 'length', 'max'=>255),
 			array('manufacturer_desc, created_on, modified_on, locked_on', 'safe'),
@@ -160,5 +167,31 @@ class ManufacturerTranslations extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate()
+        {
+            if(!empty($this->manufacturer_name) && empty($this->slug))
+            {
+                $this->slug = url_slug($this->manufacturer_name);
+            }
+            else 
+            {
+                $this->slug = url_slug($this->slug);
+            }
+            
+            return parent::beforeValidate();
+        }
+        
+        public function afterDelete() {
+            parent::afterDelete();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
+        }
+        
+        public function afterSave() {
+            parent::afterSave();
+            
+            Yii::app()->setGlobalState('ManufacturersList', date(DATE_W3C));
         }
 }

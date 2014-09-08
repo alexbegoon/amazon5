@@ -56,7 +56,7 @@ class CBuyinArBehavior extends CActiveRecordBehavior
                                       ->user($this->getOwner()->locked_by)
                                       ->getFullName();
             $this->getOwner()->addError('locked_by_user',
-                    Yii::t('common','You can not edit this. Record locked by {username}.',array('{username}'=>$username)));
+                    Yii::t('common','You Cannot edit this. Record locked by {username}.',array('{username}'=>$username)));
             return FALSE;
         }
     }
@@ -81,7 +81,7 @@ class CBuyinArBehavior extends CActiveRecordBehavior
                                       ->user($this->getOwner()->locked_by)
                                       ->getFullName();
                 $this->getOwner()->addError('locked_by_user',
-                        Yii::t('common','You can not delete this. Record locked by {username}.',array('{username}'=>$username)));
+                        Yii::t('common','You Cannot delete this. Record locked by {username}.',array('{username}'=>$username)));
                 return FALSE;
             }
         }

@@ -108,6 +108,27 @@ class LanguagesController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=Languages::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
 
 	/**
 	 * Deletes a particular model.

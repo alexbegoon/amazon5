@@ -77,7 +77,7 @@ class Languages extends CActiveRecord
 			'amzni5Manufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{manufacturer_translations}}(language_code, manufacturer_id)'),
 			'menus' => array(self::HAS_MANY, 'Menu', 'language_code'),
 			'amzni5PaymentMethods' => array(self::MANY_MANY, 'PaymentMethods', '{{payment_method_translations}}(language_code, payent_method_id)'),
-			'amzni5Products' => array(self::MANY_MANY, 'Products', '{{product_translations}}(language_code, product_id)'),
+			'productTranslations' => array(self::MANY_MANY, 'Products', '{{product_translations}}(language_code, product_id)'),
 			'amzni5ShippingMethods' => array(self::MANY_MANY, 'ShippingMethods', '{{shipping_method_translations}}(language_code, shipping_method_id)'),
 			'webShops' => array(self::HAS_MANY, 'WebShops', 'default_language'),
 		);
@@ -160,5 +160,61 @@ class Languages extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior'
                         ),
             );
-}
+        }
+        
+        /**
+         * Return available languages in the system
+         * @return object
+         */
+        public static function listLanguages()
+        {
+            return self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
+        }
+        
+        public static function listAllTags()
+        {
+            return CHtml::listData(self::model()->findAll(array('select'=>'lang_code')),'lang_code','lang_code');
+        }
+
+
+        /**
+         * Return available languages in the system for dropdown list
+         * @return mixed
+         */
+        public static function listData($languageCode=null)
+        {
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listLanguages(), 'lang_code','title');
+            }
+            
+            if(!empty($languageCode) && isset($data[$languageCode]))
+                return $data[$languageCode];
+            
+            return $data;
+        }
+        
+        public static function getCurrent()
+        {
+            if(Yii::app()->user->hasState('applicationLanguage'))
+                return Yii::app()->user->getState('applicationLanguage');
+            
+            return self::getDefault();
+        }
+        
+        /**
+         * Return default system language
+         * @return string
+         */
+        public static function getDefault()
+        {
+            return 'en-GB';
+        }
+        
+        public static function getNameByPk($language_code)
+        {
+            return self::model()->findByPk($language_code)->title_native;
+        }
 }

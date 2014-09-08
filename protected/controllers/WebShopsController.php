@@ -67,7 +67,7 @@ class WebShopsController extends Controller
 		$model=new WebShops;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['WebShops']))
 		{
@@ -97,7 +97,7 @@ class WebShopsController extends Controller
                 ));
                 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['WebShops']))
 		{
@@ -110,6 +110,27 @@ class WebShopsController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=WebShops::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
 
 	/**
 	 * Deletes a particular model.

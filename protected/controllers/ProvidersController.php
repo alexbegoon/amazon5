@@ -53,8 +53,14 @@ class ProvidersController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $providerSyncLogs = new ProviderSyncLogs('search');
+                $providerSyncLogs->unsetAttributes();  // clear any default values
+                if(isset($_GET['ProviderSyncLogs']))
+                    $providerSyncLogs->attributes=$_GET['ProviderSyncLogs'];
+                $providerSyncLogs->provider_id = $id;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'providerSyncLogs'=>$providerSyncLogs
 		));
 	}
 
@@ -110,6 +116,27 @@ class ProvidersController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=Providers::model()->findByPk($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
 
 	/**
 	 * Deletes a particular model.

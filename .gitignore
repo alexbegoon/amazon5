@@ -3,3 +3,8 @@ nbproject
 /protected/runtime/application.log
 /assets
 .idea
+/imgs/shop/*
+/uploads/*
+!/uploads/.htaccess
+/protected/runtime/*
+/imgs/categories/*

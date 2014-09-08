@@ -12,7 +12,7 @@
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
+	'enableAjaxValidation'=>true,
 )); ?>
 
 	<p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
@@ -45,13 +45,13 @@
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'default_language',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'default_language',CHtml::listData(Languages::model()->findAll(array('order'=>'title')),'lang_code','title'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'default_language',Languages::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'currency_id',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'currency_id',CHtml::listData(Currencies::model()->findAll(array('order'=>'currency_name')),'id','currency_name'),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'currency_id',Currencies::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'currency_id',array('class'=>'label label-danger')); ?>
 	</div>
 

@@ -12,8 +12,8 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <link rel="icon" href="<?php echo Yii::app()->request->baseUrl; ?>/imgs/favicon.ico" type="image/x-icon">
         
         <!-- Bootstrap framework -->
-        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/css/bootstrap-select.min.css">
         <!-- End Bootstrap framework -->
         
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -24,6 +24,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <![endif]-->
         
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/font-awesome-4.1.0/css/font-awesome.min.css">
         
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
@@ -72,7 +73,17 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                 
             ));
             ?><!-- breadcrumbs -->
-        <?php endif ?>
+        <?php endif; ?>
+        <?php $i=1;?>
+        <?php foreach(Yii::app()->user->getFlashes() as $key => $message):?>
+            <div class="alert alert-<?php echo strtolower($key);?> alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo Yii::t('common', 'Close');?></span></button>
+                <strong><?php echo Yii::t('Common', ucwords(strtolower($key)))?>!</strong><span id="flash-message-<?php echo $i;?>">&nbsp;<?php echo Yii::t('common', $message);?></span>
+            </div>
+        <?php $i++;?>
+        <?php endforeach;?>
+        <div id='Ajax-flash-message-success' class="alert alert-success alert-dismissible" style="display:none"></div>
+        <div id='Ajax-flash-message-error' class="alert alert-danger alert-dismissible" style="display:none"></div>
 
         <?php echo $content; ?>
 
@@ -81,6 +92,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
         <div id="footer">
         </div><!-- footer -->
 </div>
+<div style="display: none;">
 <?php 
 
 $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
@@ -89,6 +101,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'options'=>array(
         'title'=>Yii::t('common','Language'),
         'autoOpen'=>false,
+        'width'=>'auto',
+        'height'=>'auto',
+        'modal'=>'true'
     ),
 ));
     echo Yii::t('common','Select language');
@@ -105,6 +120,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'options'=>array(
         'title'=>Yii::t('common','Currency'),
         'autoOpen'=>false,
+        'width'=>'auto',
+        'height'=>'auto',
+        'modal'=>'true'
     ),
 ));
     echo Yii::t('common','Select Currency');
@@ -113,6 +131,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
 
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
+</div>
+
 <!-- JQuery -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>-->
 <!-- End JQuery -->
@@ -120,8 +140,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 <!-- Bootstrap framework -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.1.1/js/bootstrap-select.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/3.2.0/js/bootstrap-select.min.js"></script>
 <!-- End Bootstrap framework -->
 
 </body>
