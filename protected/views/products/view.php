@@ -24,6 +24,12 @@ $this->menu=array(
 		'id',
 		'product_sku',
                 array(
+                    'name'=>  Yii::t('common', 'Newly Created'),
+                    'type'=>'html',
+                    'value'=>$model->newly_created==1?Yii::t("yii", "Yes")             
+                                                     :Yii::t("yii", "No"),
+                ),
+                array(
                     'name'=>  Yii::t('common', 'Published'),
                     'type'=>'html',
                     'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
@@ -123,6 +129,56 @@ $this->menu=array(
                         (
                             'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
                         )
+                    ),
+                )
+	),
+));
+?>
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'Categories')?></h3>
+
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$productCategories,
+	'columns'=>array(
+                array(
+                    'name'=>  Yii::t('common', 'Web Shop'),
+                    'value'=> 'WebShops::getNameByPk($data->web_shop_id)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Assign'),Yii::app()->createUrl(Yii::app()->controller->id."/assignToCategory",array('product_id'=>$model->id))),
+                ),
+                'id',
+                array(
+                    'name'=>Yii::t('common', 'Category Name'),
+                    'value'=>'$data->getName()',
+                ),
+                array(
+                    'name'=>Yii::t('common', 'Category Path'),
+                    'value'=>'$data->getPath()',
+                ),
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{view}&nbsp;&nbsp;{delete}',
+                    'buttons'=>array
+                    (
+                        'delete' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/unmountCategory",array("product_id"=>'.$model->id.', "category_id"=>$data->id))',
+                        ),
+                        'view' => array
+                        (
+                            'url'=>'Yii::app()->createUrl("categories/view",array("id"=>$data->id))',
+                        ),
                     ),
                 )
 	),

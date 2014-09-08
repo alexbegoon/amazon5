@@ -26,7 +26,7 @@ class ProductCategories extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_id, category_id', 'required'),
-			array('product_id, category_id', 'numerical', 'integerOnly'=>true),
+			array('product_id, category_id', 'numerical', 'integerOnly'=>true, 'min'=>1),
                         array('product_id', 'unique', 'criteria'=>array(
                                 'condition'=>'`category_id`=:category_id',
                                 'params'=>array(

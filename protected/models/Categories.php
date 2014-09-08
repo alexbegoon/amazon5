@@ -181,7 +181,21 @@ class Categories extends CActiveRecord
             
             return $model->category_name;
         }
-
+        
+        public function getPath($delimeter='/')
+        {
+            $path = $delimeter;
+            $parents = array_reverse(self::getParentsList($this->id));
+            foreach ($parents as $parent)
+            {
+                if($parent!=0)
+                {
+                    $path .= self::model()->findByPk($parent)->getName();
+                    $path .= $delimeter;
+                }
+            }
+            return $path;
+        }
 
         private function getTree($webShopId=null,$categoryId=0,$limit=1000)
         {

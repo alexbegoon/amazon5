@@ -39,6 +39,16 @@ class ProductsController extends Controller
                         'params'=>array(':id'=>$id)
                     ),
                 ));
+                $productCategories = new CActiveDataProvider('Categories', array(
+                    'criteria'=>array(
+                        'with'=>array(
+                            'categoryTranslations','categoryProducts'
+                        ),
+                        'together'=>true,
+                        'condition'=>'categoryProducts_categoryProducts.product_id=:id',
+                        'params'=>array(':id'=>$id)
+                    ),
+                ));
                 
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
@@ -46,6 +56,7 @@ class ProductsController extends Controller
                         'productTranslations'=>$productTranslations,
                         'productPrices'=>$productPrices,
                         'productProviders'=>$productProviders,
+                        'productCategories'=>$productCategories
 		));
 	}
 
@@ -375,6 +386,59 @@ class ProductsController extends Controller
             $this->render('create_providers',array('model'=>$model));
         }
         
+        public function actionAssignToCategory()
+        {
+            $product = $this->loadModel(Yii::app()->request->getParam('product_id'));
+            
+            $productCategories = new ProductCategories;
+            if(isset($_POST['ProductCategories']))
+            {
+                if(ProductCategories::model()->findByPk($_POST['ProductCategories'])!==null)
+                {
+                    $productCategories=ProductCategories::model()->findByPk($_POST['ProductCategories']);
+                }
+            }
+            $productCategories->setAttribute('product_id', $product->id);
+            $category=new Categories;
+            
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='product-category-_category-form')
+            {
+                echo CActiveForm::validate($productCategories);
+                Yii::app()->end();
+            }
+            
+            if(isset($_POST['ProductCategories']))
+            {
+                $productCategories->attributes=$_POST['ProductCategories'];
+                $category=Categories::model()->findByPk($productCategories->category_id);
+                if($productCategories->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'Product assigned successfully'));
+                    $this->redirect(array('view','id'=>$productCategories->product_id));
+                }
+            }
+            
+            $this->render('assign_to_category',array('model'=>$product,
+                                                     'productCategories'=>$productCategories,
+                                                     'category'=>$category));
+        }
+        
+        public function actionUnmountCategory()
+        {
+            $model=ProductCategories::model()->findByPk(array('product_id'=>Yii::app()->request->getParam('product_id'),
+                                                              'category_id'=>Yii::app()->request->getParam('category_id')));
+            if($model===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+                
+            $model->delete();
+            
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
+
         public function actionDeleteImage($id)
         {
             $model=ProductImages::model()->findByPk($id);
@@ -664,6 +728,12 @@ class ProductsController extends Controller
                             ),
             )); 
             
+            $productsNewlyCreated=new CActiveDataProvider('Products',array(
+                            'criteria'=>array(
+                                'condition'=>'newly_created=1',
+                            ),
+            ));
+            
 //        CVarDumper::dump($productsDescriptionStat,10,true);
             
             $totalProducts = count(Products::model()->findAll());
@@ -678,6 +748,7 @@ class ProductsController extends Controller
                                                 'productsWithoutShortDescription'=>$productsWithoutShortDescription,
                                                 'productsDescriptionStat'=>$productsDescriptionStat,
                                                 'productsShortDescriptionStat'=>$productsShortDescriptionStat,
+                                                'productsNewlyCreated'=>$productsNewlyCreated,
                 ));
         }
         

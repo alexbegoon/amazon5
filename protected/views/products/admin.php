@@ -34,6 +34,11 @@ $this->menu=array(
                     'filter'=>Manufacturers::listData(),
                 ),
 		array(
+			'name'=>'newly_created',
+			'value'=>'Products::itemAlias("Newly Created",$data->newly_created)',
+			'filter'=>Products::itemAlias("Newly Created"),
+		),
+		array(
 			'name'=>'published',
 			'value'=>'Products::itemAlias("Published",$data->published)',
 			'filter'=>Products::itemAlias("Published"),

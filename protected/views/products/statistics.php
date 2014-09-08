@@ -27,6 +27,12 @@ $this->menu=array(
             <?php echo Yii::t('common', 'Total products')?>: <?php echo $totalProducts;?>
         </li>
         <li>
+            <?php echo Yii::t('common', 'Newly Created');?>: <?php echo $productsNewlyCreated->totalItemCount ;?>
+            <?php echo CHtml::link(Yii::t('common', 'See'), '#', array(
+                        'onclick'=>'$("#mydialog_newly_created").dialog("open"); return false;',
+                     ));?>
+        </li>
+        <li>
             <?php echo Yii::t('common', 'Images path')?>: <code><?php echo $imagesPath;?></code>
         </li>
         <li>
@@ -261,6 +267,36 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$productsWithoutShortDescription,
+        'columns'=>array(
+            'id',
+            'product_sku',
+            array(
+                'name'=>Yii::t('common', 'Published'),
+                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            ),
+            'created_on',
+            array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{view}',
+                )
+        ),
+    ));
+
+$this->endWidget('zii.widgets.jui.CJuiDialog');
+$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+    'id'=>'mydialog_newly_created',
+    // additional javascript options for the dialog plugin
+    'options'=>array(
+        'title'=>Yii::t('common', 'Newly Created'),
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'auto',
+        'height'=>'auto',
+    ),
+));
+$this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$productsNewlyCreated,
         'columns'=>array(
             'id',
             'product_sku',
