@@ -51,10 +51,8 @@ $('.search-form form').submit(function(){
 		'cif',
 		'provider_desc',
 		'provider_url',
-		'provider_type',
 		/*
 		'provider_address',
-		'provider_type',
 		'vat',
 		'inactive',
 		'sku_format',
