@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
         Yii::t('common','Accounting')=>array('/accounting'),
-	Yii::t('common','Provider of the Services')=>array('index'),
+	Yii::t('common','Providers of the Services')=>array('index'),
 	Yii::t('common','Manage'),
 );
 
