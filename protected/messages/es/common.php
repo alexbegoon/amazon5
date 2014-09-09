@@ -245,9 +245,10 @@ return array(
     'Assign'=>'Asignar',
     'Assign a product to the category'=>'Asigne un producto a la categoría',
     'Category Path'=>'Ruta de las Categorías',
-    ''=>'',
-    ''=>'',
-    ''=>'',
+    'Providers of the Services'=>'Proveedores de los Servicios',
+    'Provider of the Services'=>'El Proveedor de los Servicios',
+    'Type of the service provider'=>'Tipo de proveedor de servicios',
+    'Types of the service providers'=>'Tipos de los proveedores de servicios',
     ''=>'',
     
 

@@ -715,6 +715,9 @@ class ProductsController extends Controller
                                 ),
                                 'together'=>true,
                             ),
+                            'pagination'=>array(
+                                'pageSize'=>'20'
+                            )
             )); 
             
             $productsShortDescriptionStat=new CActiveDataProvider('Languages',array(

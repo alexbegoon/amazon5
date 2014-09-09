@@ -134,9 +134,9 @@ class Products extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('product_parent_id',$this->product_parent_id,true);
-		$criteria->compare('product_sku',$this->product_sku,true);
+		$criteria->compare('t.id',$this->id,true);
+		$criteria->compare('t.product_parent_id',$this->product_parent_id,true);
+		$criteria->compare('t.product_sku',$this->product_sku,true);
 		$criteria->compare('t.published',$this->published);
 		$criteria->compare('t.blocked',$this->blocked);
                 $criteria->compare('t.notification_sent',$this->notification_sent);

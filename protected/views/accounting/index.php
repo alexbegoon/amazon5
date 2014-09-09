@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
                 'items' => array(
                     array(
                         'url'=>'providers',
-                        'glyphicon'=>'glyphicon-briefcase',
+                        'fa'=>'fa-truck',
                         'label'=>Yii::t('common','Provider Management'),
                         ),
                     array(
@@ -25,6 +25,16 @@ $this->breadcrumbs=array(
                         'url'=>'accountingOverview',
                         'glyphicon'=>'glyphicon-calendar',
                         'label'=>Yii::t('common','Accounting Overview'),
+                        ),
+                    array(
+                        'url'=>'servicesProviders',
+                        'glyphicon'=>'glyphicon-briefcase',
+                        'label'=>Yii::t('common','Providers of the Services'),
+                        ),
+                    array(
+                        'url'=>'servicesProvidersTypes',
+                        'fa'=>'fa-cog',
+                        'label'=>Yii::t('common','Types of the service providers'),
                         ),
                 ),
 ))?>

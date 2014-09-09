@@ -18,7 +18,7 @@
         $class = 'fa '.$tile->fa
         ?>
     <?php endif;?>
-    <?php echo CHtml::link("<h4 class=\"text-center\">$tile->label&nbsp;&nbsp;&nbsp;&nbsp;<i class=\"<?php echo $class\"></i></h4>",Yii::app()->createUrl($tile->url), array('class'=>'thumbnail'));?>
+    <?php echo CHtml::link("<h4 class=\"text-center\">$tile->label&nbsp;&nbsp;&nbsp;&nbsp;<i class=\"$class\"></i></h4>",Yii::app()->createUrl($tile->url), array('class'=>'thumbnail'));?>
     </div>
     <?php endforeach; ?>
 </div>
