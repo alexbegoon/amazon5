@@ -500,7 +500,11 @@ class CategoriesController extends Controller
 	{
 		$model=Categories::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+                {
+                    throw new CHttpException(404,'The requested page does not exist.');
+                    Yii::app()->setGlobalState('CategoryTreeVersion', date(DATE_W3C));
+                }
+			
 		return $model;
 	}
 
