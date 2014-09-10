@@ -329,10 +329,18 @@ class Currencies extends CActiveRecord
         
         public static function listCurrencies($all=false)
         {
+            static $data=array();
+            static $allData=array();
             if($all)
-                return self::model()->findAll(array('order'=>'currency_name'));
+            {
+                if(empty($allData))
+                $allData=self::model()->findAll(array('order'=>'currency_name'));
+                return $allData;
+            }
         
-            return self::model()->findAll(array('condition'=>'published=1','order'=>'currency_name'));
+            if(empty($data))
+            $data=self::model()->findAll(array('condition'=>'published=1','order'=>'currency_name'));
+            return $data;
         }
         
         public static function listData($currencyId=null)

@@ -36,5 +36,10 @@ $this->breadcrumbs=array(
                         'fa'=>'fa-cog',
                         'label'=>Yii::t('common','Types of the service providers'),
                         ),
+                    array(
+                        'url'=>'servicesProvidersInvoices',
+                        'glyphicon'=>'glyphicon-file',
+                        'label'=>Yii::t('common','Invoices of the Service Providers'),
+                        ),
                 ),
 ))?>

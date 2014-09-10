@@ -130,6 +130,8 @@ return array(
     'From:'=>'Desde:',
     'To:'=>'Hasta:',
     'Total: '=>'Total: ',
+    'Total'=>'Total',
+    'SubTotal'=>'Total Parcial',
     'Products'=>'Productos',
     'Parent Product'=>'Padres Producto',
     'Product Name'=>'Nombre del Producto',
@@ -249,7 +251,10 @@ return array(
     'Provider of the Services'=>'El Proveedor de los Servicios',
     'Type of the service provider'=>'Tipo de proveedor de servicios',
     'Types of the service providers'=>'Tipos de los proveedores de servicios',
-    ''=>'',
+    'Invoices of the Service Providers'=>'Las facturas de los proveedores de servicios',
+    'Invoice for the Service Providers'=>'Factura para los proveedores de servicios',
+    'Pay for'=>'Pagar por',
+    'Refund'=>'Reembolso',
     
 
  

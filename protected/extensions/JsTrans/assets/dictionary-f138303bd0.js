@@ -1,0 +1,1 @@
+Yii.translate.config={"language":"de"};Yii.translate.dictionary={"de":[]}

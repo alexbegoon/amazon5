@@ -46,8 +46,6 @@ for ($i = 0; $i <= 1; $i++)
 }
 ?>
 
-<?php echo $form->dropDownList($providersModel,'provider_type',enumItem($providersModel,'provider_type'),array('prompt'=>Yii::t('common', 'Provider Type'), 'options'=>array($selected=>array('selected'=>true)))); ?>&nbsp;
-
 <?php echo CHtml::submitButton(Yii::t('common','Search'),array('class'=>'btn btn-primary')); ?>
 
 <?php

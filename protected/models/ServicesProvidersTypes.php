@@ -128,7 +128,10 @@ class ServicesProvidersTypes extends CActiveRecord
         
         public static function listTypes()
         {
-            return self::model()->findAll();
+            static $data=array();
+            if(empty($data))
+            $data=self::model()->findAll(array('order'=>'t.type'));
+            return $data;
         }
         
         public static function listData($typeId=null)
@@ -141,7 +144,6 @@ class ServicesProvidersTypes extends CActiveRecord
                 $data = CHtml::listData($types,'id',function($type) {
                     return $type->type;
                 });
-                asort($data);
             }
             
             if(!empty($typeId) && isset($data[$typeId]))

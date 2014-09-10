@@ -158,4 +158,38 @@ class ServicesProviders extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listProviders()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $data=self::model()->with('providerType')
+                                   ->findAll(array('order'=>'providerType.type,t.provider_name'));
+            }
+            return $data;
+        }
+        
+        public static function listData($providerId=null)
+        {
+            static $data=array();
+                        
+            if(empty($data))
+            {
+                $providers = self::listProviders();
+                $data = CHtml::listData($providers,'id',function($provider) {
+                    return $provider->provider_name;
+                },'providerType.type');
+            }
+            
+            if(!empty($providerId))
+            {
+                $providers = self::listProviders();
+                $data = CHtml::listData($providers,'id',function($provider) {
+                    return $provider->provider_name;
+                });
+                return $data[$providerId];
+            }
+            return $data;
+        }
 }
