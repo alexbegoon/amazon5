@@ -298,6 +298,22 @@ class Categories extends CActiveRecord
             
             return $parentList;
         }
+        
+        public static function getChildsList($categoryId=0) 
+        {
+            $key        = 'ChildsList'.$categoryId;
+            $childsList = Yii::app()->cache->get($key);
+            if($childsList)
+                return $childsList;
+            
+            $tree = self::model()->getTree(self::model()->findByPk($categoryId)->web_shop_id,$categoryId);
+            $childsList = self::iterateTree($tree);
+            
+            Yii::app()->cache->set($key, $childsList, 604800, 
+                    new CGlobalStateCacheDependency('CategoryTreeVersion'));
+            
+            return $childsList;
+        }
 
         public function getCategoryTreeOptions($webShopId)
         {

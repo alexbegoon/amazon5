@@ -417,15 +417,32 @@ class CategoriesController extends Controller
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
-	{            
-		if($this->loadModel($id)->delete())
-                    $this->setSuccessMsg (Yii::t ('common', 
-                            '{n} entry successfully removed|{n} entries successfully removed',
-                            array(1)));
+	{
+            $totalDeleted = 0;
+            $this->loadModel($id);
+            $childs = Categories::getChildsList($id);
+            if(count($childs)>0)
+            {
+                foreach (Categories::getChildsList($id) as $childCategory)
+                {
+                    if(Categories::model()->findByPk($childCategory['category_id'])->delete())
+                    {
+                        $totalDeleted++;
+                    }
+                }
+            }
+            
+            if($this->loadModel($id)->delete())
+            {
+                $totalDeleted++;
+                $this->setSuccessMsg (Yii::t ('common', 
+                        '{n} entry successfully removed|{n} entries successfully removed',
+                        array($totalDeleted)));
+            }
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
         
         public function actionRemoveAll($id)
