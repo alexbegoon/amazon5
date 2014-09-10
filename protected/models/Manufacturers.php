@@ -117,6 +117,7 @@ class Manufacturers extends CActiveRecord
 		$criteria->compare('t.locked_by',$this->locked_by);
                 
                 $criteria->with = array( 'manufacturerTranslations');
+                $criteria->group = 't.id';
                 $criteria->together = true;
                 
                 $criteria->compare( 'manufacturerTranslations.manufacturer_name', $this->manufacturer_name, true );

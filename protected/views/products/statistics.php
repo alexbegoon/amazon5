@@ -75,14 +75,18 @@ $this->menu=array(
     $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$productsDescriptionStat,
         'columns'=>array(
-            'title_native',
+            
+            array(
+                'name'=>'title_native',
+                'value'=>'Languages::listData($data->language_code)',
+            ),
             array(
                 'name'=>  Yii::t('common', 'Products with description'),
-                'value'=>'count($data->productTranslations)',
+                'value'=>'$data->total',
             ),
             array(
                 'name'=>  Yii::t('common', 'Products without description'),
-                'value'=>$totalProducts .' - count($data->productTranslations)',
+                'value'=>$totalProducts .' - $data->total',
             ),
             array(
                 'class'=>'CButtonColumn',
@@ -101,14 +105,17 @@ $this->menu=array(
     $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$productsShortDescriptionStat,
         'columns'=>array(
-            'title_native',
+            array(
+                'name'=>'title_native',
+                'value'=>'Languages::listData($data->language_code)',
+            ),
             array(
                 'name'=>  Yii::t('common', 'Products with short description'),
-                'value'=>'count($data->productTranslations)',
+                'value'=>'$data->total',
             ),
             array(
                 'name'=>  Yii::t('common', 'Products without short description'),
-                'value'=>$totalProducts.' - count($data->productTranslations)',
+                'value'=>$totalProducts .' - $data->total',
             ),
             array(
                 'class'=>'CButtonColumn',

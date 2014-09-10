@@ -81,6 +81,7 @@ class Products extends CActiveRecord
 			'productCategories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
 			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
 			'productTranslations' => array(self::HAS_MANY, 'ProductTranslations', 'product_id'),
+			'productTranslation' => array(self::BELONGS_TO, 'ProductTranslations', 'id'),
 			'manufacturer' => array(self::BELONGS_TO, 'Manufacturers', 'manufacturer_id'),
 			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
 			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
@@ -107,6 +108,7 @@ class Products extends CActiveRecord
                         'notification_sent' => Yii::t('common', 'Notification sent'),
                         'newly_created' => Yii::t('common', 'Newly Created'),
 			'blocked' => Yii::t('common', 'Blocked'),
+                        'manufacturer_id' => Yii::t('common', 'Manufacturer'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -149,7 +151,8 @@ class Products extends CActiveRecord
 		$criteria->compare('t.locked_on',$this->locked_on,true);
 		$criteria->compare('t.locked_by',$this->locked_by);
                 
-                $criteria->with = array( 'productTranslations' );
+                $criteria->with = array( 'productCategories','productTranslation' );
+                $criteria->group = 't.id';
                 $criteria->together = true;
                 
                 if(!empty($this->parent_category_id))
@@ -157,16 +160,16 @@ class Products extends CActiveRecord
                     $criteria->compare( 'productCategories_productCategories.category_id', $this->parent_category_id);
                 }
                 
-                $criteria->compare( 'productTranslations.product_name', $this->product_name, true );
+                $criteria->compare( 'productTranslation.product_name', $this->product_name, true );
                 
-
+                
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
                         'sort'=>array(
                             'attributes'=>array(
                                 'product_name'=>array(
-                                    'asc'=>'productTranslations.product_name',
-                                    'desc'=>'productTranslations.product_name DESC',
+                                    'asc'=>'productTranslation.product_name',
+                                    'desc'=>'productTranslation.product_name DESC',
                                 ),
                                 '*',
                             ),

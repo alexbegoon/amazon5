@@ -22,7 +22,9 @@
  */
 class ProductTranslations extends CActiveRecord
 {
-	/**
+        public $total;
+                
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()

@@ -699,29 +699,24 @@ class ProductsController extends Controller
                             ),
             ));
             
-            $productsDescriptionStat=new CActiveDataProvider('Languages',array(
+            $productsDescriptionStat=new CActiveDataProvider('productTranslations',array(
                             'criteria'=>array(
-                                'with'=>array(
-                                    'productTranslations'=>array(
-                                        'condition'=>'(product_desc IS NOT NULL AND product_desc != "") OR product_id IS NULL',
-                                    ),
-                                ),
-                                'together'=>true,
+                                'select'=>'t.language_code, COUNT(t.product_desc) as total',
+                                'group'=>'t.language_code'
                             ),
                             'pagination'=>array(
                                 'pageSize'=>'20'
                             )
             )); 
             
-            $productsShortDescriptionStat=new CActiveDataProvider('Languages',array(
+            $productsShortDescriptionStat=new CActiveDataProvider('productTranslations',array(
                             'criteria'=>array(
-                                'with'=>array(
-                                    'productTranslations'=>array(
-                                        'condition'=>'(product_s_desc IS NOT NULL AND product_s_desc != "") OR product_id IS NULL',
-                                    ),
-                                ),
-                                'together'=>true,
+                                'select'=>'t.language_code, COUNT(t.product_s_desc) as total',
+                                'group'=>'t.language_code'
                             ),
+                            'pagination'=>array(
+                                'pageSize'=>'20'
+                            )
             )); 
             
             $productsNewlyCreated=new CActiveDataProvider('Products',array(
@@ -771,8 +766,8 @@ class ProductsController extends Controller
         
         public function actionViewProductsWithoutDesc()
         {
-            $language_code = Yii::app()->request->getParam('lang_code');
-            $language_name = Languages::model()->findByPk($language_code)->title_native;
+            $language_code = Yii::app()->request->getParam('language_code');
+            $language_name = Languages::listData($language_code);
             
             $criteria = new CDbCriteria;
             $criteria->condition = 'language_code=:language_code';
@@ -788,6 +783,7 @@ class ProductsController extends Controller
                                         'params'=>array(':language_code'=>$language_code),
                                     )
                                 ),
+                                'group'=>'t.id',
                                 'together'=>true,
                             ),
             ));
@@ -799,6 +795,7 @@ class ProductsController extends Controller
                                         'params'=>array(':language_code'=>$language_code),
                                     )
                                 ),
+                                'group'=>'t.id',
                                 'together'=>true,
                             ),
             ));
