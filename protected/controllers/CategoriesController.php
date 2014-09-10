@@ -423,7 +423,7 @@ class CategoriesController extends Controller
             $childs = Categories::getChildsList($id);
             if(count($childs)>0)
             {
-                foreach (Categories::getChildsList($id) as $childCategory)
+                foreach ($childs as $childCategory)
                 {
                     if(Categories::model()->findByPk($childCategory['category_id'])->delete())
                     {
