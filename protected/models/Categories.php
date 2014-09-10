@@ -336,6 +336,9 @@ class Categories extends CActiveRecord
         {
             static $finalTree;
             
+            if(empty($tree))
+                return array();
+            
             foreach($tree as $model)
             {
                 $label = $model->name;
