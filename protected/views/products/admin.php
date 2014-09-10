@@ -17,7 +17,12 @@ $this->menu=array(
 <h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Products')?></h1>
 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+
+<?php 
+
+//CVarDumper::dump($model->search()->getData(),10,true);die;
+
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'products-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -30,7 +35,7 @@ $this->menu=array(
                 ),
                 array(
                     'name'=>'manufacturer_id',
-                    'value'=>'isset($data->productManufacturers[0])?Manufacturers::listData($data->productManufacturers[0]->id):Yii::t("common","*no name*")',
+                    'value'=>'$data->manufacturer_id?Manufacturers::listData($data->manufacturer_id):Yii::t("common","*no name*")',
                     'filter'=>Manufacturers::listData(),
                 ),
 		array(

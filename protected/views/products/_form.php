@@ -20,7 +20,7 @@
 
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary(array($model,$productTranslations,$productManufaturers,$productPrices,$productImages), null, null, array('class'=>'alert alert-danger')); ?>
+	<?php echo $form->errorSummary(array($model,$productTranslations,$productPrices,$productImages), null, null, array('class'=>'alert alert-danger')); ?>
 
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'product_sku',array('class'=>'control-label')); ?>
@@ -71,9 +71,9 @@
 	</div>
         <hr>
         <div class="row form-group">
-		<?php echo $form->labelEx($productManufaturers,'manufacturer_id',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($productManufaturers,'manufacturer_id',  Manufacturers::listData(), array('class'=>'form-control')); ?>
-		<?php echo $form->error($productManufaturers,'manufacturer_id',array('class'=>'label label-danger')); ?>
+		<?php echo $form->labelEx($model,'manufacturer_id',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'manufacturer_id',  Manufacturers::listData(), array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'manufacturer_id',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
         <div class="row form-group">

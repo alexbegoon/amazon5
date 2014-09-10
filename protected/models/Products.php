@@ -11,6 +11,7 @@
  * @property integer $newly_created
  * @property integer $published
  * @property integer $blocked
+ * @property integer $manufacturer_id
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -23,7 +24,7 @@
  * @property OrderItemsHistories[] $orderItemsHistories
  * @property Categories[] $productCategories
  * @property ProductImages[] $productImages
- * @property Manufacturers[] $productManufacturers
+ * @property Manufacturers $manufacturer
  * @property ProductPrices[] $productPrices
  * @property ProductReviews[] $productReviews
  * @property Languages[] $productLanguages
@@ -36,7 +37,6 @@ class Products extends CActiveRecord
 {
     
         public $product_name;
-        public $manufacturer_id;
         public $parent_category_id;
         
         /**
@@ -57,14 +57,14 @@ class Products extends CActiveRecord
 		return array(
 			array('product_sku', 'required'),
 			array('product_sku', 'unique', 'message'=>Yii::t('common', 'This SKU already exists')),
-			array('product_parent_id, notification_sent, published, newly_created, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('product_parent_id, notification_sent, published, newly_created, blocked, manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_parent_id', 'length', 'max'=>11),
 			array('product_sku', 'length', 'max'=>32),
 			array('product_sku', 'length', 'min'=>6),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, product_name, manufacturer_id, product_parent_id, product_sku, published, blocked, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, product_name, product_parent_id, product_sku, published, blocked, notification_sent, newly_created, manufacturer_id, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,7 +81,7 @@ class Products extends CActiveRecord
 			'productCategories' => array(self::MANY_MANY, 'Categories', '{{product_categories}}(product_id, category_id)'),
 			'productImages' => array(self::HAS_MANY, 'ProductImages', 'product_id'),
 			'productTranslations' => array(self::HAS_MANY, 'ProductTranslations', 'product_id'),
-			'productManufacturers' => array(self::MANY_MANY, 'Manufacturers', '{{product_manufacturers}}(product_id, manufacturer_id)'),
+			'manufacturer' => array(self::BELONGS_TO, 'Manufacturers', 'manufacturer_id'),
 			'productPrices' => array(self::HAS_MANY, 'ProductPrices', 'product_id'),
 			'productReviews' => array(self::HAS_MANY, 'ProductReviews', 'product_id'),
 			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
@@ -141,6 +141,7 @@ class Products extends CActiveRecord
 		$criteria->compare('t.blocked',$this->blocked);
                 $criteria->compare('t.notification_sent',$this->notification_sent);
 		$criteria->compare('t.newly_created',$this->newly_created);
+                $criteria->compare('t.manufacturer_id', $this->manufacturer_id);
 		$criteria->compare('t.created_on',$this->created_on,true);
 		$criteria->compare('t.created_by',$this->created_by);
 		$criteria->compare('t.modified_on',$this->modified_on,true);
@@ -148,7 +149,7 @@ class Products extends CActiveRecord
 		$criteria->compare('t.locked_on',$this->locked_on,true);
 		$criteria->compare('t.locked_by',$this->locked_by);
                 
-                $criteria->with = array( 'productTranslations', 'productManufacturers', 'productCategories' );
+                $criteria->with = array( 'productTranslations' );
                 $criteria->together = true;
                 
                 if(!empty($this->parent_category_id))
@@ -157,7 +158,7 @@ class Products extends CActiveRecord
                 }
                 
                 $criteria->compare( 'productTranslations.product_name', $this->product_name, true );
-                $criteria->compare( 'productManufacturers.id', $this->manufacturer_id);
+                
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

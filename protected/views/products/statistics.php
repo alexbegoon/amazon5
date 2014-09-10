@@ -303,7 +303,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'name',
             array(
                 'name'=>Yii::t('common', 'Manufacturer'),
-                'value'=>'isset($data->productManufacturers[0])?Manufacturers::listData($data->productManufacturers[0]->id):Yii::t("common","*no name*")',
+                'value'=>'$data->manufacturer_id?Manufacturers::listData($data->manufacturer_id):Yii::t("common","*no name*")',
             ),
             array(
                 'name'=>Yii::t('common', 'Published'),

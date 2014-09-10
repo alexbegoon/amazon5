@@ -68,16 +68,14 @@ class ProductsController extends Controller
 	{
             $model=new Products;
             $productTranslations=new ProductTranslations;
-            $productManufaturers=new ProductManufacturers;
             $productPrices=new ProductPrices;
             $productImages=new ProductImages;
 
             // Uncomment the following line if AJAX validation is needed
-             $this->performAjaxValidation(array($model,$productTranslations,$productManufaturers,$productPrices,$productImages));
+             $this->performAjaxValidation(array($model,$productTranslations,$productPrices,$productImages));
 
             if(isset($_POST['Products'], 
                      $_POST['ProductTranslations'], 
-                     $_POST['ProductManufacturers'],
                      $_POST['ProductPrices'],
                      $_POST['ProductImages']
                     ))
@@ -88,7 +86,6 @@ class ProductsController extends Controller
 
                 $model->attributes=$_POST['Products'];
                 $productTranslations->attributes=$_POST['ProductTranslations'];
-                $productManufaturers->attributes=$_POST['ProductManufacturers'];
                 $productPrices->attributes=$_POST['ProductPrices'];
                 $productImages->attributes=$_POST['ProductImages'];
 
@@ -104,18 +101,15 @@ class ProductsController extends Controller
                 if($valid)
                 {
                     $productTranslations->setAttribute('product_id', $model->id);
-                    $productManufaturers->setAttribute('product_id', $model->id);
                     $productPrices->setAttribute('product_id', $model->id);
                     $productImages->setAttribute('product_id', $model->id);
                 }
                 
-                if($productManufaturers->validate() &&
-                   $productTranslations->validate() &&
+                if($productTranslations->validate() &&
                    $productPrices->validate() && 
                    self::saveProductImage($productImages,$model->product_sku) && 
                    $valid )
                 {
-                    $productManufaturers->save();
                     $productTranslations->save();
                     $productPrices->save();
                 }
@@ -139,7 +133,6 @@ class ProductsController extends Controller
             $this->render('create',array(
                     'model'=>$model,
                     'productTranslations'=>$productTranslations,
-                    'productManufaturers'=>$productManufaturers,
                     'productPrices'=>$productPrices,
                     'productImages'=>$productImages,
             ));
@@ -734,10 +727,6 @@ class ProductsController extends Controller
             $productsNewlyCreated=new CActiveDataProvider('Products',array(
                             'criteria'=>array(
                                 'condition'=>'newly_created=1',
-                                'with'=>array(
-                                    'productManufacturers',
-                                ),
-                                'together'=>true,
                             ),
             ));
             

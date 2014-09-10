@@ -17,6 +17,5 @@ $this->menu=array(
 
 <?php $this->renderPartial('_form', array(  'model'=>$model,
                                             'productTranslations'=>$productTranslations,
-                                            'productManufaturers'=>$productManufaturers,
                                             'productPrices'=>$productPrices,
                                             'productImages'=>$productImages,)); ?>

@@ -286,10 +286,9 @@ class Manufacturers extends CActiveRecord
             
             if($valid)
             {
-                $productManufacturers = new ProductManufacturers;
-                $productManufacturers->product_id = $product['product_id'];
-                $productManufacturers->manufacturer_id = $manufacturerId;
-                $productManufacturers->save();
+                $p = Products::model()->findByPk($product['product_id']);
+                $p->manufacturer_id = $manufacturerId;
+                $p->save();
             }
             
             if($valid)
