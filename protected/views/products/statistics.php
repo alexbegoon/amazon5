@@ -300,6 +300,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'columns'=>array(
             'id',
             'product_sku',
+            'name',
+            array(
+                'name'=>Yii::t('common', 'Manufacturer'),
+                'value'=>'isset($data->productManufacturers[0])?Manufacturers::listData($data->productManufacturers[0]->id):Yii::t("common","*no name*")',
+            ),
             array(
                 'name'=>Yii::t('common', 'Published'),
                 'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',

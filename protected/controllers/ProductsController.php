@@ -734,6 +734,10 @@ class ProductsController extends Controller
             $productsNewlyCreated=new CActiveDataProvider('Products',array(
                             'criteria'=>array(
                                 'condition'=>'newly_created=1',
+                                'with'=>array(
+                                    'productManufacturers',
+                                ),
+                                'together'=>true,
                             ),
             ));
             
