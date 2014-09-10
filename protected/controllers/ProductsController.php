@@ -699,7 +699,7 @@ class ProductsController extends Controller
                             ),
             ));
             
-            $productsDescriptionStat=new CActiveDataProvider('productTranslations',array(
+            $productsDescriptionStat=new CActiveDataProvider('ProductTranslations',array(
                             'criteria'=>array(
                                 'select'=>'t.language_code, COUNT(t.product_desc) as total',
                                 'group'=>'t.language_code'
@@ -709,7 +709,7 @@ class ProductsController extends Controller
                             )
             )); 
             
-            $productsShortDescriptionStat=new CActiveDataProvider('productTranslations',array(
+            $productsShortDescriptionStat=new CActiveDataProvider('ProductTranslations',array(
                             'criteria'=>array(
                                 'select'=>'t.language_code, COUNT(t.product_s_desc) as total',
                                 'group'=>'t.language_code'
