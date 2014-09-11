@@ -25,6 +25,10 @@ $this->menu=array(
                 'value'=> 'Currencies::priceDisplay($data->net_cost, $data->currency_id)',
             ),
             array(
+                'name'=>  Yii::t('common', 'Total Cost'),
+                'value'=> 'Currencies::priceDisplay($data->net_cost, $data->currency_id, null, $data->provider->vat)',
+            ),
+            array(
                 'name'=>'provider_id',
                 'value'=>'ServicesProviders::listData($data->provider_id)',
             ),

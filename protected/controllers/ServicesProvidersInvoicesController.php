@@ -151,7 +151,12 @@ class ServicesProvidersInvoicesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ServicesProvidersInvoices');
+		$dataProvider=new CActiveDataProvider('ServicesProvidersInvoices',array(
+                    'criteria'=>array(
+                        'with'=>array('provider'),
+                        'together'=>true,
+                    ),
+                ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

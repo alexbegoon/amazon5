@@ -149,7 +149,7 @@ class ServicesProvidersInvoices extends CActiveRecord
                 
                 foreach ($totalData->getData() as $r)
                 {
-                    $this->total_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id);
+                    $this->total_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
                 }
                 
                 $data = new CActiveDataProvider($this, array(
@@ -158,7 +158,7 @@ class ServicesProvidersInvoices extends CActiveRecord
                 
                 foreach ($data->getData() as $r)
                 {
-                    $this->subtotal_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id);
+                    $this->subtotal_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
                 }
                                 
 		return $data;

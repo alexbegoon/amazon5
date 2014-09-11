@@ -49,15 +49,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
                     'filter'=>ServicesProvidersInvoices::itemAlias("Paid"),
                 ),
                 array(
-                    'name'=>'net_cost',
-                    'footer'=>
-                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal_cost, $model->total_cost_currency)."\n<br>".
-                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total_cost, $model->total_cost_currency),
+                    'name'=>'net_cost',                    
                 ),
                 array(
                     'name'=>'currency_id',
                     'value'=>'Currencies::listData($data->currency_id)',
                     'filter'=>Currencies::listData(),
+                ),
+                array(
+                    'header'=>  Yii::t('common', 'Total Cost'),
+                    'name'=>'net_cost',
+                    'value'=>'Currencies::priceDisplay($data->net_cost,$data->currency_id,null,$data->provider->vat)',
+                    'footer'=>
+                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal_cost, $model->total_cost_currency)."\n<br>".
+                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total_cost, $model->total_cost_currency),
                 ),
 		'invoice_date',
 		'due_date',

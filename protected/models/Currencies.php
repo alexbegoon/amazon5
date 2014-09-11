@@ -193,14 +193,30 @@ class Currencies extends CActiveRecord
         
         /**
          * Convert price from currency A to currency B
+         * VAT may be applied before or after as need.
          * @param float $price
          * @param int $currencyA
          * @param int $currencyB
+         * @param float $applyVATafter Apply VAT after conversion
+         * @param float $applyVATbefore Apply VAT before conversion
          * @return float
          * @throws CHttpException
          */
-        public static function convertCurrencyTo($price,$currencyA,$currencyB=0)
+        public static function convertCurrencyTo($price,$currencyA,$currencyB=0,$applyVATafter=0,$applyVATbefore=0)
         {            
+            if(!is_numeric($applyVATafter)||$applyVATafter<0||$applyVATafter>100)
+            {
+                $msg='VAT should be numeric value greater or equal to zero and less than 100. '.$applyVATafter.' applied';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+            if(!is_numeric($applyVATbefore)||$applyVATbefore<0||$applyVATbefore>100)
+            {
+                $msg='VAT should be numeric value greater or equal to zero and less than 100. '.$applyVATafter.' applied';
+                Yii::log($msg);
+                throw new CHttpException(500, $msg);
+            }
+                
             if(empty($currencyB))
             {
                 $currencyB=self::getCurrencyForDisplay();
@@ -250,7 +266,7 @@ class Currencies extends CActiveRecord
                 throw new CHttpException(500, $msg);
             }
             
-            return (float)$price * (float)$exchB / (float)$exchA;
+            return ((float)$price * (1 + ((float)$applyVATbefore/100)) * (float)$exchB / (float)$exchA) * (1 + ((float)$applyVATafter/100));
         }
         
         /**
@@ -261,7 +277,7 @@ class Currencies extends CActiveRecord
          * @param int $currencyB
          * @return string
          */
-        public static function priceDisplay($price,$currencyA,$currencyB=0)
+        public static function priceDisplay($price,$currencyA,$currencyB=0,$applyVATafter=0,$applyVATbefore=0)
         {
             if(empty($currencyB))
             {
@@ -272,7 +288,7 @@ class Currencies extends CActiveRecord
                 $currencyIdForDisplay=$currencyB;
             }
             
-            $price = self::convertCurrencyTo($price,$currencyA,$currencyIdForDisplay);
+            $price = self::convertCurrencyTo($price,$currencyA,$currencyIdForDisplay,$applyVATafter,$applyVATbefore);
             return self::getFormattedCurrency($price,$currencyIdForDisplay);
         }
         
