@@ -30,6 +30,7 @@ class ServicesProvidersInvoices extends CActiveRecord
         public $subtotal_cost;
         public $total_cost_currency;
         public $provider_type;
+        public $vat_type;
 
         public function init()
         {
@@ -60,7 +61,7 @@ class ServicesProvidersInvoices extends CActiveRecord
 			array('invoice_date, due_date, file, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_type, invoice_number, provider_id, paid, net_cost, currency_id, invoice_date, due_date, file, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, provider_type, vat_type, invoice_number, provider_id, paid, net_cost, currency_id, invoice_date, due_date, file, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -139,6 +140,7 @@ class ServicesProvidersInvoices extends CActiveRecord
                 $criteria->together = true;
                 
                 $criteria->compare( 'provider.provider_type', $this->provider_type);
+                $criteria->compare( 'provider.vat_type', $this->vat_type);
                 
                 $totalData = new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

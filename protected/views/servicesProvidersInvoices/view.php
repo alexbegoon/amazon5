@@ -49,7 +49,7 @@ $this->menu=array(
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
                 ),
 	),
 )); ?>

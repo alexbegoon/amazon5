@@ -21,7 +21,7 @@ function enumItem($model,$attribute)
                 $value=str_replace("'",null,$value);
                 $values[$value]=Yii::t('common', ucfirst(strtolower($value)));
         }
-
+        asort($values);
         return $values;
 }
 

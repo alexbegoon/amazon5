@@ -48,6 +48,13 @@
 		<?php echo $form->dropDownList($model,'default_language',Languages::listData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'default_language',array('class'=>'label label-danger')); ?>
 	</div>
+    
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'vat_type',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'vat_type',enumItem($model,'vat_type'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'vat_type',array('class'=>'label label-danger')); ?>
+	</div>
+    
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'vat',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'vat',array('class'=>'form-control')); ?>

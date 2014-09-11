@@ -31,6 +31,11 @@ $this->menu=array(
                     'value'=>'ServicesProvidersTypes::listData($data->provider_type)',
                     'filter'=>ServicesProvidersTypes::listData(),
                 ),
+                array(
+                    'name'=>'vat_type',
+                    'value'=>'$data->vat_type',
+                    'filter'=>  enumItem($model, 'vat_type'),
+                ),
 		'provider_description',
 		array(
 			'class'=>'CButtonColumn',

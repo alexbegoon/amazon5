@@ -14,6 +14,7 @@
  * @property string $provider_phone
  * @property string $provider_fax
  * @property integer $sku_as_ean
+ * @property string $vat_type
  * @property string $vat
  * @property string $discount
  * @property integer $currency_id
@@ -71,31 +72,57 @@ class Providers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('cif, provider_name, vat, provider_country, provider_email, currency_id, default_language', 'required'),
+                        array('cif, provider_name, vat, vat_type, provider_country, provider_email, currency_id, default_language', 'required'),
 			array('default_language','match','pattern'=> '/^[a-zA-Z]{2}-[a-zA-Z]{2}$/','message'=> Yii::t('common','Language code must be in format \'xx-xx\', where \'x\' - letter.')),
                         array('sync_enabled, send_csv, send_xls, sku_as_ean, inactive, created_by, modified_by, locked_by, currency_id', 'numerical', 'integerOnly'=>true),
 			array('provider_name, provider_phone, provider_fax, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'length', 'max'=>128),
 			array('cif, provider_desc, provider_url, provider_address, sku_format, service_url', 'length', 'max'=>255),
-			array('provider_country', 'length', 'max'=>2),
-                        array('vat','compare','compareValue'=>'0.00001',
-                                                                                'operator'=>'>',
-                                                                                'allowEmpty'=>true , 
-                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
-			
+			array('provider_country', 'length', 'max'=>2),                        
 			array('provider_name', 'length', 'min'=>5),
 			array('sync_params', 'validateSyncParameters', 'allowEmpty'=>true),
 			array('provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2', 'email'),
 			array('provider_name, cif, provider_email', 'unique'),
-			array('vat', 'length', 'max'=>5),
-			array('csv_format, xls_format, sync_params, created_on, modified_on, locked_on, email_subject, email_body', 'safe'),
+			array('vat', 'numerical', 'min'=>0, 'max'=>60),
+			array('vat', 'checkVat'),
+                        array('vat_type', 'length', 'max'=>8),
+                        array('vat_type','match','pattern'=>'/^standard$|^export$|^intra$/'),
+			array('csv_format, xls_format, sync_params, sync_schedule, created_on, modified_on, locked_on, email_subject, email_body', 'safe'),
                         array('discount', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_phone, provider_fax, sku_as_ean, vat, discount, currency_id, default_language, inactive, sku_format, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2, email_subject, email_body, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, vat_type, provider_name, cif, provider_desc, provider_url, provider_country, provider_address, provider_phone, provider_fax, sku_as_ean, vat, discount, currency_id, default_language, inactive, sku_format, provider_email, provider_email_copy_1, provider_email_copy_2, provider_email_hidden_copy, provider_email_hidden_copy_2, email_subject, email_body, service_url, sync_params, sync_enabled, sync_schedule, last_sync_date, send_csv, send_xls, csv_format, xls_format, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
+        
+        /**
+         * Check VAT value.
+         * Export and Intra VAT always equal Zero. 
+         * @param type $attribute
+         * @param type $params
+         */
+        public function checkVat($attribute,$params)
+        {
+            if($this->vat_type=='export'||$this->vat_type=='intra')
+            {
+                if($this->vat!=0)
+                {
+                    $this->addError('vat', Yii::t('common', 
+                            '{attribute} should be 0 (zero)', 
+                            array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                }
+            }
+            if($this->vat_type=='standard')
+            {
+                if($this->vat<=0||empty($this->vat))
+                {
+                    $this->addError('vat', Yii::t('common', 
+                            '{attribute} must be greater than zero',
+                            array('{attribute}'=> $this->attributeLabels()[$attribute])));
+                }
+            }
+        }
 
-	/**
+        /**
 	 * @return array relational rules.
 	 */
 	public function relations()
@@ -130,6 +157,7 @@ class Providers extends CActiveRecord
 			'provider_phone' => Yii::t('common', 'Provider Phone'),
 			'provider_fax' => Yii::t('common', 'Provider Fax'),
 			'sku_as_ean' => Yii::t('common', 'Storing SKU As EAN'),
+                        'vat_type' => Yii::t('common', 'VAT Type'),
 			'vat' => Yii::t('common', 'VAT'),
 			'discount' => Yii::t('common', 'Discount'),
                         'currency_id' => Yii::t('common', 'Provider Currency'),
@@ -189,6 +217,7 @@ class Providers extends CActiveRecord
 		$criteria->compare('provider_phone',$this->provider_phone,true);
 		$criteria->compare('provider_fax',$this->provider_fax,true);
 		$criteria->compare('sku_as_ean',$this->sku_as_ean);
+                $criteria->compare('vat_type',$this->vat_type,true);
 		$criteria->compare('vat',$this->vat,true);
 		$criteria->compare('discount',$this->discount,true);
                 $criteria->compare('currency_id',$this->currency_id);

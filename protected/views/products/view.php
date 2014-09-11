@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Products'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Product'), 'url'=>array('create')),
-        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Product'), 'url'=>array('update', 'id'=>$model->id)),
+//        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Product'), 'url'=>array('update', 'id'=>$model->id)),
 	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Product'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Products'), 'url'=>array('admin')),
 );
@@ -40,6 +40,10 @@ $this->menu=array(
                     'type'=>'html',
                     'value'=>$model->blocked==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("blocked"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unblock")))               
                                                :Yii::t("yii", "No"). '&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("blocked"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Block"))),
+                ),
+                array(
+                    'name'=>'manufacturer_id',
+                    'value'=>  Manufacturers::listData($model->manufacturer_id),
                 ),
                 'product_parent_id',
 		'created_on',

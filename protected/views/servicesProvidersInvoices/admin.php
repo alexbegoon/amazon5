@@ -38,6 +38,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                     'filter'=>ServicesProvidersTypes::listData(),
                 ),
                 array(
+                    'name'=>'vat_type',
+                    'header'=>Yii::t('common', 'VAT Type'),
+                    'value'=>'$data->provider->vat_type',
+                    'filter'=>  enumItem(ServicesProviders::model(), 'vat_type'),
+                ),
+                array(
                     'name'=>'paid',
                     'value'=>'ServicesProvidersInvoices::itemAlias("Paid",$data->paid)',
                     'filter'=>ServicesProvidersInvoices::itemAlias("Paid"),

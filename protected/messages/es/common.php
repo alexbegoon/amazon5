@@ -115,12 +115,15 @@ return array(
     'Provider Product Name'=>'Proveedor Nombre del Producto',
     'Inner ID'=>'ID interior',
     'Inner SKU'=>'SKU interior',
-    'VAT'=>'Iva Soportado',
+    'VAT'=>'IVA Soportado',
     'Inactive'=>'Inactivo',
     'SKU Format'=>'SKU Formato',
     'Standard'=>'Estándar',
     'Export'=>'Exportación',
     'Intra'=>'Intracomunitario',
+    'standard'=>'estándar',
+    'export'=>'exportación',
+    'intra'=>'intracomunitario',
     'Paid'=>'Pagado',
     'Net Cost'=>'Importe Neto',
     'Select Currency'=>'Seleccione Moneda',
@@ -255,6 +258,9 @@ return array(
     'Invoice for the Service Providers'=>'Factura para los proveedores de servicios',
     'Pay for'=>'Pagar por',
     'Refund'=>'Reembolso',
+    '{attribute} should be 0 (zero)'=>'{attribute} debe ser 0 (cero)',
+    'VAT Type'=>'Tipo de IVA',
+    ''=>'',
     
 
  

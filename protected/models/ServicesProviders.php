@@ -14,6 +14,7 @@
  * @property string $provider_address
  * @property string $default_language
  * @property string $phone
+ * @property string $vat_type
  * @property double $vat
  * @property string $provider_email
  * @property string $created_on
@@ -25,6 +26,7 @@
  *
  * The followings are the available model relations:
  * @property ServicesProvidersTypes $providerType
+ * @property ServicesProvidersInvoices[] $servicesProvidersInvoices
  */
 class ServicesProviders extends CActiveRecord
 {
@@ -44,7 +46,7 @@ class ServicesProviders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provider_type, cif, default_language, provider_country, provider_name, vat', 'required'),
+			array('provider_type, cif, default_language, provider_country, provider_name, vat, vat_type', 'required'),
 			array('provider_type, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('vat', 'numerical', 'max'=>60, 'min'=>0),
 			array('provider_name, provider_url, provider_email', 'length', 'max'=>255),
@@ -53,12 +55,43 @@ class ServicesProviders extends CActiveRecord
 			array('default_language', 'length', 'max'=>5),
 			array('phone', 'length', 'max'=>32),
 			array('provider_email', 'email'),
+                        array('vat', 'checkVat'),
+                        array('vat_type', 'length', 'max'=>8),
+                        array('vat_type','match','pattern'=>'/^standard$|^export$|^intra$/'),
 			array('provider_description, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_name, cif, provider_type, provider_description, provider_url, provider_country, provider_address, default_language, phone, vat, provider_email, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, vat_type, provider_name, cif, provider_type, provider_description, provider_url, provider_country, provider_address, default_language, phone, vat, provider_email, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
+        
+        /**
+         * Check VAT value.
+         * Export and Intra VAT always equal Zero. 
+         * @param type $attribute
+         * @param type $params
+         */
+        public function checkVat($attribute,$params)
+        {
+            if($this->vat_type=='export'||$this->vat_type=='intra')
+            {
+                if($this->vat!=0)
+                {
+                    $this->addError('vat', Yii::t('common', 
+                            '{attribute} should be 0 (zero)', 
+                            array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                }
+            }
+            if($this->vat_type=='standard')
+            {
+                if($this->vat<=0||empty($this->vat))
+                {
+                    $this->addError('vat', Yii::t('common', 
+                            '{attribute} must be greater than zero',
+                            array('{attribute}'=> $this->attributeLabels()[$attribute])));
+                }
+            }
+        }
 
 	/**
 	 * @return array relational rules.
@@ -88,6 +121,7 @@ class ServicesProviders extends CActiveRecord
 			'provider_address' => Yii::t('common', 'Provider Address'),
 			'default_language' => Yii::t('common', 'Default Language'),
 			'phone' => Yii::t('common', 'Phone'),
+                        'vat_type' => Yii::t('common', 'VAT Type'),
 			'vat' => Yii::t('common', 'VAT'),
 			'provider_email' => Yii::t('common', 'Provider Email'),
 			'created_on' => Yii::t('common', 'Created On'),
@@ -127,6 +161,7 @@ class ServicesProviders extends CActiveRecord
 		$criteria->compare('provider_address',$this->provider_address,true);
 		$criteria->compare('default_language',$this->default_language,true);
 		$criteria->compare('phone',$this->phone,true);
+                $criteria->compare('vat_type',$this->vat_type,true);
 		$criteria->compare('vat',$this->vat);
 		$criteria->compare('provider_email',$this->provider_email,true);
 		$criteria->compare('created_on',$this->created_on,true);

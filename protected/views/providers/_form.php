@@ -94,6 +94,11 @@
 	</div>
 
 	<div class="row form-group">
+		<?php echo $form->labelEx($model,'vat_type',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'vat_type',enumItem($model,'vat_type'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'vat_type',array('class'=>'label label-danger')); ?>
+	</div>
+	<div class="row form-group">
 		<?php echo $form->labelEx($model,'vat',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'vat',array('size'=>5,'maxlength'=>5,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'vat',array('class'=>'label label-danger')); ?>

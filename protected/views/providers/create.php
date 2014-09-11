@@ -14,6 +14,6 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Providers');?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Provider');?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
