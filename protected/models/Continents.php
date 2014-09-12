@@ -127,4 +127,27 @@ class Continents extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listContinents($all=false)
+        {
+            if($all)
+                return self::model()->findAll(array('order'=>'t.name'));
+                
+            return self::model()->findAll(array('condition'=>'t.published=1','order'=>'t.name'));
+        }
+        
+        public static function listData($continentCode=null)
+        {
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listContinents(), 'code', 'name');
+            }
+            
+            if(!empty($continentCode))
+                return CHtml::listData(self::listContinents(true), 'code', 'name')[$continentCode];
+            
+            return $data;
+        }
 }
