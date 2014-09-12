@@ -111,7 +111,7 @@ class LanguagesController extends Controller
         
         public function actionToggle($id)
         {
-            $model=Languages::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

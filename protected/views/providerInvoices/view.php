@@ -33,11 +33,23 @@ $this->menu=array(
             ),
             array(
                 'name'=>  Yii::t('common', 'Total Cost'),
-                'value'=> Currencies::priceDisplay($model->totalCost, $model->currency_id),
+                'value'=> Currencies::priceDisplay($model->net_cost, $model->currency_id, null, $model->provider->vat),
             ),
             array(
-                'name'=>  Yii::t('common', 'paid'),
-                'value'=> $model->paid==1?Yii::t("yii","Yes"):Yii::t("yii","No"),
+                'name'=>  Yii::t('common', 'Paid'),
+                'type'=>'html',
+                'value'=>$model->paid==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("paid"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Refund")))               
+                                        :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("paid"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Pay for"))),
+            ),
+            'created_on',
+            array(
+                'name'=>  Yii::t('common', 'Created By'),
+                'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+            ),
+            'modified_on',
+            array(
+                'name'=>  Yii::t('common', 'Modified By'),
+                'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
             ),
 	),
 )); ?>

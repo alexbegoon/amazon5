@@ -230,7 +230,7 @@ class ManufacturersController extends Controller
         
         public function actionToggle($id)
         {
-            $model=Manufacturers::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

@@ -119,7 +119,7 @@ class ProvidersController extends Controller
         
         public function actionToggle($id)
         {
-            $model=Providers::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

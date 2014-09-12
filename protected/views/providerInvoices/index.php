@@ -19,6 +19,7 @@ $this->menu=array(
 	'dataProvider'=>$dataProvider,
         'columns'=>array(
             'id',
+            'invoice_number',
             array(
                 'name'=>  Yii::t('common', 'Provider'),
                 'value'=> 'Providers::model()->findByPk($data->provider_id)->provider_name',
@@ -29,11 +30,21 @@ $this->menu=array(
             ),
             array(
                 'name'=>  Yii::t('common', 'Total Cost'),
-                'value'=> 'Currencies::priceDisplay($data->totalCost,$data->currency_id)',
+                'value'=> 'Currencies::priceDisplay($data->net_cost,$data->currency_id,null,$data->provider->vat)',
             ),
             array(
                 'name'=>  Yii::t('common', 'Paid'),
                 'value'=> '$data->paid==1?Yii::t("yii","Yes"):Yii::t("yii","No")',
             ),
+            array(
+                'name'=>'created_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+            ),
+            'created_on',
+            array(
+                'name'=>'modified_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+            ),
+            'modified_on',
         ),
 )); ?>

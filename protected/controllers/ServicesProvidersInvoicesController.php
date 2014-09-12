@@ -113,7 +113,7 @@ class ServicesProvidersInvoicesController extends Controller
         
         public function actionToggle($id)
         {
-            $model=ServicesProvidersInvoices::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

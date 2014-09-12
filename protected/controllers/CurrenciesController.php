@@ -113,7 +113,7 @@ class CurrenciesController extends Controller
         
         public function actionToggle($id)
         {
-            $model=  Currencies::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

@@ -113,7 +113,7 @@ class CountriesController extends Controller
         
         public function actionToggle($id)
         {
-            $model=Countries::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

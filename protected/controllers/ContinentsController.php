@@ -113,7 +113,7 @@ class ContinentsController extends Controller
         
         public function actionToggle($id)
         {
-            $model=Continents::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {

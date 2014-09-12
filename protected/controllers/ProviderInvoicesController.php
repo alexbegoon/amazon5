@@ -110,6 +110,27 @@ class ProviderInvoicesController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=$this->loadModel($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
+        }
 
 	/**
 	 * Deletes a particular model.
@@ -130,7 +151,12 @@ class ProviderInvoicesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ProviderInvoices');
+		$dataProvider=new CActiveDataProvider('ProviderInvoices',array(
+                    'criteria'=>array(
+                        'with'=>array('provider'),
+                        'together'=>true,
+                    ),
+                ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

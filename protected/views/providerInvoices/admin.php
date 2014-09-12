@@ -12,34 +12,10 @@ $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('create')),
 );
-
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#provider-invoices-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
 ?>
 
 <h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Provider Invoices')?></h1>
 
-<p>
-    <?php echo Yii::t('common','You may optionally enter a comparison operator');?>    (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) 
-    <?php echo Yii::t('common','at the beginning of each of your search values to specify how the comparison should be done.');?>    
-</p>
-
-<?php echo CHtml::link(Yii::t('common','Advanced Search'),'#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'provider-invoices-grid',
@@ -47,18 +23,41 @@ $('.search-form form').submit(function(){
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'provider_id',
-		'net_cost',
-		'currency_id',
-		'paid',
+		'invoice_number',
+                array(
+                    'name'=>'provider_id',
+                    'value'=>'Providers::listData($data->provider_id)',
+                    'filter'=>Providers::listData(),
+                ),
+                array(
+                    'name'=>'vat_type',
+                    'header'=>Yii::t('common', 'VAT Type'),
+                    'value'=>'$data->provider->vat_type',
+                    'filter'=>  enumItem(Providers::model(), 'vat_type'),
+                ),
+                array(
+                    'name'=>'paid',
+                    'value'=>'ProviderInvoices::itemAlias("Paid",$data->paid)',
+                    'filter'=>ProviderInvoices::itemAlias("Paid"),
+                ),
+                array(
+                    'name'=>'net_cost',                    
+                ),
+                array(
+                    'name'=>'currency_id',
+                    'value'=>'Currencies::listData($data->currency_id)',
+                    'filter'=>Currencies::listData(),
+                ),
+                array(
+                    'header'=>  Yii::t('common', 'Total Cost'),
+                    'name'=>'net_cost',
+                    'value'=>'Currencies::priceDisplay($data->net_cost,$data->currency_id,null,$data->provider->vat)',
+                    'footer'=>
+                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal_cost, $model->total_cost_currency)."\n<br>".
+                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total_cost, $model->total_cost_currency),
+                ),
 		'created_on',
-		/*
-		'created_by',
 		'modified_on',
-		'modified_by',
-		'locked_on',
-		'locked_by',
-		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

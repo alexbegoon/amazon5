@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table '{{provider_invoices}}':
  * @property string $id
+ * @property string $invoice_number
  * @property integer $provider_id
  * @property string $net_cost
  * @property integer $currency_id
@@ -22,7 +23,16 @@
  */
 class ProviderInvoices extends CActiveRecord
 {
+        public $total_cost;
+        public $subtotal_cost;
+        public $total_cost_currency;
         public $provider_type;
+        public $vat_type;
+        
+        public function init()
+        {
+            $this->total_cost_currency = Currencies::getCurrencyForDisplay();
+        }
         
         /**
 	 * @return string the associated database table name
@@ -43,10 +53,11 @@ class ProviderInvoices extends CActiveRecord
 			array('provider_id, currency, net_cost', 'required'),
 			array('provider_id, currency_id, paid, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('net_cost', 'length', 'max'=>15),
+                        array('invoice_number', 'length', 'max'=>64),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, provider_type, provider_id, net_cost, currency_id, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, invoice_number, provider_type, vat_type, provider_id, net_cost, currency_id, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +81,7 @@ class ProviderInvoices extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
+                        'invoice_number' => Yii::t('common', 'Invoice Number'),
 			'provider_id' => Yii::t('common', 'Provider'),
 			'net_cost' => Yii::t('common', 'Net Cost'),
 			'currency_id' => Yii::t('common', 'Currency'),
@@ -102,13 +114,15 @@ class ProviderInvoices extends CActiveRecord
 		$criteria=new CDbCriteria;
                 
                 $criteria->with = array('provider');
+                $criteria->together = true;
                 
 		$criteria->compare('id',$this->id,true);
+                $criteria->compare('invoice_number',$this->invoice_number,true);
 		$criteria->compare('provider_id',$this->provider_id);
 		$criteria->compare('net_cost',$this->net_cost,true);
-		$criteria->compare('currency_id',$this->currency_id);
+		$criteria->compare('t.currency_id',$this->currency_id);
 		$criteria->compare('paid',$this->paid);
-		$criteria->mergeWith($this->dateRangeSearchCriteria('t.created_on',$this->created_on));
+		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
 		$criteria->compare('modified_by',$this->modified_by);
@@ -116,12 +130,28 @@ class ProviderInvoices extends CActiveRecord
 		$criteria->compare('locked_by',$this->locked_by);
                 
 		$criteria->compare('provider.provider_type',$this->provider_type);
+		$criteria->compare('provider.vat_type',$this->vat_type);
                 
+                $totalData = new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                        'pagination'=>false
+		));
                 
-
-		return new CActiveDataProvider($this, array(
+                foreach ($totalData->getData() as $r)
+                {
+                    $this->total_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
+                }
+                
+                $data = new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+                
+                foreach ($data->getData() as $r)
+                {
+                    $this->subtotal_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
+                }
+                                
+		return $data;
 	}
 
 	/**
@@ -141,31 +171,23 @@ class ProviderInvoices extends CActiveRecord
                 'CBuyinArBehavior' => array(
                     'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
                 ),
-                'EDateRangeSearchBehavior' => array(
-                    'class' => 'application.components.EDateRangeSearchBehavior', 
-                ),
+//                'EDateRangeSearchBehavior' => array(
+//                    'class' => 'application.components.EDateRangeSearchBehavior', 
+//                ),
             );
         }
         
-        public function getTotalCost()
+        public static function itemAlias($type,$code=NULL) 
         {
-            $p=Providers::model()->findByPk($this->provider_id);
-            if($p===null)
-                return 0;
-            
-            return $this->net_cost + ($p->vat/100*$this->net_cost);
-        }
-        
-        public function getTotal($property, $keys)
-        {
-            $objects=self::model()->findAllByPk($keys);
-            $sum=0;
-            foreach($objects as $object)
-            {
-                if(!empty($object->{$property}))
-                $sum+=Currencies::convertCurrencyTo($object->{$property}, $object->currency_id);
-            }
-            
-            return $sum;
-        }
+            $_items = array(
+                    'Paid' => array(
+                            '0' => Yii::t('yii','No'),
+                            '1' => Yii::t('yii','Yes'),
+                    ),
+            );
+            if (isset($code))
+                    return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+            else
+                    return isset($_items[$type]) ? $_items[$type] : false;
+	}
 }

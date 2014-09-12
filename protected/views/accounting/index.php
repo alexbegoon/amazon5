@@ -22,11 +22,6 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Invoice Management'),
                         ),
                     array(
-                        'url'=>'accountingOverview',
-                        'glyphicon'=>'glyphicon-calendar',
-                        'label'=>Yii::t('common','Accounting Overview'),
-                        ),
-                    array(
                         'url'=>'servicesProviders',
                         'glyphicon'=>'glyphicon-briefcase',
                         'label'=>Yii::t('common','Providers of the Services'),

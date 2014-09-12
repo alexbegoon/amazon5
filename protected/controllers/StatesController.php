@@ -113,7 +113,7 @@ class StatesController extends Controller
         
         public function actionToggle($id)
         {
-            $model=States::model()->findByPk($id);
+            $model=$this->loadModel($id);
             
             if($model!==null)
             {
