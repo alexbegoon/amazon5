@@ -53,6 +53,7 @@ class ProviderInvoices extends CActiveRecord
 			array('provider_id, currency, net_cost', 'required'),
 			array('provider_id, currency_id, paid, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('net_cost', 'length', 'max'=>15),
+			array('net_cost', 'numerical', 'min'=>0.01),
                         array('invoice_number', 'length', 'max'=>64),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().

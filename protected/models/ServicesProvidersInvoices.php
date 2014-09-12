@@ -57,7 +57,7 @@ class ServicesProvidersInvoices extends CActiveRecord
 			array('provider_id, paid, currency_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('invoice_number', 'length', 'max'=>64),
 			array('net_cost', 'length', 'max'=>15),
-			array('net_cost', 'numerical'),
+			array('net_cost', 'numerical', 'min'=>0.01),
 			array('invoice_date, due_date, file, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

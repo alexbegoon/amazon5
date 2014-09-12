@@ -5,7 +5,7 @@
 $this->breadcrumbs=array(
         Yii::t('common','Accounting')=>array('/accounting'),
 	Yii::t('common','Provider Invoices')=>array('index'),
-	$model->id,
+	'#'.$model->id,
 );
 
 $this->menu=array(
