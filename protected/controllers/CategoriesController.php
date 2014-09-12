@@ -153,8 +153,10 @@ class CategoriesController extends Controller
             $this->render('create_images',array('model'=>$model));
         }
         
-        public function actionDeleteImage($id)
+        public function actionDeleteImage($id,$token)
         {
+            if ($token !== Yii::app()->getRequest()->getCsrfToken())
+                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
             $model=CategoryImages::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
@@ -286,8 +288,10 @@ class CategoriesController extends Controller
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
 
-        public function actionRevokeAllProductsFromCategory($id)
+        public function actionRevokeAllProductsFromCategory($id,$token)
         {
+            if ($token !== Yii::app()->getRequest()->getCsrfToken())
+                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
             $category=$this->loadModel($id);
             
             $criteria = new CDbCriteria;
@@ -416,8 +420,10 @@ class CategoriesController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete($id,$token)
 	{
+            if ($token !== Yii::app()->getRequest()->getCsrfToken())
+                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
             $totalDeleted = 0;
             $this->loadModel($id);
             $childs = Categories::getChildsList($id);
@@ -445,8 +451,10 @@ class CategoriesController extends Controller
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
         
-        public function actionRemoveAll($id)
+        public function actionRemoveAll($id,$token)
         {
+            if ($token !== Yii::app()->getRequest()->getCsrfToken())
+                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
             $webShop = WebShops::model()->findByPk($id);
             if($webShop===null)
                 throw new CHttpException(404,'The requested page does not exist.');
