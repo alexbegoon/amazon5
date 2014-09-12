@@ -11,7 +11,7 @@ $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Countries'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Countries'), 'url'=>array('create')),
         array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Countries'), 'url'=>array('update', 'id'=>$model->code)),
-	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Countries'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->code),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Countries'), 'url'=>'#', 'linkOptions'=>array('csrf'=>true,'submit'=>array('delete','id'=>$model->code),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Countries'), 'url'=>array('admin')),
 );
 ?>

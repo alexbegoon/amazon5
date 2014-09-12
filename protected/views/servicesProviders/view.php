@@ -12,7 +12,7 @@ $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Providers of the Services'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Provider of the Services'), 'url'=>array('create')),
         array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Provider of the Services'), 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Provider of the Services'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Provider of the Services'), 'url'=>'#', 'linkOptions'=>array('csrf'=>true,'submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Providers of the Services'), 'url'=>array('admin')),
 );
 ?>
