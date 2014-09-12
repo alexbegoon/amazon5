@@ -49,7 +49,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                     array('label' => Yii::t('common','Language'), 'url'=>array('#'), 'linkOptions'=>array('onclick'=>'$("#langWindow").dialog("open"); return false;')),
                     array('label' => Yii::t('common','Currency'), 'url'=>array('#'), 'linkOptions'=>array('onclick'=>'$("#currencyWindow").dialog("open"); return false;')),
                     array('label' => Yii::t('common', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
-                    array('label' => Yii::t('common', 'Logout') . ' (' . Yii::app()->user->name . ')', 'url' => array('/user/logout'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => Yii::t('common', 'Logout') . ' (' . Yii::app()->user->name . ')', 'url' => array('/user/logout','token'=>Yii::app()->getRequest()->getCsrfToken()), 'visible' => !Yii::app()->user->isGuest),
                     
                 ),
             ));

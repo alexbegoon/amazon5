@@ -19,7 +19,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/signin.css')
 
 <div class="container">
     
-<?php echo CHtml::beginForm(null, null, array('class'=>'form-signin', 'role'=>'form')); ?>
+<?php echo CHtml::beginForm(null, 'POST', array('class'=>'form-signin', 'role'=>'form')); ?>
 
 	<!--<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>-->
 	<h2 class="form-signin-heading text-center"><?php echo UserModule::t("Login"); ?></h2>

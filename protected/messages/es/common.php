@@ -263,6 +263,7 @@ return array(
     'Export to Excel'=>'Exportar a Excel',
     'Export all data to Excel'=>'Exportar todos los datos a Excel',
     'Export to: '=>'Exportar a: ',
+    'Invoice Number'=>'Número de Factura',
     
 
  

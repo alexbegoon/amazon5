@@ -7,8 +7,10 @@ class LogoutController extends Controller
 	/**
 	 * Logout the current user and redirect to returnLogoutUrl.
 	 */
-	public function actionLogout()
+	public function actionLogout($token)
 	{
+                if ($token !== Yii::app()->getRequest()->getCsrfToken())
+                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
 	}
