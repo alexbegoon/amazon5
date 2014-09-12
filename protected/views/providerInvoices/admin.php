@@ -10,17 +10,24 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Provider Invoices'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Provider Invoice'), 'url'=>array('create')),
+	array('label'=>Yii::t('common','Export all data to Excel'), 'url'=>array('admin','excel'=>'export','disablePaging'=>'true')),
 );
 ?>
 
 <h1 class="text-center"><?php echo Yii::t('common','Manage');?> <?php echo Yii::t('common','Provider Invoices')?></h1>
 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('EExcelView', array(
 	'id'=>'provider-invoices-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+        // Excel settings
+        'title'=>Yii::t('common','Provider Invoices'),
+        'autoWidth'=>true,
+        'stream'=>true,
+        'template'=>"{exportbuttons}\n{summary}\n{items}\n{pager}\n{exportbuttons}",
+        // End Excel settings
 	'columns'=>array(
 		'id',
 		'invoice_number',
@@ -62,4 +69,6 @@ $this->menu=array(
 			'class'=>'CButtonColumn',
 		),
 	),
-)); ?>
+)); 
+
+?>

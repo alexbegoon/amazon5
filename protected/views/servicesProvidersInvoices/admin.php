@@ -11,6 +11,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Invoices of the Service Providers'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Invoice for the Service Providers'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','Export all data to Excel'), 'url'=>array('admin','excel'=>'export','disablePaging'=>'true')),
 );
 
 ?>
@@ -19,11 +20,17 @@ $this->menu=array(
 
 
 <?php 
-//CVarDumper::dump($model->search()->getData(),10,true);die;
-$this->widget('zii.widgets.grid.CGridView', array(
+
+$this->widget('EExcelView', array(
 	'id'=>'services-providers-invoices-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+        // Excel settings
+        'title'=>Yii::t('common','Invoices of the Service Providers'),
+        'autoWidth'=>true,
+        'stream'=>true,
+        'template'=>"{exportbuttons}\n{summary}\n{items}\n{pager}\n{exportbuttons}",
+        // End Excel settings
 	'columns'=>array(
 		'id',
 		'invoice_number',

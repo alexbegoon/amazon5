@@ -260,7 +260,9 @@ return array(
     'Refund'=>'Reembolso',
     '{attribute} should be 0 (zero)'=>'{attribute} debe ser 0 (cero)',
     'VAT Type'=>'Tipo de IVA',
-    ''=>'',
+    'Export to Excel'=>'Exportar a Excel',
+    'Export all data to Excel'=>'Exportar todos los datos a Excel',
+    'Export to: '=>'Exportar a: ',
     
 
  

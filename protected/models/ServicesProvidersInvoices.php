@@ -31,10 +31,12 @@ class ServicesProvidersInvoices extends CActiveRecord
         public $total_cost_currency;
         public $provider_type;
         public $vat_type;
+        public $disablePaging = false;
 
         public function init()
         {
             $this->total_cost_currency = Currencies::getCurrencyForDisplay();
+            $this->disablePaging = Yii::app()->request->getParam('disablePaging',false);
         }
         
 	/**
@@ -154,6 +156,7 @@ class ServicesProvidersInvoices extends CActiveRecord
                 
                 $data = new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'pagination'=>$this->disablePaging?false:null,
 		));
                 
                 foreach ($data->getData() as $r)
