@@ -30,7 +30,7 @@ function print_category($category, $webShopId)
     <li role="presentation" class="divider"></li>
     <li role="presentation">
     '.CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Revoke all products'), 
-                    Yii::app()->controller->createUrl('RevokeAllProductsFromCategory',array('id'=>$category->id)),
+                    Yii::app()->controller->createUrl('RevokeAllProductsFromCategory',array('id'=>$category->id,Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken)),
                     array('confirm'=>Yii::t('common','Are you sure you want to delete these items?'),
                           'role'=>'menuitem',
                           'tabindex'=>'-1',
@@ -38,7 +38,7 @@ function print_category($category, $webShopId)
                               <li role="presentation" class="divider"></li>
     <li role="presentation">
     '.CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove this category'), 
-                    Yii::app()->controller->createUrl('delete',array('id'=>$category->id)),
+                    Yii::app()->controller->createUrl('delete',array('id'=>$category->id,Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken)),
                     array('confirm'=>Yii::t('zii','Are you sure you want to delete this item?'),
                           'role'=>'menuitem',
                           'tabindex'=>'-1',
@@ -84,7 +84,7 @@ function print_category($category, $webShopId)
                     <li role="presentation" class="divider"></li>
                     <li role="presentation">
                         <?php echo CHtml::link('<i class="fa fa-trash-o"></i> '.Yii::t('common', 'Remove all categories'), 
-                                    Yii::app()->controller->createUrl('removeAll',array('id'=>$webShop->id)),
+                                    Yii::app()->controller->createUrl('removeAll',array('id'=>$webShop->id,Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken)),
                                     array('confirm'=>Yii::t('common','Are you sure you want to delete this item?|Are you sure you want to delete these items?',array(count($webShop->categories))),
                                           'role'=>'menuitem',
                                           'tabindex'=>'-1',

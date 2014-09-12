@@ -153,10 +153,9 @@ class CategoriesController extends Controller
             $this->render('create_images',array('model'=>$model));
         }
         
-        public function actionDeleteImage($id,$token)
+        public function actionDeleteImage($id)
         {
-            if ($token !== Yii::app()->getRequest()->getCsrfToken())
-                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+            $this->checkToken();
             $model=CategoryImages::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
@@ -167,6 +166,8 @@ class CategoriesController extends Controller
             if(!isset($_GET['ajax']))
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
+        
+        
         
         public function actionMove($id)
         {
@@ -288,10 +289,9 @@ class CategoriesController extends Controller
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
 
-        public function actionRevokeAllProductsFromCategory($id,$token)
+        public function actionRevokeAllProductsFromCategory($id)
         {
-            if ($token !== Yii::app()->getRequest()->getCsrfToken())
-                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+            $this->checkToken();
             $category=$this->loadModel($id);
             
             $criteria = new CDbCriteria;
@@ -420,10 +420,9 @@ class CategoriesController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id,$token)
+	public function actionDelete($id)
 	{
-            if ($token !== Yii::app()->getRequest()->getCsrfToken())
-                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+            $this->checkToken();
             $totalDeleted = 0;
             $this->loadModel($id);
             $childs = Categories::getChildsList($id);
@@ -451,10 +450,9 @@ class CategoriesController extends Controller
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
         
-        public function actionRemoveAll($id,$token)
+        public function actionRemoveAll($id)
         {
-            if ($token !== Yii::app()->getRequest()->getCsrfToken())
-                throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+            $this->checkToken();
             $webShop = WebShops::model()->findByPk($id);
             if($webShop===null)
                 throw new CHttpException(404,'The requested page does not exist.');
@@ -515,8 +513,17 @@ class CategoriesController extends Controller
 			
 		return $model;
 	}
+        
+        public function checkToken()
+        {
+            if(empty(Yii::app()->request->getParam( Yii::app()->request->csrfTokenName, null)))
+                    throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+            
+            if (Yii::app()->request->getParam( Yii::app()->request->csrfTokenName, null) !== Yii::app()->getRequest()->getCsrfToken())
+                    throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+        }
 
-	/**
+        /**
 	 * Performs the AJAX validation.
 	 * @param Categories $model the model to be validated
 	 */

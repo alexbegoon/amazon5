@@ -14,3 +14,8 @@ $this->menu=array(
 <h1 class="text-center"><?php echo Yii::t('common','Categories')?></h1>
 
 <?php $this->renderPartial('tree', array()); ?>
+
+<br>
+<br>
+<br>
+<br>
