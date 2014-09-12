@@ -24,7 +24,10 @@ $this->menu=array(
                 'template_name',
                 'shop_url',
                 'default_language',
-                'currency_id',
+                array(
+                    'name'=>'currency_id',
+                    'value'=>'Currencies::listData($data->currency_id)',
+                ),
                 'email',
                 array(
                     'name'=>'offline',
