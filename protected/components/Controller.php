@@ -30,6 +30,12 @@ class Controller extends RController
         public function init() {
             parent::init();
             
+            // filter out garbage requests
+            $uri = Yii::app()->request->requestUri;
+            if (strpos($uri, 'favicon'))
+                    Yii::app()->end();
+            // do the other initialization stuff
+            
             new JsTrans('common',  Yii::app()->language);
         }
         
