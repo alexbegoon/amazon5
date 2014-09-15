@@ -516,7 +516,7 @@ class CategoriesController extends Controller
         
         public function checkToken()
         {
-            if(empty(Yii::app()->request->getParam( Yii::app()->request->csrfTokenName, null)))
+            if(!Yii::app()->request->getParam( Yii::app()->request->csrfTokenName, null))
                     throw new CHttpException(400, Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
             
             if (Yii::app()->request->getParam( Yii::app()->request->csrfTokenName, null) !== Yii::app()->getRequest()->getCsrfToken())
