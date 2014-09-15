@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteRule ^favicon.ico$ - [F,L]
+RewriteRule ^/favicon.ico$ - [F,L]
 
 # if a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
