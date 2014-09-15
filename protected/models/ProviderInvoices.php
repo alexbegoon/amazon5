@@ -119,18 +119,18 @@ class ProviderInvoices extends CActiveRecord
                 $criteria->with = array('provider');
                 $criteria->together = true;
                 
-		$criteria->compare('id',$this->id,true);
-                $criteria->compare('invoice_number',$this->invoice_number,true);
-		$criteria->compare('provider_id',$this->provider_id);
-		$criteria->compare('net_cost',$this->net_cost,true);
+		$criteria->compare('t.id',$this->id,true);
+                $criteria->compare('t.invoice_number',$this->invoice_number,true);
+		$criteria->compare('t.provider_id',$this->provider_id);
+		$criteria->compare('t.net_cost',$this->net_cost,true);
 		$criteria->compare('t.currency_id',$this->currency_id);
-		$criteria->compare('paid',$this->paid);
-		$criteria->compare('created_on',$this->created_on,true);
-		$criteria->compare('created_by',$this->created_by);
-		$criteria->compare('modified_on',$this->modified_on,true);
-		$criteria->compare('modified_by',$this->modified_by);
-		$criteria->compare('locked_on',$this->locked_on,true);
-		$criteria->compare('locked_by',$this->locked_by);
+		$criteria->compare('t.paid',$this->paid);
+		$criteria->compare('t.created_on',$this->created_on,true);
+		$criteria->compare('t.created_by',$this->created_by);
+		$criteria->compare('t.modified_on',$this->modified_on,true);
+		$criteria->compare('t.modified_by',$this->modified_by);
+		$criteria->compare('t.locked_on',$this->locked_on,true);
+		$criteria->compare('t.locked_by',$this->locked_by);
                 
 		$criteria->compare('provider.provider_type',$this->provider_type);
 		$criteria->compare('provider.vat_type',$this->vat_type);
