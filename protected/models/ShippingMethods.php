@@ -1,12 +1,13 @@
 <?php
 
 /**
- * This is the model class for table "{{shipping_types}}".
+ * This is the model class for table "{{shipping_methods}}".
  *
- * The followings are the available columns in table '{{shipping_types}}':
+ * The followings are the available columns in table '{{shipping_methods}}':
  * @property integer $id
- * @property string $shipping_type_name
- * @property string $shipping_type_desc
+ * @property integer $shipping_company_id
+ * @property integer $shipping_type_id
+ * @property integer $published
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -15,16 +16,20 @@
  * @property integer $locked_by
  *
  * The followings are the available model relations:
- * @property ShippingMethods[] $shippingMethods
+ * @property Orders[] $orders
+ * @property ShippingCosts[] $shippingCosts
+ * @property Languages[] $amzni5Languages
+ * @property ShippingCompanies $shippingCompany
+ * @property ShippingTypes $shippingType
  */
-class ShippingTypes extends CActiveRecord
+class ShippingMethods extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{shipping_types}}';
+		return '{{shipping_methods}}';
 	}
 
 	/**
@@ -35,14 +40,12 @@ class ShippingTypes extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('shipping_type_name','required'),
-                        array('shipping_type_name','unique'),
-			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('shipping_type_name, shipping_type_desc', 'length', 'max'=>255, 'min'=>3),
+			array('shipping_company_id, shipping_type_id', 'required'),
+			array('shipping_company_id, shipping_type_id, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, shipping_type_name, shipping_type_desc, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, shipping_company_id, shipping_type_id, published, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,7 +57,11 @@ class ShippingTypes extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'shippingMethods' => array(self::HAS_MANY, 'ShippingMethods', 'shipping_type_id'),
+			'orders' => array(self::HAS_MANY, 'Orders', 'shipping_method_id'),
+			'shippingCosts' => array(self::HAS_MANY, 'ShippingCosts', 'shipping_method_id'),
+			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{shipping_method_translations}}(shipping_method_id, language_code)'),
+			'shippingCompany' => array(self::BELONGS_TO, 'ShippingCompanies', 'shipping_company_id'),
+			'shippingType' => array(self::BELONGS_TO, 'ShippingTypes', 'shipping_type_id'),
 		);
 	}
 
@@ -65,8 +72,9 @@ class ShippingTypes extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'shipping_type_name' => Yii::t('common', 'Shipping Type'),
-			'shipping_type_desc' => Yii::t('common', 'Shipping Type Description'),
+			'shipping_company_id' => Yii::t('common', 'Shipping Company'),
+			'shipping_type_id' => Yii::t('common', 'Shipping Type'),
+			'published' => Yii::t('common', 'Published'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -95,8 +103,9 @@ class ShippingTypes extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('shipping_type_name',$this->shipping_type_name,true);
-		$criteria->compare('shipping_type_desc',$this->shipping_type_desc,true);
+		$criteria->compare('shipping_company_id',$this->shipping_company_id);
+		$criteria->compare('shipping_type_id',$this->shipping_type_id);
+		$criteria->compare('published',$this->published);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -113,7 +122,7 @@ class ShippingTypes extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ShippingTypes the static model class
+	 * @return ShippingMethods the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -127,36 +136,42 @@ class ShippingTypes extends CActiveRecord
               ));
         }
         
-        public static function listTypes()
+        public function getName()
         {
-            static $data=array();
-            if(empty($data))
+            $model=null;
+            if(Yii::app()->user->hasState('applicationLanguage'))
             {
-                $data=self::model()->findAll(array('order'=>'t.shipping_type_name'));
-            }
-            return $data;
-        }
-        
-        public static function listData($typeId=null)
-        {
-            static $data=array();
-                        
-            if(empty($data))
-            {
-                $types = self::listTypes();
-                $data = CHtml::listData($types,'id',function($type) {
-                    return $type->shipping_type_name;
-                });
+                $currentLang = Yii::app()->user->getState('applicationLanguage');
+                $model = ShippingMethodTranslations::model()->findByPk(array('shipping_method_id'=>$this->id,'language_code'=>$currentLang));
             }
             
-            if(!empty($typeId))
+            if($model===null)
             {
-                $types = self::listTypes();
-                $data = CHtml::listData($types,'id',function($type) {
-                    return $type->shipping_type_name;
-                });
-                return $data[$typeId];
+                $criteria = new CDbCriteria;
+                $criteria->condition='shipping_method_id=:shipping_method_id';
+                $criteria->params=array(':shipping_method_id'=>$this->id);
+                $model = ShippingMethodTranslations::model()->find($criteria);
             }
-            return $data;
+            
+            if($model===null)
+            {
+                return Yii::t('common', '*no name*');
+            }
+            
+            return $model->shipping_method_name;
         }
+        
+        public static function itemAlias($type,$code=NULL) 
+        {
+		$_items = array(
+			'Published' => array(
+				'0' => Yii::t('yii','No'),
+				'1' => Yii::t('yii','Yes'),
+			),
+		);
+		if (isset($code))
+			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+		else
+			return isset($_items[$type]) ? $_items[$type] : false;
+	}
 }

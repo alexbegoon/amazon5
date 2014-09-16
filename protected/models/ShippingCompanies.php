@@ -130,4 +130,37 @@ class ShippingCompanies extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listCompanies()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $data=self::model()->findAll(array('order'=>'t.company_name'));
+            }
+            return $data;
+        }
+        
+        public static function listData($companyId=null)
+        {
+            static $data=array();
+                        
+            if(empty($data))
+            {
+                $companies = self::listCompanies();
+                $data = CHtml::listData($companies,'id',function($company) {
+                    return $company->company_name;
+                });
+            }
+            
+            if(!empty($companyId))
+            {
+                $companies = self::listCompanies();
+                $data = CHtml::listData($companies,'id',function($company) {
+                    return $company->company_name;
+                });
+                return $data[$companyId];
+            }
+            return $data;
+        }
 }

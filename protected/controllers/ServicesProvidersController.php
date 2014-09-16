@@ -67,7 +67,7 @@ class ServicesProvidersController extends Controller
 		$model=new ServicesProviders;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['ServicesProviders']))
 		{
@@ -97,7 +97,7 @@ class ServicesProvidersController extends Controller
                 ));
                 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['ServicesProviders']))
 		{

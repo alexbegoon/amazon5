@@ -270,7 +270,11 @@ return array(
     'Shipping Type'=>'Tipo de Envío',
     'Shipping Types'=>'Tipos del Envío',
     'Shipping Type Description'=>'Descripción del tipo de envío',
-    
+    'Shipping Methods'=>'Métodos del Envío',
+    'Shipping Method'=>'Método de Envío',
+    'Name of Shipping Method'=>'Nombre de la forma de Envío',
+    'Title of Shipping Method'=>'Título de la forma de Envío',
+    'Description of Shipping Method'=>'Descripción de la forma de Envío',
 
  
  

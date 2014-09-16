@@ -67,7 +67,7 @@ class StatesController extends Controller
 		$model=new States;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['States']))
 		{
@@ -97,7 +97,7 @@ class StatesController extends Controller
                 ));
                 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['States']))
 		{

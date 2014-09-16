@@ -1,6 +1,6 @@
 <?php
 
-class ShippingTypesController extends Controller
+class ShippingMethodsController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -53,8 +53,15 @@ class ShippingTypesController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $shippingMethodTranslations =new CActiveDataProvider('ShippingMethodTranslations', array(
+                    'criteria'=>array(
+                        'condition'=>'shipping_method_id=:id',
+                        'params'=>array(':id'=>$id)
+                    ),
+                ));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'shippingMethodTranslations'=>$shippingMethodTranslations,
 		));
 	}
 
@@ -64,14 +71,14 @@ class ShippingTypesController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new ShippingTypes;
+		$model=new ShippingMethods;
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['ShippingTypes']))
+		if(isset($_POST['ShippingMethods']))
 		{
-			$model->attributes=$_POST['ShippingTypes'];
+			$model->attributes=$_POST['ShippingMethods'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -80,6 +87,58 @@ class ShippingTypesController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionCreateTranslation()
+        {            
+            $model= new ShippingMethodTranslations;
+            
+            $model->setAttribute('shipping_method_id', Yii::app()->request->getParam('shipping_method_id'));
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='shipping-method-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            if(isset($_POST['ShippingMethodTranslations']))
+            {
+                $model->attributes=$_POST['ShippingMethodTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->shipping_method_id));
+                }
+            }
+            $this->render('create_translations',array('model'=>$model));
+        }
+        
+        public function actionUpdateTranslation()
+        {            
+            $model=ShippingMethodTranslations::model()->findByPk($this->getActionParams());
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+                
+            // enable ajax-based validation
+            
+            if(isset($_POST['ajax']) && $_POST['ajax']==='shipping-method-translations-_translations-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            
+
+            if(isset($_POST['ShippingMethodTranslations']))
+            {
+                $model->attributes=$_POST['ShippingMethodTranslations'];
+                if($model->validate())
+                {
+                    $model->save();
+                    $this->redirect(array('view','id'=>$model->shipping_method_id));
+                }
+            }
+            $this->render('update_translations',array('model'=>$model));
+        }
 
 	/**
 	 * Updates a particular model.
@@ -99,9 +158,9 @@ class ShippingTypesController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['ShippingTypes']))
+		if(isset($_POST['ShippingMethods']))
 		{
-			$model->attributes=$_POST['ShippingTypes'];
+			$model->attributes=$_POST['ShippingMethods'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -151,7 +210,7 @@ class ShippingTypesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ShippingTypes');
+		$dataProvider=new CActiveDataProvider('ShippingMethods');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -162,10 +221,10 @@ class ShippingTypesController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new ShippingTypes('search');
+		$model=new ShippingMethods('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ShippingTypes']))
-			$model->attributes=$_GET['ShippingTypes'];
+		if(isset($_GET['ShippingMethods']))
+			$model->attributes=$_GET['ShippingMethods'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -176,12 +235,12 @@ class ShippingTypesController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return ShippingTypes the loaded model
+	 * @return ShippingMethods the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=ShippingTypes::model()->findByPk($id);
+		$model=ShippingMethods::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -189,11 +248,11 @@ class ShippingTypesController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param ShippingTypes $model the model to be validated
+	 * @param ShippingMethods $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='shipping-types-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='shipping-methods-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

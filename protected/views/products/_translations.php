@@ -1,5 +1,5 @@
 <?php
-/* @var $this ProductTranslationsController */
+/* @var $this ProductController */
 /* @var $model ProductTranslations */
 /* @var $form CActiveForm */
 ?>

@@ -20,5 +20,10 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-time',
                         'label'=>Yii::t('common','Shipping Types'),
                         ),
+                    array(
+                        'url'=>'shippingMethods',
+                        'fa'=>'fa-list-ul',
+                        'label'=>Yii::t('common','Shipping Methods'),
+                        ),
                 ),
 ))?>

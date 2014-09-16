@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Shipping Types'), 'url'=>array('index')),
+	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Shipping Type'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Shipping Types'), 'url'=>array('create')),
 );
 ?>

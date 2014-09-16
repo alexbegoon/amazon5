@@ -65,7 +65,7 @@ class LanguagesController extends Controller
 		$model=new Languages;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['Languages']))
 		{
@@ -95,7 +95,7 @@ class LanguagesController extends Controller
                 ));
                 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['Languages']))
 		{

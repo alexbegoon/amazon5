@@ -10,8 +10,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
         array('label'=>Yii::t('common','List') .' '. Yii::t('common','Products'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Products'), 'url'=>array('create')),
-        array('label'=>Yii::t('common','View') .' '. Yii::t('common','Products'), 'url'=>array('view', 'id'=>$model->product_id)),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Product'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','View') .' '. Yii::t('common','Product'), 'url'=>array('view', 'id'=>$model->product_id)),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Products'), 'url'=>array('admin')),
 );
 ?>
