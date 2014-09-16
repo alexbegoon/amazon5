@@ -264,6 +264,12 @@ return array(
     'Export all data to Excel'=>'Exportar todos los datos a Excel',
     'Export to: '=>'Exportar a: ',
     'Invoice Number'=>'Número de Factura',
+    'Shipping Companies'=>'Compañías navieras',
+    'Shipping Company'=>'Compañía naviera',
+    'Shipping'=>'Envío',
+    'Shipping Type'=>'Tipo de Envío',
+    'Shipping Types'=>'Tipos del Envío',
+    'Shipping Type Description'=>'Descripción del tipo de envío',
     
 
  

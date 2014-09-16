@@ -76,6 +76,11 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Categories'),
                         ),
                     array(
+                        'url'=>'shipping',
+                        'fa'=>'fa-truck',
+                        'label'=>Yii::t('common','Shipping'),
+                        ),
+                    array(
                         'url'=>'synchronization',
                         'fa'=>'fa-refresh fa-spin',
                         'label'=>Yii::t('common','Synchronization'),
