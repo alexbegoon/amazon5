@@ -174,4 +174,38 @@ class ShippingMethods extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
+        
+        public static function listMethods()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $data=self::model()->findAll(array('condition'=>'t.published=1'));
+            }
+            return $data;
+        }
+        
+        public static function listData($methodId=null)
+        {
+            static $data=array();
+                        
+            if(empty($data))
+            {
+                $methods = self::listMethods();
+                $data = CHtml::listData($methods,'id',function($method) {
+                    return $method->getName();
+                });
+                asort($data);
+            }
+            
+            if(!empty($methodId))
+            {
+                $methods = self::listMethods();
+                $data = CHtml::listData($methods,'id',function($method) {
+                    return $method->getName();
+                });
+                return $data[$methodId];
+            }
+            return $data;
+        }
 }

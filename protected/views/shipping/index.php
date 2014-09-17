@@ -30,5 +30,10 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-globe',
                         'label'=>Yii::t('common','Ranges of the Postal Codes'),
                         ),
+                    array(
+                        'url'=>'shippingCosts',
+                        'glyphicon'=>'glyphicon-euro',
+                        'label'=>Yii::t('common','Shipping Costs'),
+                        ),
                 ),
 ))?>

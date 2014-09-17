@@ -177,4 +177,44 @@ class PostalCodesRanges extends CActiveRecord
             }
             return parent::afterValidate();
         }
+        
+        public static function listRanges()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $data=self::model()->findAll(array('order'=>'t.range_name','condition'=>'t.id!=0'));
+            }
+            return $data;
+        }
+        
+        public static function listData($rangeId=null)
+        {
+            static $data=array();
+                   
+            if($rangeId==='0')
+            {
+                return Yii::t('common', 'All postal codes');
+            }
+            
+            if(empty($data))
+            {
+                $ranges = self::listRanges();
+                $data[0] = Yii::t('common', 'All postal codes');
+                $data = array_merge($data,CHtml::listData($ranges,'id',function($range) {
+                    return $range->range_name;
+                }));
+            }
+            
+            if(!empty($rangeId))
+            {
+                $ranges = self::listRanges();
+                $data[0] = Yii::t('common', 'All postal codes');
+                $data = array_merge($data,CHtml::listData($ranges,'id',function($range) {
+                    return $range->range_name;
+                }));
+                return $data[$rangeId];
+            }
+            return $data;
+        }
 }

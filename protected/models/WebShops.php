@@ -188,12 +188,35 @@ class WebShops extends CActiveRecord
         
         public static function listWebShops()
         {
-            return self::model()->with('categories')->findAll(array('order'=>'shop_name'));
+            static $data=array();
+            if(empty($data))
+            {
+                $data=self::model()->with('categories')->findAll(array('order'=>'t.shop_name'));
+            }
+            return $data;
         }
         
-        public static function listData()
+        public static function listData($webShopId=null)
         {
-            return CHtml::listData(self::listWebShops(), 'id', 'shop_name');
+            static $data=array();
+                        
+            if(empty($data))
+            {
+                $webShops = self::listWebShops();
+                $data = CHtml::listData($webShops,'id',function($webShop) {
+                    return $webShop->shop_name;
+                });
+            }
+            
+            if(!empty($webShopId))
+            {
+                $webShops = self::listWebShops();
+                $data = CHtml::listData($webShops,'id',function($webShop) {
+                    return $webShop->shop_name;
+                });
+                return $data[$webShopId];
+            }
+            return $data;
         }
         
         public static function getNameByPk($web_shop_id)

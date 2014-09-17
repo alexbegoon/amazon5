@@ -189,7 +189,7 @@ class Manufacturers extends CActiveRecord
         
         public static function listManufacturers()
         {
-            return self::model()->findAll(array('condition'=>'published=1'));
+            return self::model()->findAll(array('condition'=>'t.published=1'));
         }
         
         public static function listData($manufacturer_id=null)

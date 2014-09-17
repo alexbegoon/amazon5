@@ -277,6 +277,9 @@ return array(
     'Description of Shipping Method'=>'Descripción de la forma de Envío',
     'Ranges of the Postal Codes'=>'Los rangos de los Códigos Postales',
     'Range of the Postal Codes'=>'Rango de los Códigos Postales',
+    'Shipping Company Price'=>'Precio Naviera',
+    'Seller\'s Price'=>'El precio del Vendedor',
+    'All postal codes'=>'Todos los códigos postales',
 
  
  
