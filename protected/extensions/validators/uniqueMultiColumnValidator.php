@@ -64,7 +64,7 @@ class uniqueMultiColumnValidator extends CValidator
 			else
 				$exists=$n>1;
 		}
-		if($exists)
+		if($exists && $object->isNewRecord===true)
 		{
 			$message = '';
 			$labels = $object->attributeLabels();
