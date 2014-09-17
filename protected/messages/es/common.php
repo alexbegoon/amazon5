@@ -275,6 +275,8 @@ return array(
     'Name of Shipping Method'=>'Nombre de la forma de Envío',
     'Title of Shipping Method'=>'Título de la forma de Envío',
     'Description of Shipping Method'=>'Descripción de la forma de Envío',
+    'Ranges of the Postal Codes'=>'Los rangos de los Códigos Postales',
+    'Range of the Postal Codes'=>'Rango de los Códigos Postales',
 
  
  
@@ -283,6 +285,8 @@ return array(
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
     '{attribute} is empty for the provider: {provider_name}'=>'{attribute} está vacía para el proveedor: {provider_name}',
+    '{attribute} malformed'=>'{attribute} malformado',
+    'Overlap the existing postal codes'=>'Se superponen los códigos postales existentes',
     'Service unavailable for the provider: {provider_name}. Please check this URL: {URL}. Provider contacts: Phone {Phone}, Email {Email}'=>'Servicio no disponible para el proveedor: {provider_name}. Por favor, consulte la siguiente dirección URL: {URL}. Contactos Proveedor: Teléfono {Phone}, Email {Email}',
     'The request is successfully processed'=>'La solicitud se ha procesado correctamente',
     'The request was processed with errors'=>'La solicitud fue procesada con errores',

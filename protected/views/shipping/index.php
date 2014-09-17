@@ -25,5 +25,10 @@ $this->breadcrumbs=array(
                         'fa'=>'fa-list-ul',
                         'label'=>Yii::t('common','Shipping Methods'),
                         ),
+                    array(
+                        'url'=>'postalCodesRanges',
+                        'glyphicon'=>'glyphicon-globe',
+                        'label'=>Yii::t('common','Ranges of the Postal Codes'),
+                        ),
                 ),
 ))?>
