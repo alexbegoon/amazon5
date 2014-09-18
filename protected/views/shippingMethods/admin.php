@@ -41,6 +41,7 @@ $this->menu=array(
 		'modified_on',
 		array(
 			'class'=>'CButtonColumn',
+                        'template'=>'{view}&nbsp;&nbsp;&nbsp;{delete}'
 		),
 	),
 )); ?>

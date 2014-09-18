@@ -15,6 +15,23 @@
 	'enableAjaxValidation'=>true,
 )); ?>
 
+    <?php
+    Yii::app()->clientScript->registerScript('search', "
+        $(function(){
+            
+            var initRanges = function(){
+                $('#ShippingCosts_postal_codes_range_id optgroup').attr('disabled',true);
+                $('#ShippingCosts_postal_codes_range_id optgroup[label='+$('#ShippingCosts_country_code').find(':selected').text()+']').attr('disabled',false);
+            };
+
+            initRanges();
+            $('#ShippingCosts_country_code').change(function(){
+                initRanges();
+            });
+        });
+        ");
+    ?>
+    
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
 	<?php echo $form->errorSummary($model, null, null, array('class'=>'alert alert-danger')); ?>

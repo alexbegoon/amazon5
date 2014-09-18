@@ -88,3 +88,7 @@ a.thumbnail h4{
     height: 22px!important;
     padding-top: 2px!important;
 }
+
+optgroup[disabled="disabled"] option{
+    color: #ddd!important;
+}

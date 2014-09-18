@@ -17,4 +17,24 @@ $this->menu=array(
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
+        'columns'=>array(
+            'id',
+            'range_name',
+            array(
+                'name'=>'country_code',
+                'value'=>'Countries::listData($data->country_code)',
+            ),
+            'postal_code_from',
+            'postal_code_to',
+            array(
+                'name'=>'created_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+            ),
+            'created_on',
+            array(
+                'name'=>'modified_by',
+                'value'=>'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+            ),
+            'modified_on',
+        ),
 )); ?>

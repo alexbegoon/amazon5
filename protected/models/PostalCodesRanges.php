@@ -87,7 +87,7 @@ class PostalCodesRanges extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'countryCode' => array(self::BELONGS_TO, 'Countries', 'country_code'),
+			'country' => array(self::BELONGS_TO, 'Countries', 'country_code'),
 			'shippingCosts' => array(self::HAS_MANY, 'ShippingCosts', 'postal_codes_range_id'),
 		);
 	}
@@ -183,7 +183,7 @@ class PostalCodesRanges extends CActiveRecord
             static $data=array();
             if(empty($data))
             {
-                $data=self::model()->findAll(array('order'=>'t.range_name','condition'=>'t.id!=0'));
+                $data=self::model()->with('country')->findAll(array('order'=>'t.range_name, country.name','condition'=>'t.id!=0'));
             }
             return $data;
         }
@@ -203,7 +203,7 @@ class PostalCodesRanges extends CActiveRecord
                 $data[0] = Yii::t('common', 'All postal codes');
                 $data = array_merge($data,CHtml::listData($ranges,'id',function($range) {
                     return $range->range_name;
-                }));
+                }, 'country.name'));
             }
             
             if(!empty($rangeId))

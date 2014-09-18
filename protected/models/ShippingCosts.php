@@ -49,14 +49,51 @@ class ShippingCosts extends CActiveRecord
 			array('shipping_company_price, seller_price', 'numerical', 'min'=>0.01),
 			array('shipping_company_price, seller_price', 'length', 'max'=>15),
                         array('shipping_method_id+web_shop_id+country_code+postal_codes_range_id', 'application.extensions.validators.uniqueMultiColumnValidator'),
-			array('created_on, modified_on, locked_on', 'safe'),
+			array('country_code, postal_codes_range_id', 'validateCountryRange'),
+			array('postal_codes_range_id', 'validateRange'),
+                        array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('shipping_method_id, web_shop_id, country_code, postal_codes_range_id, shipping_company_price, seller_price, currency_id, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
+        
+        public function validateCountryRange($attribute,$params)
+        {
+            if($this->postal_codes_range_id=='0')
+            {
+                return true;
+            }
+            
+            $range = PostalCodesRanges::model()->findByPk($this->postal_codes_range_id);
+            
+            if($range!==null)
+            {
+                if($range->country_code!==$this->country_code)
+                {
+                    $this->addError($attribute, Yii::t('common', 
+                    '{attribute} is inconsistent. The range of the postal codes should be consistent to selected country.', 
+                    array('{attribute}'=>$this->attributeLabels()[$attribute])));
 
-	/**
+                    return FALSE;
+                }
+            }
+        }
+        public function validateRange($attribute,$params)
+        {
+            $range = PostalCodesRanges::model()->findByPk($this->postal_codes_range_id);
+            
+            if($range===null)
+            {
+                $this->addError($attribute, Yii::t('common', 
+                '{attribute} malformed', 
+                array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                
+                return FALSE;
+            }
+        }
+
+        /**
 	 * @return array relational rules.
 	 */
 	public function relations()

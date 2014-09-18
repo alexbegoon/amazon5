@@ -70,10 +70,10 @@ class uniqueMultiColumnValidator extends CValidator
 			$labels = $object->attributeLabels();
 			foreach ($attributes as $attribute)
 			{
-				$message .= $labels[$attribute] . "+";
+				$message .= $labels[$attribute] . ", ";
 			}
-			$message = substr ($message, 0, -1);
-			$message = $this->message!==null ? $this->message : "The Combination of ($message) should be unique in the current context.";
+			$message = substr ($message, 0, -2);
+			$message = $this->message!==null ? $this->message : Yii::t('common',"The Combination of ({message}) should be unique in the current context.",array('{message}'=>$message));
 			foreach ($attributes as $attribute)
 			{
 				$this->addError($object,$attribute,$message);

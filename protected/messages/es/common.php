@@ -280,6 +280,7 @@ return array(
     'Shipping Company Price'=>'Precio Naviera',
     'Seller\'s Price'=>'El precio del Vendedor',
     'All postal codes'=>'Todos los códigos postales',
+    'The Combination of ({message}) should be unique in the current context.'=>'La combinación de ({message}) debe ser único en el contexto actual.',
 
  
  

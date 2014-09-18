@@ -71,21 +71,61 @@ class ShippingMethodsController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new ShippingMethods;
+            $model=new ShippingMethods;
+            $shippingMethodTranslation=new ShippingMethodTranslations;
 
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
 
-		if(isset($_POST['ShippingMethods']))
-		{
-			$model->attributes=$_POST['ShippingMethods'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+            // Uncomment the following line if AJAX validation is needed
+            $this->performAjaxValidation(array($model,$shippingMethodTranslation));
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+            if(isset($_POST['ShippingMethods'],
+                     $_POST['ShippingMethodTranslations']))
+            {
+                // Start the transaction
+                $transaction = Yii::app()->db->beginTransaction();
+                $valid = true;
+
+                $model->attributes=$_POST['ShippingMethods'];
+                $shippingMethodTranslation->attributes=$_POST['ShippingMethodTranslations'];
+
+                if($model->validate() && $valid)
+                {
+                    $model->save();
+                }
+                else
+                {
+                    $valid=FALSE;
+                }
+
+                if($valid)
+                {
+                    $shippingMethodTranslation->setAttribute('shipping_method_id', $model->id);
+                }
+
+                if( $shippingMethodTranslation->validate() && $valid )
+                {
+                    $shippingMethodTranslation->save();
+                }
+                else
+                {
+                    $valid=FALSE;
+                }
+                // Method Successfully created 
+                if($valid)
+                {
+                    $transaction->commit();
+                    $this->redirect(array('view','id'=>$model->id));
+                }
+                else
+                {
+                    $transaction->rollback();
+                }
+            }
+            
+            $this->render('create',array(
+                    'model'=>$model,
+                    'shippingMethodTranslation'=>$shippingMethodTranslation,
+            ));
 	}
         
         public function actionCreateTranslation()
@@ -139,37 +179,7 @@ class ShippingMethodsController extends Controller
             }
             $this->render('update_translations',array('model'=>$model));
         }
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-                
-                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-                $model->updateByPk($id,array(
-                    'locked_by'=>Yii::app()->user->getId(),
-                    'locked_on'=>date('Y-m-d H:i:s',time()),
-                ));
-                
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
-
-		if(isset($_POST['ShippingMethods']))
-		{
-			$model->attributes=$_POST['ShippingMethods'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-        
+       
         public function actionToggle($id)
         {
             $model=$this->loadModel($id);
