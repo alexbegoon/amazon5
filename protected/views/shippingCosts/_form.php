@@ -21,7 +21,7 @@
             
             var initRanges = function(){
                 $('#ShippingCosts_postal_codes_range_id optgroup').attr('disabled',true);
-                $('#ShippingCosts_postal_codes_range_id optgroup[label='+$('#ShippingCosts_country_code').find(':selected').text()+']').attr('disabled',false);
+                $('#ShippingCosts_postal_codes_range_id optgroup[label=\"'+$('#ShippingCosts_country_code').find(':selected').text()+'\"]').attr('disabled',false);
             };
 
             initRanges();
