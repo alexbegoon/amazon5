@@ -176,6 +176,14 @@ class ServicesProvidersInvoicesController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionDownloadInvoice($id)
+        {
+            $model=$this->loadModel($id);
+            
+            if(!empty($model->file))
+            return Yii::app()->request->sendFile($model->file_name, $model->file, $model->file_mime_type);
+        }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

@@ -63,6 +63,8 @@ class WebShops extends CActiveRecord
 			array('shop_code', 'length', 'min'=>5),
 			array('shop_code', 'unique'),
 			array('shop_name', 'unique'),          
+			array('shop_url', 'url'),          
+			array('offline', 'boolean'),          
                         array('admin_email, email', 'email'),
 			array('template_name', 'length', 'max'=>15),
 			array('template_name', 'length', 'min'=>5),

@@ -10,6 +10,14 @@
  * @property string $net_cost
  * @property integer $currency_id
  * @property integer $paid
+ * @property string $paid_date
+ * @property string $invoice_date
+ * @property string $due_date
+ * @property string $file
+ * @property string $file_name
+ * @property string $file_mime_type
+ * @property string $file_extension
+ * @property integer $file_size
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -25,10 +33,15 @@ class ProviderInvoices extends CActiveRecord
 {
         public $total_cost;
         public $subtotal_cost;
+        public $total;
+        public $subtotal;
+        public $total_net_cost;
+        public $subtotal_net_cost;
         public $total_cost_currency;
         public $provider_type;
         public $vat_type;
         public $disablePaging = false;
+        public $uploadedFile;
         
         public function init()
         {
@@ -52,19 +65,38 @@ class ProviderInvoices extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provider_id, currency, net_cost', 'required'),
-			array('provider_id, currency_id, paid, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('provider_id, currency_id, net_cost', 'required'),
+			array('provider_id, paid, file_size, currency_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('invoice_number, file_mime_type', 'length', 'max'=>64),
 			array('net_cost', 'length', 'max'=>15),
 			array('net_cost', 'numerical', 'min'=>0.01),
-                        array('invoice_number', 'length', 'max'=>64),
+                        array('paid','boolean'),
+                        array('uploadedFile', 'file', 'allowEmpty'=>true,'types'=>array('pdf','txt')),
+                        array('file_name', 'length', 'max'=>255),
+                        array('file_extension', 'length', 'max'=>45),
+                        array('paid_date', 'compare', 'allowEmpty'=>true, 'operator'=>'<=','compareValue'=>date('Y-m-d H:i:s')),
+                        array('due_date', 'compare', 'allowEmpty'=>true, 'operator'=>'>=','compareValue'=>date('Y-m-d H:i:s')),
+                        array('paid, paid_date', 'validatePaidCondition'),
+                        array('paid_date, invoice_date, due_date', 'date', 'allowEmpty'=>true, 'format'=>array('yyyy-MM-dd HH:mm:ss','yyyy-MM-dd')),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, invoice_number, provider_type, vat_type, provider_id, net_cost, currency_id, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, file, file_name, file_mime_type, file_extension, file_size, paid_date, invoice_date, invoice_number, due_date, provider_type, vat_type, provider_id, net_cost, currency_id, paid, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
-	/**
+        public function validatePaidCondition($attribute,$params)
+        {
+            if($this->paid!='1' && !empty($this->paid_date))
+            {
+                $this->addError($attribute, 
+                    Yii::t('common', 
+                    '{attribute} ambiguous.', 
+                    array('{attribute}'=>$this->attributeLabels()[$attribute])));
+            }
+        }
+
+        /**
 	 * @return array relational rules.
 	 */
 	public function relations()
@@ -89,6 +121,15 @@ class ProviderInvoices extends CActiveRecord
 			'net_cost' => Yii::t('common', 'Net Cost'),
 			'currency_id' => Yii::t('common', 'Currency'),
 			'paid' => Yii::t('common', 'Paid'),
+                        'paid_date' => Yii::t('common', 'Date of Payment'),
+			'invoice_date' => Yii::t('common', 'Invoice Date'),
+			'due_date' => Yii::t('common', 'Due Date'),
+			'file' => Yii::t('common', 'File'),
+			'uploadedFile' => Yii::t('common', 'File'),
+                        'file_name' => Yii::t('common', 'File Name'),
+			'file_mime_type' => Yii::t('common', 'File MIME Type'),
+			'file_extension' => Yii::t('common', 'File Extension'),
+			'file_size' => Yii::t('common', 'File Size'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -122,9 +163,13 @@ class ProviderInvoices extends CActiveRecord
 		$criteria->compare('t.id',$this->id,true);
                 $criteria->compare('t.invoice_number',$this->invoice_number,true);
 		$criteria->compare('t.provider_id',$this->provider_id);
-		$criteria->compare('t.net_cost',$this->net_cost,true);
+		$criteria->compare('t.net_cost',$this->net_cost);
+		$criteria->compare('t.net_cost',$this->total_cost);
 		$criteria->compare('t.currency_id',$this->currency_id);
 		$criteria->compare('t.paid',$this->paid);
+                $criteria->compare('t.paid_date',$this->paid_date,true);
+		$criteria->compare('t.invoice_date',$this->invoice_date,true);
+		$criteria->compare('t.due_date',$this->due_date,true);
 		$criteria->compare('t.created_on',$this->created_on,true);
 		$criteria->compare('t.created_by',$this->created_by);
 		$criteria->compare('t.modified_on',$this->modified_on,true);
@@ -142,7 +187,8 @@ class ProviderInvoices extends CActiveRecord
                 
                 foreach ($totalData->getData() as $r)
                 {
-                    $this->total_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
+                    $this->total_net_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id);
+                    $this->total += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
                 }
                 
                 $data = new CActiveDataProvider($this, array(
@@ -152,7 +198,8 @@ class ProviderInvoices extends CActiveRecord
                 
                 foreach ($data->getData() as $r)
                 {
-                    $this->subtotal_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
+                    $this->subtotal_net_cost += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id);
+                    $this->subtotal += Currencies::convertCurrencyTo($r->net_cost, $r->currency_id,null,$r->provider->vat);
                 }
                                 
 		return $data;
@@ -174,11 +221,7 @@ class ProviderInvoices extends CActiveRecord
             return array( 
                 'CBuyinArBehavior' => array(
                     'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
-                ),
-//                'EDateRangeSearchBehavior' => array(
-//                    'class' => 'application.components.EDateRangeSearchBehavior', 
-//                ),
-            );
+              ));
         }
         
         public static function itemAlias($type,$code=NULL) 
@@ -194,4 +237,24 @@ class ProviderInvoices extends CActiveRecord
             else
                     return isset($_items[$type]) ? $_items[$type] : false;
 	}
+        
+        public function beforeValidate() 
+        {
+            if($this->paid=='1' && empty($this->paid_date))
+            {
+                $this->paid_date = date('Y-m-d H:i:s');
+            }
+            
+            // Saves the name, size, type and data of the uploaded file
+            if($file=CUploadedFile::getInstance($this,'uploadedFile'))
+            {
+                $this->file_name=$file->name;
+                $this->file_mime_type=$file->type;
+                $this->file_size=$file->size;
+                $this->file_extension=$file->extensionName;
+                $this->file=file_get_contents($file->tempName);
+            }
+
+            return parent::beforeValidate();
+        }
 }

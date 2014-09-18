@@ -36,6 +36,9 @@ $this->menu=array(
                 'name'=>  Yii::t('common', 'Paid'),
                 'value'=> '$data->paid==1?Yii::t("yii","Yes"):Yii::t("yii","No")',
             ),
+            'paid_date',
+            'invoice_date',
+            'due_date',
             array(
                 'name'=>'created_by',
                 'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',

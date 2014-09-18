@@ -33,14 +33,24 @@ $this->menu=array(
                     'value'=> Currencies::priceDisplay($model->net_cost, $model->currency_id),
                 ),
                 array(
+                    'name'=>  Yii::t('common', 'Total Cost'),
+                    'value'=> Currencies::priceDisplay($model->net_cost, $model->currency_id, null, $model->provider->vat),
+                ),
+                array(
                     'name'=>  Yii::t('common', 'Paid'),
                     'type'=>'html',
-                    'value'=>$model->paid==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("paid"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Refund")))               
-                                            :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("paid"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Pay for"))),
+                    'value'=>$model->paid==1?Yii::t("yii", "Yes")               
+                                            :Yii::t("yii", "No"),
                 ),
+                'paid_date',
 		'invoice_date',
 		'due_date',
-		'file',
+            array(
+                'name'=>'file',
+                'type'=>'raw',
+                'value'=>!empty($model->file)?CHtml::link(Yii::t('common', 'Download'), $this->createUrl('downloadInvoice',array('id'=>$model->getPrimaryKey()))):null,
+            ),
+            
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),

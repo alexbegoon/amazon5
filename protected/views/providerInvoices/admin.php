@@ -47,21 +47,23 @@ $this->menu=array(
                     'value'=>'ProviderInvoices::itemAlias("Paid",$data->paid)',
                     'filter'=>ProviderInvoices::itemAlias("Paid"),
                 ),
+                'paid_date',
+                'invoice_date',
+                'due_date',
                 array(
-                    'name'=>'net_cost',                    
-                ),
-                array(
-                    'name'=>'currency_id',
-                    'value'=>'Currencies::listData($data->currency_id)',
-                    'filter'=>Currencies::listData(),
+                    'name'=>'net_cost',
+                    'value'=>'Currencies::priceDisplay($data->net_cost,$data->currency_id)',
+                    'footer'=>
+                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal_net_cost, $model->total_cost_currency)."\n<br>".
+                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total_net_cost, $model->total_cost_currency),
                 ),
                 array(
                     'header'=>  Yii::t('common', 'Total Cost'),
-                    'name'=>'net_cost',
+                    'name'=>'total_cost',
                     'value'=>'Currencies::priceDisplay($data->net_cost,$data->currency_id,null,$data->provider->vat)',
                     'footer'=>
-                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal_cost, $model->total_cost_currency)."\n<br>".
-                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total_cost, $model->total_cost_currency),
+                    Yii::t('common', 'SubTotal').': '.  Currencies::priceDisplay($model->subtotal, $model->total_cost_currency)."\n<br>".
+                    Yii::t('common', 'Total').': '.  Currencies::priceDisplay($model->total, $model->total_cost_currency),
                 ),
 		'created_on',
 		'modified_on',

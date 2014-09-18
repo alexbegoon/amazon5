@@ -180,7 +180,7 @@
                 if($column->footer)
                 {
 					$footer =trim($column->footer)!=='' ? $column->footer : $column->grid->blankDisplay;
-
+                                        $footer = strip_tags($footer);
 				    $cell = $this->objPHPExcel->getActiveSheet()->setCellValue($this->columnName($a).($row+2) ,$footer, true);
 				    if(is_callable($this->onRenderFooterCell))
 					    call_user_func_array($this->onRenderFooterCell, array($cell, $footer));				

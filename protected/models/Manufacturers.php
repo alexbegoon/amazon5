@@ -43,6 +43,7 @@ class Manufacturers extends CActiveRecord
 		return array(
 			array('hits, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('manufacturer_email, manufacturer_url', 'length', 'max'=>255),
+			array('manufacturer_url', 'url'),
 			array('manufacturer_email','email'),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().

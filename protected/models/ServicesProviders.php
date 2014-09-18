@@ -50,6 +50,7 @@ class ServicesProviders extends CActiveRecord
 			array('provider_type, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('vat', 'numerical', 'max'=>60, 'min'=>0),
 			array('provider_name, provider_url, provider_email', 'length', 'max'=>255),
+                        array('provider_url','url'),
 			array('cif, provider_address', 'length', 'max'=>45),
 			array('provider_country', 'length', 'max'=>2),
 			array('default_language', 'length', 'max'=>5),
