@@ -208,11 +208,8 @@ class PostalCodesRanges extends CActiveRecord
             
             if(!empty($rangeId))
             {
-                $ranges = self::listRanges();
-                $data[0] = Yii::t('common', 'All postal codes');
-                $data = array_merge($data,CHtml::listData($ranges,'id',function($range) {
-                    return $range->range_name;
-                }));
+                $range = self::model()->findByPk($rangeId);
+                $data[$range->id] = $range->range_name;
                 return $data[$rangeId];
             }
             return $data;
