@@ -36,5 +36,15 @@ $this->breadcrumbs=array(
                         'glyphicon'=>'glyphicon-file',
                         'label'=>Yii::t('common','Invoices of the Service Providers'),
                         ),
+                    array(
+                        'url'=>'taxes',
+                        'fa'=>'fa-bank',
+                        'label'=>Yii::t('common','Taxes'),
+                        ),
+                    array(
+                        'url'=>'fees',
+                        'fa'=>'fa-gavel',
+                        'label'=>Yii::t('common','Fees'),
+                        ),
                 ),
 ))?>

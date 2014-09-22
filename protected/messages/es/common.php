@@ -87,6 +87,7 @@ return array(
     'Number'=>'Número',
     'Continent Code'=>'Código Continente',
     'Country Code'=>'Código País',
+    'Country'=>'País',
     'State Name'=>'Nombre del Estado',
     'State 3 Code'=>'Código Estatal 3',
     'State 2 Code'=>'Código Estatal 2',
@@ -284,6 +285,16 @@ return array(
     '{attribute} ambiguous.'=>'{atributo} ambigua.',
     'Date of Payment'=>'Fecha de Pago',
     'Download'=>'Descargar',
+    'Tax'=>'Impuestos',
+    'Taxes'=>'Impuestos',
+    'Fee'=>'Comision',
+    'Fees'=>'Comisiones',
+    'Financial Fees'=>'Comisiones Financieras',
+    'Marketplace Fees'=>'Honorarios del Mercado',
+    'Financial fees'=>'Comisiones Financieras',
+    'Marketplace fees'=>'Honorarios del Mercado',
+    'Percent'=>'Porcentaje',
+    'Amount'=>'Importe',
  
 
     
