@@ -92,3 +92,9 @@ a.thumbnail h4{
 optgroup[disabled="disabled"] option{
     color: #ddd!important;
 }
+
+.grid-view .filters input,
+.grid-view .filters select
+{
+	height: 22px;
+}

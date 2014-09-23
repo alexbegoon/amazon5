@@ -28,6 +28,11 @@ $this->menu=array(
                     'value'=>'$data->getName()',
 		),
 		array(
+                    'name'=>'web_shop_id',
+                    'value'=>'WebShops::listData($data->web_shop_id)',
+                    'filter'=>WebShops::listData(),
+		),
+		array(
                     'name'=>'published',
                     'value'=>'PaymentMethods::itemAlias("Published",$data->published)',
                     'filter'=>PaymentMethods::itemAlias("Published"),

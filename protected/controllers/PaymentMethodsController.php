@@ -74,19 +74,22 @@ class PaymentMethodsController extends Controller
 	{
             $model=new PaymentMethods;
             $paymentMethodTranslation=new PaymentMethodTranslations;
-
+            $paypalParams=new PayPalParams;
 
             // Uncomment the following line if AJAX validation is needed
-            $this->performAjaxValidation(array($model,$paymentMethodTranslation));
+            $this->performAjaxValidation(array($model,$paymentMethodTranslation,$paypalParams));
 
             if(isset($_POST['PaymentMethods'],
-                     $_POST['PaymentMethodTranslations']))
+                     $_POST['PaymentMethodTranslations'],
+                     $_POST['PayPalParams']))
             {
                 // Start the transaction
                 $transaction = Yii::app()->db->beginTransaction();
                 $valid = true;
 
                 $model->attributes=$_POST['PaymentMethods'];
+                if(isset($_POST['PaymentMethods']['handler_component']))
+                $model->parameters=serialize($_POST[$_POST['PaymentMethods']['handler_component'].'Params']);
                 $paymentMethodTranslation->attributes=$_POST['PaymentMethodTranslations'];
 
                 if($model->validate() && $valid)
@@ -103,7 +106,9 @@ class PaymentMethodsController extends Controller
                     $paymentMethodTranslation->setAttribute('payment_method_id', $model->id);
                 }
 
-                if( $paymentMethodTranslation->validate() && $valid )
+                if( $paymentMethodTranslation->validate() 
+                    && $paypalParams->validate()
+                    && $valid )
                 {
                     $paymentMethodTranslation->save();
                 }

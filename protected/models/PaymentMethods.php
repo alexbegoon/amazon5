@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{payment_methods}}':
  * @property integer $id
  * @property integer $published
+ * @property integer $web_shop_id
  * @property string $handler_component
  * @property string $parameters
  * @property string $created_on
@@ -17,6 +18,7 @@
  *
  * The followings are the available model relations:
  * @property Orders[] $orders
+ * @property WebShops $webShop
  * @property Languages[] $amzni5Languages
  * @property Transactions[] $transactions
  */
@@ -41,13 +43,13 @@ class PaymentMethods extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('web_shop_id, published, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('handler_component', 'match', 'pattern'=>'/^PayPal$|^SagePay$|^Bank Transfer$|^TPV$/'), 
-			array('handler_component', 'required'), 
+			array('handler_component, web_shop_id', 'required'), 
 			array('parameters, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, payment_method_name, published, handler_component, parameters, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, payment_method_name, web_shop_id, published, handler_component, parameters, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class PaymentMethods extends CActiveRecord
 		return array(
 			'orders' => array(self::HAS_MANY, 'Orders', 'payment_method_id'),
 			'amzni5Languages' => array(self::MANY_MANY, 'Languages', '{{payment_method_translations}}(payment_method_id, language_code)'),
+                        'webShop' => array(self::BELONGS_TO, 'WebShops', 'web_shop_id'),
 			'transactions' => array(self::HAS_MANY, 'Transactions', 'payment_method_id'),
 			'paymentTranslations' => array(self::HAS_MANY, 'PaymentMethodTranslations', array('payment_method_id'=>'id')),
 		);
@@ -74,6 +77,7 @@ class PaymentMethods extends CActiveRecord
 		return array(
 			'id' => Yii::t('common', 'ID'),
 			'published' => Yii::t('common', 'Published'),
+                        'web_shop_id' => Yii::t('common', 'Web Shop'),
 			'handler_component' => Yii::t('common', 'Handler Component'),
 			'payment_method_name' => Yii::t('common', 'Payment Method Name'),
 			'parameters' => Yii::t('common', 'Parameters'),
@@ -106,6 +110,7 @@ class PaymentMethods extends CActiveRecord
 
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('t.published',$this->published);
+                $criteria->compare('t.web_shop_id',$this->web_shop_id);
 		$criteria->compare('t.handler_component',$this->handler_component,true);
 		$criteria->compare('t.parameters',$this->parameters,true);
 		$criteria->compare('t.created_on',$this->created_on,true);

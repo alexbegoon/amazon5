@@ -5,7 +5,7 @@
 ?>
 <div class="container">
 <div class="form">
-<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-4 col-lg-offset-4">
+<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'payment-methods-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -18,6 +18,12 @@
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
 	<?php echo $form->errorSummary(array($model,$paymentMethodTranslation), null, null, array('class'=>'alert alert-danger')); ?>
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'web_shop_id',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'web_shop_id',WebShops::listData(),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'web_shop_id',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
         <div class="row form-group">
 		<?php echo $form->labelEx($paymentMethodTranslation,'language_code',array('class'=>'control-label')); ?>
 		<?php echo $form->dropDownList($paymentMethodTranslation,'language_code',  Languages::listData(),array('class'=>'form-control')); ?>
@@ -39,22 +45,16 @@
 		<?php echo $form->error($paymentMethodTranslation,'payment_method_desc',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'handler_component',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'handler_component',enumItem($model,'handler_component'),array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'handler_component',array('class'=>'label label-danger')); ?>
-	</div>
-
-	<div class="row form-group">
-		<?php echo $form->labelEx($model,'parameters',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($model,'parameters',array('class'=>'form-control')); ?>
-		<?php echo $form->error($model,'parameters',array('class'=>'label label-danger')); ?>
-	</div>
-    
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'published',array('class'=>'control-label')); ?>
 		<?php echo $form->checkBox($model,'published'); ?>
 		<?php echo $form->error($model,'published',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'handler_component',array('class'=>'control-label')); ?>
+		<?php echo $form->dropDownList($model,'handler_component',enumItem($model,'handler_component'),array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'handler_component',array('class'=>'label label-danger')); ?>
 	</div>
 
 	<div class="row form-group buttons">
@@ -62,7 +62,9 @@
 	</div>
 
 <?php $this->endWidget(); ?>
-
+<?php $this->widget('TinyMCE',array('options'=>array(
+    'selector'=>'textarea',
+)));?>
 </div>
 </div>
 </div>

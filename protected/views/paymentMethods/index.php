@@ -23,6 +23,10 @@ $this->menu=array(
                 'name'=>Yii::t('common', 'Payment Method Name'),
                 'value'=>'$data->getName()',
             ),
+            array(
+                'name'=>'web_shop_id',
+                'value'=>'WebShops::listData($data->web_shop_id)',
+            ),
             'handler_component',
             array(
                 'name'=>'published',

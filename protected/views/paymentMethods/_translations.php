@@ -6,7 +6,7 @@
 
 <div class="container">
 <div class="form">
-<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-4 col-lg-offset-4">
+<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'payment-method-translations-_translations-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -52,6 +52,10 @@
 
 <?php $this->endWidget(); ?>
 
+<?php $this->widget('TinyMCE',array('options'=>array(
+    'selector'=>'textarea',
+)));?>
+        
 </div>
 </div>
 </div><!-- form -->

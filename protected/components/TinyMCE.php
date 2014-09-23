@@ -1,0 +1,42 @@
+<?php
+/**
+ * TinyMCE is a platform independent web based Javascript 
+ * HTML WYSIWYG editor control released as Open Source under LGPL. 
+ * TinyMCE has the ability to convert HTML TEXTAREA fields 
+ * or other HTML elements to editor instances.
+ * 
+ * This widget is a wrapper for TinyMCE.
+ *
+ * @author Alexander.B <alexbassmusic@gmail.com> - https://www.odesk.com/users/~01ae8f6e1a81c189cf
+ */
+class TinyMCE extends CWidget 
+{
+    public $options;
+    
+    public function run()
+    {
+        // Defaults
+        $this->options = array(
+            'selector'=>'textarea',
+            'language'=>Yii::app()->language,
+            'entity_encoding'=>'raw',
+        );
+        
+        $baseUrl = Yii::app()->baseUrl;
+        $tinymceOptions = '';
+        $cs = Yii::app()->getClientScript();  
+        $cs->registerScriptFile($baseUrl.'/js/tinymce/tinymce.min.js');
+        if(empty($this->options))
+            return FALSE;
+        
+        if(is_array($this->options))
+        {
+            foreach ($this->options as $k=>$option)
+            {
+                $tinymceOptions .= $k.':'.'\''.$option.'\',';
+            }
+            $tinymceOptions = substr ($tinymceOptions, 0, -1);
+        }
+        $cs->registerScript("_init_TinyMCE","tinymce.init({{$tinymceOptions}});");
+    }
+}

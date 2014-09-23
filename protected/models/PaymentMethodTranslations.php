@@ -34,7 +34,7 @@ class PaymentMethodTranslations extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('payment_method_id, language_code', 'required'),
+			array('payment_method_id, language_code, payment_method_name', 'required'),
 			array('payment_method_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('language_code', 'length', 'max'=>5),
 			array('payment_method_name, payment_method_desc, payment_method_title', 'length', 'max'=>255),
