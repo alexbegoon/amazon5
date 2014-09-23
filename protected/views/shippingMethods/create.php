@@ -14,7 +14,7 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Shipping Methods');?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Shipping Method');?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model,
                                           'shippingMethodTranslation'=>$shippingMethodTranslation)); ?>

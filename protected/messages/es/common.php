@@ -295,8 +295,13 @@ return array(
     'Marketplace fees'=>'Honorarios del Mercado',
     'Percent'=>'Porcentaje',
     'Amount'=>'Importe',
- 
-
+    'Payment'=>'Pago',
+    'Payment Method'=>'Forma de pago',
+    'Payment Method Name'=>'Forma de pago Nombre',
+    'Payment Method Title'=>'Forma de pago Título',
+    'Payment Method Description'=>'Forma de pago Descripción',
+    'Payment Methods'=>'Formas de pago',
+    'Handler Component'=>'Componente manejador',
     
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',

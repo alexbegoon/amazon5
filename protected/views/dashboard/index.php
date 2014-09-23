@@ -81,6 +81,11 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Shipping'),
                         ),
                     array(
+                        'url'=>'payment',
+                        'fa'=>'fa-cc-visa',
+                        'label'=>Yii::t('common','Payment'),
+                        ),
+                    array(
                         'url'=>'synchronization',
                         'fa'=>'fa-refresh fa-spin',
                         'label'=>Yii::t('common','Synchronization'),

@@ -19,7 +19,7 @@ function enumItem($model,$attribute)
         foreach(explode(',', $matches[1]) as $value)
         {
                 $value=str_replace("'",null,$value);
-                $values[$value]=Yii::t('common', ucfirst(strtolower($value)));
+                $values[$value]=Yii::t('common', ucfirst($value));
         }
         asort($values);
         return $values;
