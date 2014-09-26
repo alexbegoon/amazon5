@@ -1,6 +1,6 @@
 <?php
 
-class PaymentMethodsController extends Controller
+class OrderStatusesController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -53,16 +53,16 @@ class PaymentMethodsController extends Controller
 	 */
 	public function actionView($id)
 	{
-                $paymentMethodTranslations =new CActiveDataProvider('PaymentMethodTranslations', array(
+                $orderStatusTranslations = new CActiveDataProvider('OrderStatusTranslations', array(
                     'criteria'=>array(
-                        'condition'=>'payment_method_id=:id',
-                        'params'=>array(':id'=>$id)
+                        'condition'=>'status_code=:status_code',
+                        'params'=>array(':status_code'=>$id)
                     ),
                 ));
                 
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
-                        'paymentMethodTranslations'=>$paymentMethodTranslations,
+                        'orderStatusTranslations'=>$orderStatusTranslations,
 		));
 	}
 
@@ -72,30 +72,24 @@ class PaymentMethodsController extends Controller
 	 */
 	public function actionCreate()
 	{
-            $model=new PaymentMethods;
-            $paymentMethodTranslation=new PaymentMethodTranslations;
-            $paypalParams=new PayPalParams;
-            // Uncomment the following line if AJAX validation is needed
-            $this->performAjaxValidation(array($model,$paymentMethodTranslation,$paypalParams));
+		$model=new OrderStatuses;
+                $orderStatusTranslations=new OrderStatusTranslations;
 
-            if(isset($_POST['PaymentMethods'],
-                     $_POST['PaymentMethodTranslations']))
+            // Uncomment the following line if AJAX validation is needed
+             $this->performAjaxValidation(array($model,$orderStatusTranslations));
+
+            if(isset($_POST['OrderStatuses'], 
+                     $_POST['OrderStatusTranslations']
+                    ))
             {
                 // Start the transaction
                 $transaction = Yii::app()->db->beginTransaction();
                 $valid = true;
 
-                $model->attributes=$_POST['PaymentMethods'];
-                if(isset($_POST['PaymentMethods']['handler_component']))
-                    if(class_exists($_POST['PaymentMethods']['handler_component'].'Params'))
-                $model->parameters=serialize($_POST[$_POST['PaymentMethods']['handler_component'].'Params']);
-                $paymentMethodTranslation->attributes=$_POST['PaymentMethodTranslations'];
-                // Params
-                $paypalParams->attributes=$_POST['PayPalParams'];
+                $model->attributes=$_POST['OrderStatuses'];
+                $orderStatusTranslations->attributes=$_POST['OrderStatusTranslations'];
 
-                if($model->validate() 
-                        && $paypalParams->validate() 
-                        && $valid)
+                if($model->validate() && $valid)
                 {
                     $model->save();
                 }
@@ -106,56 +100,57 @@ class PaymentMethodsController extends Controller
 
                 if($valid)
                 {
-                    $paymentMethodTranslation->setAttribute('payment_method_id', $model->id);
+                    $orderStatusTranslations->setAttribute('status_code', $model->status_code);
                 }
                 
-                if( $paymentMethodTranslation->validate() && $valid )
+                if($orderStatusTranslations->validate() 
+                    && $valid )
                 {
-                    $paymentMethodTranslation->save();
+                    $orderStatusTranslations->save();
                 }
                 else
                 {
                     $valid=FALSE;
                 }
-                // Method Successfully created 
+
+                // Product Successfully created 
                 if($valid)
                 {
                     $transaction->commit();
-                    $this->redirect(array('view','id'=>$model->id));
+                    $this->redirect(array('view','id'=>$model->status_code));
                 }
                 else
                 {
                     $transaction->rollback();
                 }
             }
-            
+
             $this->render('create',array(
                     'model'=>$model,
-                    'paymentMethodTranslation'=>$paymentMethodTranslation,
-                    'paypalParams'=>$paypalParams,
+                    'orderStatusTranslations'=>$orderStatusTranslations,
             ));
 	}
         
         public function actionCreateTranslation()
         {            
-            $model= new PaymentMethodTranslations;
+            $model= new OrderStatusTranslations;
             
-            $model->setAttribute('payment_method_id', Yii::app()->request->getParam('payment_method_id'));
+            $model->setAttribute('status_code', Yii::app()->request->getParam('status_code'));
                 
             // enable ajax-based validation
             
-            if(isset($_POST['ajax']) && $_POST['ajax']==='payment-method-translations-_translations-form')
+            if(isset($_POST['ajax']) && $_POST['ajax']==='status-code-translations-_translations-form')
             {
                 echo CActiveForm::validate($model);
                 Yii::app()->end();
             }
-            if(isset($_POST['PaymentMethodTranslations']))
+            if(isset($_POST['OrderStatusTranslations']))
             {
-                $model->attributes=$_POST['PaymentMethodTranslations'];
+                $model->attributes=$_POST['OrderStatusTranslations'];
                 if($model->validate())
                 {
                     $model->save();
-                    $this->redirect(array('view','id'=>$model->payment_method_id));
+                    $this->redirect(array('view','id'=>$model->status_code));
                 }
             }
             $this->render('create_translations',array('model'=>$model));
@@ -163,29 +158,80 @@ class PaymentMethodsController extends Controller
         
         public function actionUpdateTranslation()
         {            
-            $model=PaymentMethodTranslations::model()->findByPk($this->getActionParams());
+            $model=OrderStatusTranslations::model()->findByPk($this->getActionParams());
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
                 
             // enable ajax-based validation
             
-            if(isset($_POST['ajax']) && $_POST['ajax']==='payment-method-translations-_translations-form')
+            if(isset($_POST['ajax']) && $_POST['ajax']==='status-code-translations-_translations-form')
             {
                 echo CActiveForm::validate($model);
                 Yii::app()->end();
             }
             
 
-            if(isset($_POST['PaymentMethodTranslations']))
+            if(isset($_POST['OrderStatusTranslations']))
             {
-                $model->attributes=$_POST['PaymentMethodTranslations'];
+                $model->attributes=$_POST['OrderStatusTranslations'];
                 if($model->validate())
                 {
                     $model->save();
-                    $this->redirect(array('view','id'=>$model->payment_method_id));
+                    $this->redirect(array('view','id'=>$model->status_code));
                 }
             }
             $this->render('update_translations',array('model'=>$model));
+        }
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id);
+                
+                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
+                $model->updateByPk($id,array(
+                    'locked_by'=>Yii::app()->user->getId(),
+                    'locked_on'=>date('Y-m-d H:i:s',time()),
+                ));
+                
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['OrderStatuses']))
+		{
+			$model->attributes=$_POST['OrderStatuses'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->status_code));
+		}
+
+		$this->render('update',array(
+			'model'=>$model,
+		));
+	}
+        
+        public function actionToggle($id)
+        {
+            $model=$this->loadModel($id);
+            
+            if($model!==null)
+            {
+                $model->attributes = $this->getActionParams();
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+            
+            $this->redirect(array('view','id'=>$id));
         }
 
 	/**
@@ -207,7 +253,7 @@ class PaymentMethodsController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('PaymentMethods');
+		$dataProvider=new CActiveDataProvider('OrderStatuses');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -218,10 +264,10 @@ class PaymentMethodsController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new PaymentMethods('search');
+		$model=new OrderStatuses('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['PaymentMethods']))
-			$model->attributes=$_GET['PaymentMethods'];
+		if(isset($_GET['OrderStatuses']))
+			$model->attributes=$_GET['OrderStatuses'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -232,12 +278,12 @@ class PaymentMethodsController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return PaymentMethods the loaded model
+	 * @return OrderStatuses the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=PaymentMethods::model()->findByPk($id);
+		$model=OrderStatuses::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -245,11 +291,11 @@ class PaymentMethodsController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param PaymentMethods $model the model to be validated
+	 * @param OrderStatuses $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='payment-methods-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='order-statuses-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

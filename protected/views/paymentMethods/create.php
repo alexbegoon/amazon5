@@ -17,4 +17,5 @@ $this->menu=array(
 <h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Payment Method');?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model,
-                                          'paymentMethodTranslation'=>$paymentMethodTranslation)); ?>
+                                          'paymentMethodTranslation'=>$paymentMethodTranslation,
+                                          'paypalParams'=>$paypalParams,)); ?>

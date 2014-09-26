@@ -1,33 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "{{fees}}".
+ * This is the model class for table "{{order_status_translations}}".
  *
- * The followings are the available columns in table '{{fees}}':
- * @property string $code
- * @property string $fee_type
- * @property string $fee_mode
- * @property double $percent
- * @property string $amount
- * @property integer $currency_id
+ * The followings are the available columns in table '{{order_status_translations}}':
+ * @property string $status_code
+ * @property string $language_code
+ * @property string $status_name
+ * @property string $status_desc
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
  * @property integer $modified_by
  * @property string $locked_on
  * @property integer $locked_by
- *
- * The followings are the available model relations:
- * @property Currencies $currency
  */
-class Fees extends CActiveRecord
+class OrderStatusTranslations extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{fees}}';
+		return '{{order_status_translations}}';
 	}
 
 	/**
@@ -38,19 +33,23 @@ class Fees extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, currency_id, fee_type, fee_mode', 'required'),
-			array('code', 'unique'),
-			array('currency_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('percent', 'numerical', 'min'=>0, 'max'=>60),
-			array('code', 'length', 'max'=>64, 'min'=>3),
-			array('fee_type', 'match', 'pattern'=>'/Financial Fees|Marketplace Fees/'),
-			array('fee_mode', 'match', 'pattern'=>'/Percent|Amount|Percent and Amount/'),
-			array('amount', 'length', 'max'=>15),
-			array('amount', 'numerical', 'min'=>0.01),
+			array('status_code, language_code, status_name', 'required'),
+			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('status_code', 'length', 'max'=>2),
+			array('status_code', 'match', 'pattern'=>'/^\w{2}$/'),
+			array('language_code', 'length', 'max'=>5),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`status_code`=:status_code',
+                            'params'=>array(
+                                ':status_code'=>$this->status_code
+                            )
+                        )),
+			array('status_name', 'length', 'max'=>64, 'min'=>5),
+			array('status_desc', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('code, fee_type, fee_mode, percent, amount, currency_id, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('status_code, language_code, status_name, status_desc, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +61,6 @@ class Fees extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'currency' => array(self::BELONGS_TO, 'Currencies', 'currency_id'),
 		);
 	}
 
@@ -72,12 +70,10 @@ class Fees extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'code' => Yii::t('common', 'Code'),
-			'fee_type' => Yii::t('common', 'Fee Type'),
-			'fee_mode' => Yii::t('common', 'Fee Mode'),
-			'percent' => Yii::t('common', 'Percent'),
-			'amount' => Yii::t('common', 'Amount'),
-			'currency_id' => Yii::t('common', 'Currency'),
+			'status_code' => Yii::t('common', 'Status Code'),
+			'language_code' => Yii::t('common', 'Language Code'),
+			'status_name' => Yii::t('common', 'Status Name'),
+			'status_desc' => Yii::t('common', 'Status Description'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -105,12 +101,10 @@ class Fees extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('code',$this->code,true);
-		$criteria->compare('fee_type',$this->fee_type,true);
-		$criteria->compare('fee_mode',$this->fee_mode,true);
-		$criteria->compare('percent',$this->percent);
-		$criteria->compare('amount',$this->amount,true);
-		$criteria->compare('currency_id',$this->currency_id);
+		$criteria->compare('status_code',$this->status_code,true);
+		$criteria->compare('language_code',$this->language_code,true);
+		$criteria->compare('status_name',$this->status_name,true);
+		$criteria->compare('status_desc',$this->status_desc,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -127,7 +121,7 @@ class Fees extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Fees the static model class
+	 * @return OrderStatusTranslations the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -139,26 +133,5 @@ class Fees extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
-        }
-        
-        public static function listFees()
-        {
-            return self::model()->findAll(array('order'=>'t.code'));
-        }
-        
-        public static function listData($feeCode=null)
-        {
-            static $data=array();
-            
-            if(empty($data))
-            {
-                $fees = self::listFees();
-                $data = CHtml::listData($fees,'code','code');
-            }
-            
-            if(!empty($feeCode) && isset($data[$feeCode]))
-                return $data[$feeCode];
-            
-            return $data;
         }
 }

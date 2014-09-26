@@ -17,7 +17,7 @@
 
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary(array($model,$paymentMethodTranslation), null, null, array('class'=>'alert alert-danger')); ?>
+	<?php echo $form->errorSummary(array($model,$paymentMethodTranslation,$paypalParams), null, null, array('class'=>'alert alert-danger')); ?>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'web_shop_id',array('class'=>'control-label')); ?>
 		<?php echo $form->dropDownList($model,'web_shop_id',WebShops::listData(),array('class'=>'form-control')); ?>
@@ -56,7 +56,47 @@
 		<?php echo $form->dropDownList($model,'handler_component',enumItem($model,'handler_component'),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'handler_component',array('class'=>'label label-danger')); ?>
 	</div>
+        <hr>
+        <?php $this->widget('zii.widgets.jui.CJuiTabs',array(
+        'tabs'=>array(
+            'Bank Transfer'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'BankTransfer'),
+            'PayPal'=>array('content'=>$this->renderPartial('_paypal_params', array('paypalParams'=>$paypalParams,
+                                                           'form'=>$form ), true), 'id'=>'PayPal'),
+            'SagePay'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'SagePay'),
+            'TPV'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'TPV'),
+            
+        ),
+        'id'=>'params_tabs',
+        'htmlOptions'=>array('class'=>'row form-group'),
+        // additional javascript options for the tabs plugin
+        'options'=>array(
+            'collapsible'=>false,
+            'disabled'=>true,
+            'show'=>array(
+                'effect'=>'blind',
+                'duration'=>800,
+            ),
+        ),
+));
+        
+        Yii::app()->clientScript->registerScript('tabs',"
+                $(function(){ 
+			init_tabs = function(){ 
+				$('#params_tabs').tabs( 'option','disabled', true ); 
+				var selectedTab = $('#PaymentMethods_handler_component').val().replace(/\s+/g, ''); 
+				$('#params_tabs').tabs( 'enable', selectedTab);
+				var index = $('#params_tabs a[href=#'+selectedTab+']').parent().index();
+                                $('#params_tabs').tabs('select', index);
+			}; 
 
+			init_tabs(); 
+			$('#PaymentMethods_handler_component').change(function(){
+				init_tabs();
+			});
+		});
+                ");
+        ?>
+        <hr>
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>

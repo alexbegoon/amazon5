@@ -86,6 +86,11 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Payment'),
                         ),
                     array(
+                        'url'=>'orderStatuses',
+                        'glyphicon'=>'glyphicon-ok-sign',
+                        'label'=>Yii::t('common','Order Statuses'),
+                        ),
+                    array(
                         'url'=>'synchronization',
                         'fa'=>'fa-refresh fa-spin',
                         'label'=>Yii::t('common','Synchronization'),

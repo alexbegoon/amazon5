@@ -37,6 +37,12 @@ class PaymentMethodTranslations extends CActiveRecord
 			array('payment_method_id, language_code, payment_method_name', 'required'),
 			array('payment_method_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('language_code', 'length', 'max'=>5),
+                        array('language_code', 'unique', 'criteria'=>array(
+                            'condition'=>'`payment_method_id`=:payment_method_id',
+                            'params'=>array(
+                                ':payment_method_id'=>$this->payment_method_id
+                            )
+                        )),
 			array('payment_method_name, payment_method_desc, payment_method_title', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().

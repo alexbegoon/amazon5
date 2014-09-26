@@ -1,16 +1,16 @@
 <?php
 /**
- * Collect and validate PayPal parameters
+ * Collect and validate SagePay parameters
  *
  * @author Alexander.B <alexbassmusic@gmail.com> - https://www.odesk.com/users/~01ae8f6e1a81c189cf
  * 
  * 
  */
-class PayPalParams extends CFormModel
+class SagePayParams extends CFormModel
 {
     /**
-     * PayPal payment email. 
-     * Your business email address for PayPal payments. 
+     * SagePay payment email. 
+     * Your business email address for SagePay payments. 
      * Also used as receiver_email.
      * @var string 
      */
@@ -18,13 +18,13 @@ class PayPalParams extends CFormModel
     /**
      * Boolean. Accept only verified buyers?::Here you can choose if you only 
      * want to accept payments from buyers with a <strong>verified</strong> 
-     * PayPal account (when an account is not verified, PayPal does transfer 
+     * SagePay account (when an account is not verified, SagePay does transfer 
      * the funds, but they do not fully guarantee the validity of the sale).
      * @var bool
      */
     public $only_verified_buyers;
     /**
-     * PayPal SandBox email.
+     * SagePay SandBox email.
      * @var string 
      */
     public $paypal_sandbox_email;
@@ -34,10 +34,10 @@ class PayPalParams extends CFormModel
      */
     public $sandbox_mode;
     /**
-     * Let buyers override their PayPal addresses?::The address specified with 
-     * automatic fill-in variables overrides the PayPal member’s stored address.
+     * Let buyers override their SagePay addresses?::The address specified with 
+     * automatic fill-in variables overrides the SagePay member’s stored address.
      * Buyers see the addresses that you pass in, but they cannot edit them. 
-     * PayPal does not show addresses if they are invalid or omitted.
+     * SagePay does not show addresses if they are invalid or omitted.
      * @var bool 
      */
     public $address_override;    
@@ -93,7 +93,7 @@ class PayPalParams extends CFormModel
     /**
      * Order Status for Successful transactions. 
      * Select the order status to which the actual order is set, 
-     * if the PayPal IPN was successful. If using download selling options: 
+     * if the SagePay IPN was successful. If using download selling options: 
      * select the status which enables the download 
      * (then the customer is instantly notified about the download via e-mail).
      * @var string 
@@ -101,7 +101,7 @@ class PayPalParams extends CFormModel
     public $status_success;
     /**
      * Order Status for Failed transactions. 
-     * Select an order status for Failed PayPal transactions.
+     * Select an order status for Failed SagePay transactions.
      * @var string
      */
     public $status_canceled;
@@ -166,11 +166,11 @@ class PayPalParams extends CFormModel
     public function attributeLabels()
     {
             return array(
-                'paypal_email'=>Yii::t('common', 'PayPal payment email'),
+                'paypal_email'=>Yii::t('common', 'SagePay payment email'),
                 'only_verified_buyers'=>Yii::t('common', 'Accept only verified buyers?'),
-                'paypal_sandbox_email'=>Yii::t('common', 'PayPal Sandbox Email'),
+                'paypal_sandbox_email'=>Yii::t('common', 'SagePay Sandbox Email'),
                 'sandbox_mode'=>Yii::t('common', 'Sandbox'),
-                'address_override'=>Yii::t('common', 'Let buyers override their PayPal addresses?'),
+                'address_override'=>Yii::t('common', 'Let buyers override their SagePay addresses?'),
                 'no_shipping'=>Yii::t('common', 'Prompt buyers for a shipping address'),
                 'payment_currency'=>Yii::t('common', 'Currency'),
                 'countries'=>Yii::t('common', 'Countries'),

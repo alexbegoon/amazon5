@@ -167,4 +167,15 @@ class Countries extends CActiveRecord
             
             return $data;
         }
+        
+        public static function isAvailable($countryCode=null)
+        {
+            if(empty($countryCode))
+                return false;
+            
+            return self::model()
+                    ->with('continentCode')
+                    ->exists(array('condition'=>'t.published=1 AND continentCode.published=1 AND t.code=:country_code',
+                                   'params'=>array(':country_code'=>$countryCode)));
+        }
 }

@@ -302,6 +302,12 @@ return array(
     'Payment Method Description'=>'Forma de pago Descripción',
     'Payment Methods'=>'Formas de pago',
     'Handler Component'=>'Componente manejador',
+    'Minimum Amount'=>'Importe mínimo',
+    'Maximum Amount'=>'Importe máximo',
+    'Public'=>'Pública',
+    'System'=>'Sistema',
+    'Not configurable'=>'No configurable',
+    'Country with code {country_code} not available.'=>'País con código {country_code} no disponible.',
     
     // Long text
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
@@ -323,6 +329,7 @@ return array(
     'Product with SKU: {sku} not found'=>'Producto con SKU: {sku} no encontrado',
     'Product image for the product SKU: {sku}, successfully saved.'=>'Imagen del producto para el producto SKU: {sku}, guardado correctamente.',
     '{attribute} must be greater than zero'=>'{attribute} debe ser mayor que cero',
+    '{attribute1} must be greater than {attribute2}'=>'{attribute1} debe ser mayor que {attribute2}',
     'This SKU already exists'=>'Esta SKU ya existe',
     'Are you sure you want to delete this item?'=>'¿Está seguro que desea eliminar este artículo?',
     'Are you sure you want to delete these items?'=>'¿Seguro que quiere eliminar estos elementos?',
