@@ -227,6 +227,19 @@ class OrderStatuses extends CActiveRecord
             return $data;
         }
         
+        public static function range()
+        {
+            static $data=array();
+                        
+            if(empty($data))
+            {
+                $statuses = self::listStatuses();
+                $data = CHtml::listData($statuses,'status_code','status_code');
+            }
+            
+            return $data;
+        }
+
         public static function listData($statusCode=null)
         {
             static $data=array();

@@ -4,19 +4,40 @@
 /* @var $form CActiveForm */
 ?>
 <div class="row form-group">
-        <?php echo $form->labelEx($paramsModel,'paypal_email',array('class'=>'control-label')); ?>
-        <?php echo $form->textField($paramsModel,'paypal_email',array('class'=>'form-control')); ?>
-        <?php echo $form->error($paramsModel,'paypal_email',array('class'=>'label label-danger')); ?>
+        <?php echo $form->labelEx($paramsModel,'sagepay_email',array('class'=>'control-label')); ?>
+        <?php echo $form->textField($paramsModel,'sagepay_email',array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'sagepay_email',array('class'=>'label label-danger')); ?>
 </div>
 <div class="row form-group">
-        <?php echo $form->labelEx($paramsModel,'only_verified_buyers',array('class'=>'control-label')); ?>
-        <?php echo $form->checkBox($paramsModel,'only_verified_buyers'); ?>
-        <?php echo $form->error($paramsModel,'only_verified_buyers',array('class'=>'label label-danger')); ?>
+        <?php echo $form->labelEx($paramsModel,'sagepay_vendor_name',array('class'=>'control-label')); ?>
+        <?php echo $form->textField($paramsModel,'sagepay_vendor_name',array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'sagepay_vendor_name',array('class'=>'label label-danger')); ?>
 </div>
 <div class="row form-group">
-        <?php echo $form->labelEx($paramsModel,'paypal_sandbox_email',array('class'=>'control-label')); ?>
-        <?php echo $form->textField($paramsModel,'paypal_sandbox_email',array('class'=>'form-control')); ?>
-        <?php echo $form->error($paramsModel,'paypal_sandbox_email',array('class'=>'label label-danger')); ?>
+        <?php echo $form->labelEx($paramsModel,'live_encryption_password',array('class'=>'control-label')); ?>
+        <?php echo $form->passwordField($paramsModel,'live_encryption_password',array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'live_encryption_password',array('class'=>'label label-danger')); ?>
+</div>
+<div class="row form-group">
+        <?php echo $form->labelEx($paramsModel,'test_encryption_password',array('class'=>'control-label')); ?>
+        <?php echo $form->passwordField($paramsModel,'test_encryption_password',array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'test_encryption_password',array('class'=>'label label-danger')); ?>
+</div>
+<hr>
+<div class="row form-group">
+        <?php echo $form->labelEx($paramsModel,'profile_type',array('class'=>'control-label')); ?>
+        <?php echo $form->dropDownList($paramsModel,'profile_type',SagePayParams::itemAlias('profile_type'),array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'profile_type',array('class'=>'label label-danger')); ?>
+</div>
+<div class="row form-group">
+        <?php echo $form->labelEx($paramsModel,'ssl_enabled',array('class'=>'control-label')); ?>
+        <?php echo $form->checkBox($paramsModel,'ssl_enabled'); ?>
+        <?php echo $form->error($paramsModel,'ssl_enabled',array('class'=>'label label-danger')); ?>
+</div>
+<div class="row form-group">
+        <?php echo $form->labelEx($paramsModel,'sagepay_sandbox_email',array('class'=>'control-label')); ?>
+        <?php echo $form->textField($paramsModel,'sagepay_sandbox_email',array('class'=>'form-control')); ?>
+        <?php echo $form->error($paramsModel,'sagepay_sandbox_email',array('class'=>'label label-danger')); ?>
 </div>
 <div class="row form-group">
         <?php echo $form->labelEx($paramsModel,'sandbox_mode',array('class'=>'control-label')); ?>
@@ -27,16 +48,6 @@
         <?php echo $form->labelEx($paramsModel,'debug',array('class'=>'control-label')); ?>
         <?php echo $form->checkBox($paramsModel,'debug'); ?>
         <?php echo $form->error($paramsModel,'debug',array('class'=>'label label-danger')); ?>
-</div>
-<div class="row form-group">
-        <?php echo $form->labelEx($paramsModel,'address_override',array('class'=>'control-label')); ?>
-        <?php echo $form->checkBox($paramsModel,'address_override'); ?>
-        <?php echo $form->error($paramsModel,'address_override',array('class'=>'label label-danger')); ?>
-</div>
-<div class="row form-group">
-        <?php echo $form->labelEx($paramsModel,'no_shipping',array('class'=>'control-label')); ?>
-        <?php echo $form->dropDownList($paramsModel,'no_shipping',  PayPalParams::itemAlias('no_shipping'),array('class'=>'form-control')); ?>
-        <?php echo $form->error($paramsModel,'no_shipping',array('class'=>'label label-danger')); ?>
 </div>
 <div class="row form-group">
         <?php echo $form->labelEx($paramsModel,'payment_currency',array('class'=>'control-label')); ?>

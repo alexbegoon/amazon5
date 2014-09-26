@@ -1,68 +1,30 @@
 <?php
 /**
- * Collect and validate SagePay parameters
+ * Collect and validate TPV parameters
  *
  * @author Alexander.B <alexbassmusic@gmail.com> - https://www.odesk.com/users/~01ae8f6e1a81c189cf
  * 
  * 
  */
-class SagePayParams extends CFormModel
+class TPVParams extends CFormModel
 {
     /**
-     * SagePay payment email. 
-     * Your business email address for SagePay payments. 
+     * TPV payment email. 
+     * Your business email address for TPV payments. 
      * Also used as receiver_email.
      * @var string 
      */
-    public $sagepay_email;    
+    public $tpv_email;    
     /**
-     * SagePay Vendor Name::This is your unique Sage Pay System name. 
-     * (Your My Sage Pay Account Name). It is used to identify yourself 
-     * to the system. You will need to enter this into your 
-     * shopping cart software / code and is also used when accessing your 
-     * My Sage Pay Admin Reports pages. It replaces the 'testvendor' 
-     * default settings. NB: Some shopping carts may refer to this as MerchantID
+     * TPV Commerce key
      * @var string 
      */
-    public $sagepay_vendor_name;    
+    public $tpv_commerce_key;    
     /**
-     * Live Encryption Password:::This password is used to encrypted 
-     * the data your server sends to our Live servers 
-     * via the Sage Pay Form system. 
-     * You will need to update your shopping cart settings 
-     * (or functions file) with this new password and your new Vendor Name.
+     *  TPV password
      * @var string
      */
-    public $live_encryption_password;    
-    /**
-     * Test Encryption Password:::This password is used to encrypted the data 
-     * your server sends to our Test servers via the Sage Pay Form system. 
-     * You will need to update your shopping cart settings (or functions file) 
-     * with this new password and your new Vendor Name.
-     * @var string
-     */
-    public $test_encryption_password;  
-    /**
-     * SSL enabled?::The Secure Sockets Layer (SSL) 
-     * is a commonly-used protocol for managing the security 
-     * of a message transmission on the Internet.
-     * @var bool
-     */
-    public $ssl_enabled;
-    /**
-     * Profile type::This is used to indicate what type of payment pages 
-     * should be displayed LOW returns simpler payment pages which have 
-     * only one step and minimal formatting. 
-     * Designed to run in i-Frames. 
-     * NORMAL returns the normal card selection screen. (Default) 
-     * @var type 
-     */
-    public $profile_type;    
-    /**
-     * SagePay SandBox email.
-     * @var string 
-     */
-    public $sagepay_sandbox_email;
+    public $tpv_password;
     /**
      * Sandbox mode
      * @var bool 
@@ -112,7 +74,7 @@ class SagePayParams extends CFormModel
     /**
      * Order Status for Successful transactions. 
      * Select the order status to which the actual order is set, 
-     * if the SagePay IPN was successful. If using download selling options: 
+     * if the TPV IPN was successful. If using download selling options: 
      * select the status which enables the download 
      * (then the customer is instantly notified about the download via e-mail).
      * @var string 
@@ -120,7 +82,7 @@ class SagePayParams extends CFormModel
     public $status_success;
     /**
      * Order Status for Failed transactions. 
-     * Select an order status for Failed SagePay transactions.
+     * Select an order status for Failed TPV transactions.
      * @var string
      */
     public $status_canceled;
@@ -136,19 +98,17 @@ class SagePayParams extends CFormModel
     public function rules()
     {
             return array(
-                    array('sagepay_email,sagepay_vendor_name,test_encryption_password,live_encryption_password,profile_type,status_pending, status_success, status_canceled', 'required'),
-                    array('sagepay_email, sagepay_sandbox_email', 'email'),
-                    array('ssl_enabled, debug, sandbox_mode', 'boolean'),
+                    array('tpv_email,tpv_password,tpv_commerce_key,status_pending, status_success, status_canceled', 'required'),
+                    array('tpv_email', 'email'),
+                    array('debug, sandbox_mode', 'boolean'),
                     array('payment_currency', 'numerical', 'integerOnly'=>true),
                     array('min_amount, max_amount, tax', 'numerical'),
                     array('min_amount, max_amount', 'validateAmount'),
                     array('min_amount', 'numerical', 'min'=>0.01),
-                    array('profile_type', 'match', 'pattern'=>'/^LOW$|^NORMAL$/'),
                     array('status_pending, status_success, status_canceled','length','max'=>2),
                     array('status_pending, status_success, status_canceled','in','range'=>OrderStatuses::range()),
-                    array('sagepay_vendor_name','length','max'=>15),
-                    array('fee_code,test_encryption_password,live_encryption_password','length','max'=>64),
-                    array('test_encryption_password,live_encryption_password','length','min'=>5),
+                    array('fee_code,tpv_password,tpv_commerce_key','length','max'=>64),
+                    array('tpv_password,tpv_commerce_key','length','min'=>5),
                     array('fee_code','in','range'=>Fees::listData()),
                     array('countries','validateCountries'),
                     array('countries','safe'),
@@ -190,13 +150,9 @@ class SagePayParams extends CFormModel
     public function attributeLabels()
     {
             return array(
-                'sagepay_email'=>Yii::t('common', 'SagePay payment email'),
-                'sagepay_sandbox_email'=>Yii::t('common', 'SagePay Sandbox Email'),
-                'sagepay_vendor_name'=>Yii::t('common', 'SagePay Vendor Name'),
-                'test_encryption_password'=>Yii::t('common', 'Test Encryption Password'),
-                'live_encryption_password'=>Yii::t('common', 'Live Encryption Password'),
-                'profile_type'=>Yii::t('common', 'Profile Type'),
-                'ssl_enabled'=>Yii::t('common', 'SSL Enabled'),
+                'tpv_email'=>Yii::t('common', 'TPV payment email'),
+                'tpv_password'=>Yii::t('common', 'TPV Password'),
+                'tpv_commerce_key'=>Yii::t('common', 'TPV Commerce Key'),
                 'sandbox_mode'=>Yii::t('common', 'Sandbox'),
                 'payment_currency'=>Yii::t('common', 'Currency'),
                 'countries'=>Yii::t('common', 'Countries'),
@@ -214,10 +170,7 @@ class SagePayParams extends CFormModel
     public static function itemAlias($type,$code=NULL) 
     {
         $_items = array(
-            'profile_type'=>array(
-                'LOW'=>Yii::t('common', 'Low'),
-                'NORMAL'=>Yii::t('common', 'Normal'),
-            )
+            
         );
         if (isset($code))
                 return isset($_items[$type][$code]) ? $_items[$type][$code] : false;

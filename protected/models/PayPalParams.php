@@ -117,6 +117,7 @@ class PayPalParams extends CFormModel
     public function rules()
     {
             return array(
+                    array('paypal_email,status_pending, status_success, status_canceled, payment_currency', 'required'),
                     array('paypal_email, paypal_sandbox_email', 'email'),
                     array('only_verified_buyers, debug, address_override, sandbox_mode', 'boolean'),
                     array('no_shipping, payment_currency', 'numerical', 'integerOnly'=>true),
@@ -124,6 +125,7 @@ class PayPalParams extends CFormModel
                     array('min_amount, max_amount', 'validateAmount'),
                     array('min_amount', 'numerical', 'min'=>0.01),
                     array('status_pending, status_success, status_canceled','length','max'=>2),
+                    array('status_pending, status_success, status_canceled','in','range'=>OrderStatuses::range()),
                     array('fee_code','length','max'=>64),
                     array('fee_code','in','range'=>  Fees::listData()),
                     array('countries','validateCountries'),

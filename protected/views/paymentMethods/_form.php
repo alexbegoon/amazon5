@@ -17,7 +17,7 @@
 
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary(array($model,$paymentMethodTranslation,$paypalParams), null, null, array('class'=>'alert alert-danger')); ?>
+	<?php echo $form->errorSummary(array($model,$paymentMethodTranslation,$paypalParams,$tpvParams,$sagepayParams), null, null, array('class'=>'alert alert-danger')); ?>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'web_shop_id',array('class'=>'control-label')); ?>
 		<?php echo $form->dropDownList($model,'web_shop_id',WebShops::listData(),array('class'=>'form-control')); ?>
@@ -60,10 +60,12 @@
         <?php $this->widget('zii.widgets.jui.CJuiTabs',array(
         'tabs'=>array(
             'Bank Transfer'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'BankTransfer'),
-            'PayPal'=>array('content'=>$this->renderPartial('_paypal_params', array('paypalParams'=>$paypalParams,
+            'PayPal'=>array('content'=>$this->renderPartial('_paypal_params', array('paramsModel'=>$paypalParams,
                                                            'form'=>$form ), true), 'id'=>'PayPal'),
-            'SagePay'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'SagePay'),
-            'TPV'=>array('content'=>Yii::t('common', 'Not configurable'), 'id'=>'TPV'),
+            'SagePay'=>array('content'=>$this->renderPartial('_sagepay_params', array('paramsModel'=>$sagepayParams,
+                                                           'form'=>$form ), true), 'id'=>'SagePay'),
+            'TPV'=>array('content'=>$this->renderPartial('_tpv_params', array('paramsModel'=>$tpvParams,
+                                                           'form'=>$form ), true), 'id'=>'TPV'),
             
         ),
         'id'=>'params_tabs',

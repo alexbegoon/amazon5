@@ -75,8 +75,11 @@ class PaymentMethodsController extends Controller
             $model=new PaymentMethods;
             $paymentMethodTranslation=new PaymentMethodTranslations;
             $paypalParams=new PayPalParams;
+            $sagepayParams=new SagePayParams;
+            $tpvParams=new TPVParams;
+            $paramsClassName = '';
             // Uncomment the following line if AJAX validation is needed
-            $this->performAjaxValidation(array($model,$paymentMethodTranslation,$paypalParams));
+            $this->performAjaxValidation(array($model,$paymentMethodTranslation,$paypalParams,$sagepayParams,$tpvParams));
 
             if(isset($_POST['PaymentMethods'],
                      $_POST['PaymentMethodTranslations']))
@@ -88,14 +91,31 @@ class PaymentMethodsController extends Controller
                 $model->attributes=$_POST['PaymentMethods'];
                 if(isset($_POST['PaymentMethods']['handler_component']))
                     if(class_exists($_POST['PaymentMethods']['handler_component'].'Params'))
-                $model->parameters=serialize($_POST[$_POST['PaymentMethods']['handler_component'].'Params']);
+                        $paramsClassName = $_POST['PaymentMethods']['handler_component'].'Params';
+                    
+                if(!empty($paramsClassName))
+                {
+                    $model->parameters=Yii::app()->securityManager->encrypt(
+                        serialize($_POST[$paramsClassName]),
+                        Yii::app()->params['encryptionKey']);
+                }
+                
                 $paymentMethodTranslation->attributes=$_POST['PaymentMethodTranslations'];
                 // Params
                 $paypalParams->attributes=$_POST['PayPalParams'];
+                $sagepayParams->attributes=$_POST['SagePayParams'];
+                $tpvParams->attributes=$_POST['TPVParams'];
+                
+                if(is_a($paypalParams, $paramsClassName))
+                    $valid = $paypalParams->validate();
+                
+                if(is_a($sagepayParams, $paramsClassName))
+                    $valid = $sagepayParams->validate();
+                
+                if(is_a($tpvParams, $paramsClassName))
+                    $valid = $tpvParams->validate();
 
-                if($model->validate() 
-                        && $paypalParams->validate() 
-                        && $valid)
+                if($model->validate() && $valid)
                 {
                     $model->save();
                 }
@@ -133,6 +153,8 @@ class PaymentMethodsController extends Controller
                     'model'=>$model,
                     'paymentMethodTranslation'=>$paymentMethodTranslation,
                     'paypalParams'=>$paypalParams,
+                    'sagepayParams'=>$sagepayParams,
+                    'tpvParams'=>$tpvParams,
             ));
 	}
         
@@ -187,8 +209,37 @@ class PaymentMethodsController extends Controller
             }
             $this->render('update_translations',array('model'=>$model));
         }
+        
+        public function actionUpdateParams($id)
+        {
+            $model=$this->loadModel($id);
+            
+            $paramsClassName=$model->handler_component.'Params';
+            
+            if(!class_exists($paramsClassName))
+            {
+                $this->setWarningMsg(Yii::t('common', 'This Payment Method not support parameters'));
+                $this->redirect(array('view','id'=>$model->id));
+            }
+            
+            $paramsModel=new $paramsClassName;
+            
+            $paramsModel->attributes = unserialize(
+                    Yii::app()->securityManager->decrypt(
+                    $model->parameters,
+                    Yii::app()->params['encryptionKey']));
+            
+            $formName = '_'.strtolower($model->handler_component).'_params';
+            
+            $this->render('update_parameters',
+                    array('model'=>$model,
+                          'formName'=>$formName,  
+                          'paramsModel'=>$paramsModel,  
+            ));
+            
+        }
 
-	/**
+        /**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted

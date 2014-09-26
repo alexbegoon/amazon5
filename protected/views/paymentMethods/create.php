@@ -18,4 +18,8 @@ $this->menu=array(
 
 <?php $this->renderPartial('_form', array('model'=>$model,
                                           'paymentMethodTranslation'=>$paymentMethodTranslation,
-                                          'paypalParams'=>$paypalParams,)); ?>
+                                          'paypalParams'=>$paypalParams,
+                                          'sagepayParams'=>$sagepayParams,
+                                          'tpvParams'=>$tpvParams,
+    
+    )); ?>
