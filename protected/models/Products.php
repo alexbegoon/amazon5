@@ -61,6 +61,7 @@ class Products extends CActiveRecord
 			array('product_parent_id', 'length', 'max'=>11),
 			array('product_sku', 'length', 'max'=>32),
 			array('product_sku', 'length', 'min'=>6),
+			array('published, blocked, notification_sent, newly_created', 'boolean'),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

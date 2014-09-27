@@ -45,7 +45,14 @@ class Transactions extends CActiveRecord
 			array('id, order_id, payment_method_id', 'required'),
 			array('payment_method_id, canceled, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('id, order_id', 'length', 'max'=>10),
+			array('canceled', 'boolean'),
 			array('outer_id', 'length', 'max'=>255),
+			array('outer_id', 'unique', 'criteria'=>array(
+                            'condition'=>'`payment_method_id`=:payment_method_id',
+                            'params'=>array(
+                                ':payment_method_id'=>$this->payment_method_id
+                            )
+                        )),
 			array('request, response, verification, canceled_on, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -73,9 +80,9 @@ class Transactions extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'outer_id' => Yii::t('common', 'Outer'),
-			'order_id' => Yii::t('common', 'Order'),
-			'payment_method_id' => Yii::t('common', 'Payment Method'),
+			'outer_id' => Yii::t('common', 'Outer Transaction ID'),
+			'order_id' => Yii::t('common', 'Order ID'),
+			'payment_method_id' => Yii::t('common', 'Payment Method ID'),
 			'request' => Yii::t('common', 'Request'),
 			'response' => Yii::t('common', 'Response'),
 			'verification' => Yii::t('common', 'Verification'),

@@ -168,7 +168,14 @@ class Languages extends CActiveRecord
          */
         public static function listLanguages()
         {
-            return self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = self::model()->findAll(array('order'=>'title_native', 'condition'=>'published=1'));
+            }
+            
+            return $data;
         }
         
         public static function listAllTags()
@@ -176,6 +183,10 @@ class Languages extends CActiveRecord
             return CHtml::listData(self::model()->findAll(array('select'=>'lang_code')),'lang_code','lang_code');
         }
 
+        public static function range()
+        {
+            return CHtml::listData(self::listLanguages(), 'lang_code','lang_code');
+        }
 
         /**
          * Return available languages in the system for dropdown list

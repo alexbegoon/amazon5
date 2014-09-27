@@ -109,8 +109,14 @@ $this->menu=array(
                     'value'=>  'Languages::getNameByPk($data->language_code)',
                     'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('product_id'=>$model->id))),
                 ),
-                'product_desc',
-                'product_s_desc',
+                array(
+                    'name'=>'product_desc',
+                    'type'=>'html',
+                ),
+                array(
+                    'name'=>'product_s_desc',
+                    'type'=>'html',
+                ),
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),

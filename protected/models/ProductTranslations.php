@@ -51,6 +51,7 @@ class ProductTranslations extends CActiveRecord
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
+			array('language_code', 'in', 'range'=>Languages::range()),
 			array('product_name, product_desc, product_s_desc', 'length', 'min'=>8),
 			array('product_name, meta_desc, meta_keywords, custom_title, slug', 'length', 'max'=>255),
 			array('product_desc, product_s_desc, created_on, modified_on, locked_on', 'safe'),

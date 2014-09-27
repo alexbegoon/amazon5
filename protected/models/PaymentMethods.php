@@ -27,7 +27,19 @@ class PaymentMethods extends CActiveRecord
     
         public $payment_method_name;
         
-	/**
+        
+        public function afterFind() 
+        {            
+            if(!empty($this->parameters))
+            {
+                $this->setAttribute('parameters', unserialize(
+                Yii::app()->securityManager->decrypt(
+                $this->parameters,
+                Yii::app()->params['encryptionKey'])));
+            }
+        }
+
+        /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -229,5 +241,16 @@ class PaymentMethods extends CActiveRecord
                 return $data[$methodId];
             }
             return $data;
+        }
+        
+        public function beforeValidate()
+        {
+            if(is_array($this->parameters))
+            {
+                $this->setAttribute('parameters', Yii::app()->securityManager->encrypt(
+                serialize($this->parameters),
+                Yii::app()->params['encryptionKey']));
+            }
+            return parent::beforeValidate();
         }
 }

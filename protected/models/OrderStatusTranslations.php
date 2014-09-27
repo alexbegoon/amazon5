@@ -38,6 +38,7 @@ class OrderStatusTranslations extends CActiveRecord
 			array('status_code', 'length', 'max'=>2),
 			array('status_code', 'match', 'pattern'=>'/^\w{2}$/'),
 			array('language_code', 'length', 'max'=>5),
+                        array('language_code', 'in', 'range'=>Languages::range()),
                         array('language_code', 'unique', 'criteria'=>array(
                             'condition'=>'`status_code`=:status_code',
                             'params'=>array(

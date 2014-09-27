@@ -32,17 +32,16 @@ $this->menu=array(
 )); ?>
 <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary(array($model,$paramsModel), null, null, array('class'=>'alert alert-danger')); ?>
+<?php echo $form->errorSummary(array($model,$paramsModel), null, null, array('class'=>'alert alert-danger')); ?>
 <?php $this->renderPartial($formName, array('model'=>$model,
                                             'paramsModel'=>$paramsModel,
                                             'form'=>$form,
     )); ?>
-
-<?php $this->endWidget(); ?>
 <hr>
-	<div class="row form-group buttons">
-		<?php echo CHtml::submitButton(Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
-	</div>
+<div class="row form-group buttons">
+    <?php echo CHtml::submitButton(Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
+</div>
+<?php $this->endWidget(); ?>
 </div>
 </div>
 </div>

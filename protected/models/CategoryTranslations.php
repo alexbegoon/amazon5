@@ -48,6 +48,7 @@ class CategoryTranslations extends CActiveRecord
                         )),
 			array('category_id', 'length', 'max'=>11),
 			array('language_code', 'length', 'max'=>5),
+                        array('language_code', 'in', 'range'=>Languages::range()),
 			array('category_name, slug', 'length', 'min'=>4),
 			array('slug', 'unique', 'allowEmpty'=>false),
 			array('category_name, category_s_desc, meta_desc, meta_keywords, custom_title, slug', 'length', 'max'=>255),

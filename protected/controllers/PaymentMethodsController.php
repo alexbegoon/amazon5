@@ -95,9 +95,7 @@ class PaymentMethodsController extends Controller
                     
                 if(!empty($paramsClassName))
                 {
-                    $model->parameters=Yii::app()->securityManager->encrypt(
-                        serialize($_POST[$paramsClassName]),
-                        Yii::app()->params['encryptionKey']);
+                    $model->parameters=$_POST[$paramsClassName];
                 }
                 
                 $paymentMethodTranslation->attributes=$_POST['PaymentMethodTranslations'];
@@ -215,6 +213,7 @@ class PaymentMethodsController extends Controller
             $model=$this->loadModel($id);
             
             $paramsClassName=$model->handler_component.'Params';
+            $formName = '_'.strtolower($model->handler_component).'_params';
             
             if(!class_exists($paramsClassName))
             {
@@ -224,12 +223,23 @@ class PaymentMethodsController extends Controller
             
             $paramsModel=new $paramsClassName;
             
-            $paramsModel->attributes = unserialize(
-                    Yii::app()->securityManager->decrypt(
-                    $model->parameters,
-                    Yii::app()->params['encryptionKey']));
+            $this->performAjaxValidation(array($model,$paramsModel));
             
-            $formName = '_'.strtolower($model->handler_component).'_params';
+            $paramsModel->attributes = $model->parameters;
+            
+            if(isset($_POST[$paramsClassName]))
+            {
+                $paramsModel->attributes=$_POST[$paramsClassName];
+                if($paramsModel->validate())
+                {
+                    $model->parameters=$_POST[$paramsClassName];
+                    if($model->validate())
+                    {
+                        $model->save();
+                        $this->redirect(array('view','id'=>$model->id));
+                    }
+                }
+            }
             
             $this->render('update_parameters',
                     array('model'=>$model,

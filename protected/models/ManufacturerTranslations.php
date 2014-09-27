@@ -44,6 +44,7 @@ class ManufacturerTranslations extends CActiveRecord
 			array('manufacturer_id, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
                         array('slug','unique','allowEmpty'=>false),
 			array('language_code', 'length', 'max'=>5),
+                        array('language_code', 'in', 'range'=>Languages::range()),
 			array('manufacturer_name, slug', 'length', 'max'=>255),
 			array('manufacturer_desc, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().

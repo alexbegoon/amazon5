@@ -56,7 +56,10 @@ $this->menu=array(
                 ),
                 'payment_method_name',
                 'payment_method_title',
-                'payment_method_desc',
+                array(
+                    'name'=>'payment_method_desc',
+                    'type'=>'html',
+                ),
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
