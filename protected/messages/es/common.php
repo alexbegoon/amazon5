@@ -308,8 +308,7 @@ return array(
     'System'=>'Sistema',
     'Not configurable'=>'No configurable',
     'Country with code {country_code} not available.'=>'País con código {country_code} no disponible.',
-    
-    // Long text
+    'Unknown attribute: {attribute}'=>'Atributo desconocido: {attribute}',
     'Enter a SKU here...'=>'Introduzca un código de artículo aquí...',
     '{attribute} is empty for the provider: {provider_name}'=>'{attribute} está vacía para el proveedor: {provider_name}',
     '{attribute} malformed'=>'{attribute} malformado',

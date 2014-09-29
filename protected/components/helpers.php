@@ -25,61 +25,90 @@ function enumItem($model,$attribute)
         return $values;
 }
 
-function toggle($model, $attribute, $titles)
+/**
+ * Create ajax switcher for a bool fields of the model $model
+ * @param mixed $model
+ * @param string $attribute
+ * @param array $titles
+ * @return string
+ * @throws CHttpException
+ */
+function toggle($model, $attribute='published', $titles=null)
 {
     $str = '';
     $space='&nbsp;&nbsp;&nbsp;&nbsp;';
     $tokenName  =  Yii::app()->request->csrfTokenName;
     $token      =  Yii::app()->request->csrfToken;
     
-    
     if($model===null)
         return '';
+    
+    if(!$model->hasAttribute($attribute))
+        throw new CHttpException(500,  
+                Yii::t('common', 'Unknown attribute {attribute}', 
+                        array('{attribute}'=>$attribute)));
+
+    if($titles===null)
+    {
+        $titles=array("Unpublish","Publish");
+    }
     
     $modelClass = get_class($model);
     
     if($model->{$attribute} == 1)
     {
-        $str = '<span id="toggle_attribute_'.$attribute.'">';
-        $str .= Yii::t("yii", "Yes");
-        $str .= $space;
-        $str .= CHtml::ajaxLink('<i id="toggle_i_'.$attribute.'" class="fa fa-ban red"></i>', 
-                Yii::app()->controller->createUrl("toggle",
-                        array("id"=>$model->primaryKey)),
-                array(
-                    'type'=>'POST',
-                    'data'=>array($tokenName=>$token,$modelClass=>array($attribute=>0)),
-                    'success'=>'function(html){location.reload();}',
-                    'beforeSend' => 'function() {    
-                        $("#toggle_i_'.$attribute.'").removeClass();
-                        $("#toggle_i_'.$attribute.'").addClass("fa fa-spin fa-spinner");
-                    }',
-                ),
-                array('title'=>$titles[0]));
-        $str .= '</span>';
+        $name = Yii::t("yii", "Yes");
+        $class = "fa fa-ban red";
+        $attrVal=0;
     }
     else
     {
-        $str = '<span id="toggle_attribute_'.$attribute.'">';
-        $str .= Yii::t("yii", "No");
-        $str .= $space;
-        $str .= CHtml::ajaxLink('<i id="toggle_i_'.$attribute.'" class="fa fa-check green"></i>', 
-                Yii::app()->controller->createUrl("toggle",
-                        array("id"=>$model->primaryKey)),
-                array(
-                    'type'=>'POST',
-                    'data'=>array($tokenName=>$token,$modelClass=>array($attribute=>1)),
-                    'success'=>'function(html){location.reload();}',
-                    'beforeSend' => 'function() {    
-                        $("#toggle_i_'.$attribute.'").removeClass();
-                        $("#toggle_i_'.$attribute.'").addClass("fa fa-spin fa-spinner");
-                    }',
-                ),
-                array('title'=>$titles[1]));
-        $str .= '</span>';
+        $name = Yii::t("yii", "No");
+        $class = "fa fa-check green";
+        $attrVal=1;
     }
     
+    $str = '<span id="toggle_attribute_'.$attribute.'">';
+    $str .= $name;
+    $str .= $space;
+    $str .= CHtml::ajaxLink('<i id="toggle_i_'.$attribute.'" class="'.$class.'"></i>', 
+            Yii::app()->controller->createUrl("toggle",
+                    array("id"=>$model->primaryKey)),
+            array(
+                'type'=>'POST',
+                'data'=>array($tokenName=>$token,$modelClass=>array($attribute=>$attrVal)),
+                'success'=>'function(html){location.reload();}',
+                'beforeSend' => 'function() {    
+                    $("#toggle_i_'.$attribute.'").removeClass();
+                    $("#toggle_i_'.$attribute.'").addClass("fa fa-spin fa-spinner");
+                }',
+            ),
+            array('title'=>Yii::t("common", $titles[$attrVal])));
+    $str .= '</span>';
+    
     return $str;
+}
+
+function created_by($model)
+{
+    if($model===null)
+        return '';
+    
+    if(!$model->hasAttribute('created_by'))
+        return '';
+    
+    return Yii::app()->getModule("user")->user($model->created_by)->getFullName();
+}
+
+function modified_by($model)
+{
+    if($model===null)
+        return '';
+    
+    if(!$model->hasAttribute('modified_by'))
+        return '';
+    
+    return Yii::app()->getModule("user")->user($model->modified_by)->getFullName();
 }
 
 /**

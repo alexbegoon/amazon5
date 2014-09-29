@@ -27,21 +27,20 @@ $this->menu=array(
                 ),
 		array(
                     'name'=>  Yii::t('common', 'Published'),
-                    'type'=>'html',
-                    'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Publish"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model),
                 ),
 		'hits',
 		'outer_category_id',
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> created_by($model),
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                    'value'=> modified_by($model),
                 ),
 		'locked_on',
 		'locked_by',
@@ -62,12 +61,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 array
                 (
@@ -102,12 +101,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 array
                 (
@@ -144,12 +143,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 array
                 (
@@ -185,12 +184,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 'id',
                 array

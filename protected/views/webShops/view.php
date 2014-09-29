@@ -36,9 +36,8 @@ $this->menu=array(
                 ),
                 array(
                     'name'=>'offline',
-                    'type'=>'html',
-                    'value'=>$model->offline==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("offline"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
-                                               :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("offline"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'offline',array("No","Yes")),
                 ),
 		'email',
 		'email_header',
@@ -48,12 +47,12 @@ $this->menu=array(
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> created_by($model),
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                    'value'=> modified_by($model),
                 ),
 		'locked_on',
 		'locked_by',

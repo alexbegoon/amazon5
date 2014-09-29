@@ -36,9 +36,8 @@ $this->menu=array(
                 'provider_fax',
                 array(
                     'name'=>'sku_as_ean',
-                    'type'=>'html',
-                    'value'=>$model->sku_as_ean==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("sku_as_ean"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("sku_as_ean"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'sku_as_ean',array("No","Yes")),
                 ),
                 'sku_format',
                 'discount',
@@ -49,9 +48,8 @@ $this->menu=array(
 		'vat',
                 array(
                     'name'=>'inactive',
-                    'type'=>'html',
-                    'value'=>$model->inactive==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("inactive"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Activate")))               
-                                                :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("inactive"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Deactivate"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'inactive',array("Activate","Deactivate")),
                 ),
                 array(
                     'name'=>'currency_id',
@@ -70,36 +68,33 @@ $this->menu=array(
 		'email_body',
                 array(
                     'name'=>'sync_enabled',
-                    'type'=>'html',
-                    'value'=>$model->sync_enabled==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("sync_enabled"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("sync_enabled"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'sync_enabled',array("No","Yes")),
                 ),
                 'service_url',
                 'sync_schedule',
                 'last_sync_date',
                 array(
                     'name'=>'send_csv',
-                    'type'=>'html',
-                    'value'=>$model->send_csv==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("send_csv"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("send_csv"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'send_csv',array("No","Yes")),
                 ),
                 'csv_format',
                 array(
                     'name'=>'send_xls',
-                    'type'=>'html',
-                    'value'=>$model->send_xls==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("send_xls"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "No")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("send_xls"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("yii", "Yes"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'send_xls',array("No","Yes")),
                 ),
                 'xls_format',
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> created_by($model),
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                    'value'=> modified_by($model),
                 ),
 //		'locked_on',
 //		'locked_by',

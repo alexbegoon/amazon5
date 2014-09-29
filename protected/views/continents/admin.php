@@ -53,12 +53,12 @@ $('.search-form form').submit(function(){
             ),
             array(
                 'name'=>'created_by',
-                'value'=>'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                'value'=>'created_by($data)',
             ),
 		'created_on',
             array(
                 'name'=>'modified_by',
-                'value'=>'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                'value'=>'modified_by($data)',
             ),
 		'modified_on',
 		array(

@@ -32,12 +32,12 @@ $this->menu=array(
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> created_by($model),
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                    'value'=> modified_by($model),
                 ),
 	),
 )); ?>
@@ -62,12 +62,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 array
                 (

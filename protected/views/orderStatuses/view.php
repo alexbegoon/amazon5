@@ -23,31 +23,28 @@ $this->menu=array(
 		'status_code',
 		array(
                     'name'=>'published',
-                    'type'=>'html',
-                    'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Publish"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model),
                 ),
                 array(
                     'name'=>'public',
-                    'type'=>'html',
-                    'value'=>$model->public==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("public"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Private")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("public"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Public"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'public',array("Private", "Public")),                    
                 ),
                 array(
                     'name'=>'notify_customer_if_applied',
-                    'type'=>'html',
-                    'value'=>$model->notify_customer_if_applied==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("notify_customer_if_applied"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Not notify")))               
-                                                                  :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("notify_customer_if_applied"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Notify"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model,'notify_customer_if_applied',array("Not notify","Notify")),                    
                 ),
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->created_by)->getFullName(),
+                    'value'=> created_by($model),
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> Yii::app()->getModule("user")->user($model->modified_by)->getFullName(),
+                    'value'=> modified_by($model),
                 ),
 	),
 )); ?>
@@ -69,12 +66,12 @@ $this->menu=array(
 		'created_on',
                 array(
                     'name'=>  Yii::t('common', 'Created By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->created_by)->getFullName()',
+                    'value'=> 'created_by($data)',
                 ),
 		'modified_on',
 		array(
                     'name'=>  Yii::t('common', 'Modified By'),
-                    'value'=> 'Yii::app()->getModule("user")->user($data->modified_by)->getFullName()',
+                    'value'=> 'modified_by($data)',
                 ),
                 array
                 (
