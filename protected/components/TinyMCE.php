@@ -8,6 +8,8 @@
  * This widget is a wrapper for TinyMCE.
  *
  * @author Alexander.B <alexbassmusic@gmail.com> - https://www.odesk.com/users/~01ae8f6e1a81c189cf
+ * @link http://www.tinymce.com/wiki.php/Configuration Configuration
+ * @link http://www.tinymce.com/index.php About
  */
 class TinyMCE extends CWidget 
 {
@@ -20,6 +22,7 @@ class TinyMCE extends CWidget
             'selector'=>'textarea',
             'language'=>Yii::app()->language,
             'entity_encoding'=>'raw',
+            'height'=>200,
         );
         
         $baseUrl = Yii::app()->baseUrl;
