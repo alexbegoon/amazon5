@@ -20,9 +20,17 @@ class TinyMCE extends CWidget
         // Defaults
         $this->options = array(
             'selector'=>'textarea',
+            'schema'=>'html5',
             'language'=>Yii::app()->language,
             'entity_encoding'=>'raw',
             'height'=>200,
+            'plugins'=>array("advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "template paste textcolor"),
+            'toolbar1'=>"insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor backcolor",
+            'image_advtab'=>true,
+            'browser_spellcheck'=>true,
         );
         
         $baseUrl = Yii::app()->baseUrl;
