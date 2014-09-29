@@ -57,7 +57,7 @@ $this->menu=array(
                 'payment_method_title',
                 array(
                     'name'=>'payment_method_desc',
-                    'type'=>'html',
+                    'type'=>'raw',
                 ),
 		'created_on',
                 array(
