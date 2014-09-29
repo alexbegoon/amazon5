@@ -117,7 +117,9 @@ class FeesController extends Controller
             
             if($model!==null)
             {
-                $model->attributes = $this->getActionParams();
+                $modelName=get_class($model);
+                if(isset($_POST[$modelName]))                 
+                    $model->attributes = $_POST[$modelName];
                 if($model->save())
                 {
                     $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
@@ -128,8 +130,6 @@ class FeesController extends Controller
                     $this->setErrorMsg($model->getErrors());
                 }
             }
-            
-            $this->redirect(array('view','id'=>$id));
         }
 
 	/**

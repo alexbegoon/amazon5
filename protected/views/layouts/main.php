@@ -132,11 +132,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 </div>
-
-<!-- JQuery -->
-<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.11.1.min.js"></script>-->
-<!-- End JQuery -->
-
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 <!-- Bootstrap framework -->

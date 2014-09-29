@@ -25,6 +25,63 @@ function enumItem($model,$attribute)
         return $values;
 }
 
+function toggle($model, $attribute, $titles)
+{
+    $str = '';
+    $space='&nbsp;&nbsp;&nbsp;&nbsp;';
+    $tokenName  =  Yii::app()->request->csrfTokenName;
+    $token      =  Yii::app()->request->csrfToken;
+    
+    
+    if($model===null)
+        return '';
+    
+    $modelClass = get_class($model);
+    
+    if($model->{$attribute} == 1)
+    {
+        $str = '<span id="toggle_attribute_'.$attribute.'">';
+        $str .= Yii::t("yii", "Yes");
+        $str .= $space;
+        $str .= CHtml::ajaxLink('<i id="toggle_i_'.$attribute.'" class="fa fa-ban red"></i>', 
+                Yii::app()->controller->createUrl("toggle",
+                        array("id"=>$model->primaryKey)),
+                array(
+                    'type'=>'POST',
+                    'data'=>array($tokenName=>$token,$modelClass=>array($attribute=>0)),
+                    'success'=>'function(html){location.reload();}',
+                    'beforeSend' => 'function() {    
+                        $("#toggle_i_'.$attribute.'").removeClass();
+                        $("#toggle_i_'.$attribute.'").addClass("fa fa-spin fa-spinner");
+                    }',
+                ),
+                array('title'=>$titles[0]));
+        $str .= '</span>';
+    }
+    else
+    {
+        $str = '<span id="toggle_attribute_'.$attribute.'">';
+        $str .= Yii::t("yii", "No");
+        $str .= $space;
+        $str .= CHtml::ajaxLink('<i id="toggle_i_'.$attribute.'" class="fa fa-check green"></i>', 
+                Yii::app()->controller->createUrl("toggle",
+                        array("id"=>$model->primaryKey)),
+                array(
+                    'type'=>'POST',
+                    'data'=>array($tokenName=>$token,$modelClass=>array($attribute=>1)),
+                    'success'=>'function(html){location.reload();}',
+                    'beforeSend' => 'function() {    
+                        $("#toggle_i_'.$attribute.'").removeClass();
+                        $("#toggle_i_'.$attribute.'").addClass("fa fa-spin fa-spinner");
+                    }',
+                ),
+                array('title'=>$titles[1]));
+        $str .= '</span>';
+    }
+    
+    return $str;
+}
+
 /**
  * Return string of all validation errors
  * @param type $model

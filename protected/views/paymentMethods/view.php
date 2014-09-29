@@ -25,9 +25,8 @@ $this->menu=array(
 		'id',
 		array(
                     'name'=>  Yii::t('common', 'Published'),
-                    'type'=>'html',
-                    'value'=>$model->published==1?Yii::t("yii", "Yes").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-ban red"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>0,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Unpublish")))               
-                                                 :Yii::t("yii", "No").'&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('<i class="fa fa-check green"></i>', Yii::app()->controller->createUrl("toggle",array("published"=>1,"id"=>$model->primaryKey)),array('title'=>Yii::t("common", "Publish"))),
+                    'type'=>'raw',
+                    'value'=>toggle($model, 'published', array(Yii::t("common", "Unpublish"),Yii::t("common", "Publish"))),
                 ),
 		'handler_component',
 		'created_on',

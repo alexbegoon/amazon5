@@ -288,6 +288,27 @@ class PaymentMethodsController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionToggle($id)
+        {
+            $model=$this->loadModel($id);
+            
+            if($model!==null)
+            {
+                $modelName=get_class($model);
+                if(isset($_POST[$modelName]))
+                $model->attributes = $_POST[$modelName];
+                if($model->save())
+                {
+                    $this->setSuccessMsg(Yii::t('common', 'The request is successfully processed'));
+                }
+                else
+                {
+                    $this->setErrorMsg(Yii::t('common', 'The request was processed with errors'));
+                    $this->setErrorMsg($model->getErrors());
+                }
+            }
+        }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
