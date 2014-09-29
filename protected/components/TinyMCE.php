@@ -32,14 +32,7 @@ class TinyMCE extends CWidget
         if(empty($this->options))
             return FALSE;
         
-        if(is_array($this->options))
-        {
-            foreach ($this->options as $k=>$option)
-            {
-                $tinymceOptions .= $k.':'.'\''.$option.'\',';
-            }
-            $tinymceOptions = substr ($tinymceOptions, 0, -1);
-        }
-        $cs->registerScript("_init_TinyMCE","tinymce.init({{$tinymceOptions}});");
+        $tinymceOptions=CJavaScript::encode($this->options);
+        $cs->registerScript("_init_TinyMCE","tinymce.init($tinymceOptions);");
     }
 }
