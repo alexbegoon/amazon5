@@ -31,7 +31,7 @@ $this->menu=array(
                 'email',
                 array(
                     'name'=>'offline',
-                    'value'=>'$data->offline==1?Yii::t("yii","Yes"):Yii::t("yii","No")',
+                    'value'=>'boolean($data,"offline")',
                 ),
                 array(
                     'name'=>'created_by',
@@ -44,10 +44,5 @@ $this->menu=array(
                     'value'=>'modified_by($data)',
                 ),
                 'modified_on',
-                array(
-                    'name'=>'locked_by',
-                    'type'=>'html',
-                    'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"".Yii::t(\'common\',\'Locked By\')." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->getFullName()."\"></span>":""',                
-                ),
         ),
 )); ?>

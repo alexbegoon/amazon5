@@ -89,13 +89,37 @@ function toggle($model, $attribute='published', $titles=null)
     return $str;
 }
 
+/**
+ * Return "Yes"/"No" for bool field of rhe model $model.
+ * Translation included.
+ * Default attribute "Published"
+ * @param object $model
+ * @param string $attribute
+ * @return string
+ * @throws CHttpException
+ */
+function boolean($model, $attribute='published')
+{
+    if($model===null)
+        return '';
+    
+    if(!$model->hasAttribute($attribute))
+        throw new CHttpException(500,  
+                Yii::t('common', 'Unknown attribute {attribute}', 
+                        array('{attribute}'=>$attribute)));
+    
+    return $model->{$attribute}==1?Yii::t("yii", "Yes"):Yii::t("yii", "No");
+}
+
 function created_by($model)
 {
     if($model===null)
         return '';
     
     if(!$model->hasAttribute('created_by'))
-        return '';
+        throw new CHttpException(500,  
+                Yii::t('common', 'Unknown attribute {attribute}', 
+                        array('{attribute}'=>'created_by')));
     
     return Yii::app()->getModule("user")->user($model->created_by)->getFullName();
 }
@@ -106,7 +130,9 @@ function modified_by($model)
         return '';
     
     if(!$model->hasAttribute('modified_by'))
-        return '';
+        throw new CHttpException(500,  
+                Yii::t('common', 'Unknown attribute {attribute}', 
+                        array('{attribute}'=>'modified_by')));
     
     return Yii::app()->getModule("user")->user($model->modified_by)->getFullName();
 }

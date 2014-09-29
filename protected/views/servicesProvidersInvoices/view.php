@@ -39,8 +39,7 @@ $this->menu=array(
                 array(
                     'name'=>  Yii::t('common', 'Paid'),
                     'type'=>'html',
-                    'value'=>$model->paid==1?Yii::t("yii", "Yes")               
-                                            :Yii::t("yii", "No"),
+                    'value'=>boolean($model,"paid"),
                 ),
                 'paid_date',
 		'invoice_date',

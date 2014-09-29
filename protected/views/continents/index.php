@@ -22,7 +22,7 @@ $this->menu=array(
             'name',
             array(
                 'name'=>'published',
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             array(
                 'name'=>'created_by',
@@ -35,10 +35,5 @@ $this->menu=array(
                 'value'=>'modified_by($data)',
             ),
             'modified_on',
-            array(
-                'name'=>'lock',
-                'type'=>'html',
-                'value'=>'$data->locked_by!=0?"<span class=\"glyphicon glyphicon-lock\" title=\"".Yii::t(\'common\',\'Locked By\')." ". Yii::app()->getModule(\'user\')->user($data->locked_by)->getFullName()."\"></span>":""',                
-            ),
         ),
 )); ?>

@@ -23,11 +23,11 @@ $this->menu=array(
             'product_sku',
             array(
                 'name'=>Yii::t('common', 'Published'),
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             array(
                 'name'=>Yii::t('common', 'Blocked'),
-                'value'=>'$data->blocked==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data,"blocked")',
             ),
             array(
                 'name'=>'created_by',

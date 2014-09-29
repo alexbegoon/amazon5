@@ -193,7 +193,7 @@ class Manufacturers extends CActiveRecord
             return self::model()->findAll(array('condition'=>'t.published=1'));
         }
         
-        public static function listData($manufacturer_id=null)
+        public static function listData($manufacturerId=null)
         {
             static $data=array();
             $key='ManufacturersList'.Languages::getCurrent();
@@ -211,8 +211,11 @@ class Manufacturers extends CActiveRecord
                         new CGlobalStateCacheDependency('ManufacturersList'));
             }
             
-            if(!empty($manufacturer_id) && isset($data[$manufacturer_id]))
-                return $data[$manufacturer_id];
+            if(!empty($manufacturerId) && isset($data[$manufacturerId]))
+                return $data[$manufacturerId];
+            
+            if(!empty($manufacturerId))
+                return Yii::t("common","*no name*");
             
             return $data;
         }

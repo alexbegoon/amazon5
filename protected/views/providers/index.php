@@ -30,7 +30,7 @@ $this->menu=array(
             'vat',
             array(
                 'name'=>Yii::t('common', 'Inactive'),
-                'value'=>'$data->inactive==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data,"inactive")',
             ),
             'sku_format',
             'provider_email',

@@ -29,7 +29,7 @@ $this->menu=array(
             ),
             array(
                 'name'=>'published',
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             array(
                 'name'=>'created_by',

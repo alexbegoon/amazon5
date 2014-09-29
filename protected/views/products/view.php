@@ -26,8 +26,7 @@ $this->menu=array(
                 array(
                     'name'=>  Yii::t('common', 'Newly Created'),
                     'type'=>'html',
-                    'value'=>$model->newly_created==1?Yii::t("yii", "Yes")             
-                                                     :Yii::t("yii", "No"),
+                    'value'=>boolean($model,'newly_created'),
                 ),
                 array(
                     'name'=>  Yii::t('common', 'Published'),
@@ -41,7 +40,9 @@ $this->menu=array(
                 ),
                 array(
                     'name'=>'manufacturer_id',
-                    'value'=> Manufacturers::listData($model->manufacturer_id),
+                    'value'=> $model->manufacturer_id?
+                        Manufacturers::listData($model->manufacturer_id):
+                        Yii::t("common","*no name*"),
                 ),
                 'product_parent_id',
 		'created_on',
@@ -209,7 +210,7 @@ $this->menu=array(
                 ),
                 array(
                     'name'=>  Yii::t('common', 'Override'),
-                    'value'=>  '$data->override==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                    'value'=>  'boolean($data,"override")',
                 ),
                 'product_override_price',
                 'product_tax_id',
@@ -305,7 +306,7 @@ $this->menu=array(
                 array(
                     'header'=>  Yii::t('common', 'Blocked'),
                     'name'=>'blocked',
-                    'value'=>  '$data->blocked==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                    'value'=>  'boolean($data,"blocked")',
                 ),
                 'inner_id',
                 'inner_sku',

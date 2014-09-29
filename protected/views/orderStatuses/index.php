@@ -24,15 +24,15 @@ $this->menu=array(
             ),
             array(
                 'name'=>'published',
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             array(
                 'name'=>'public',
-                'value'=>'$data->public==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data,"public")',
             ),
             array(
                 'name'=>'notify_customer_if_applied',
-                'value'=>'$data->notify_customer_if_applied==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data,"notify_customer_if_applied")',
             ),
             array(
                 'name'=>'created_by',

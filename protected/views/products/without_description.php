@@ -26,7 +26,7 @@ $this->menu=array(
             'product_sku',
             array(
                 'name'=>Yii::t('common', 'Published'),
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             'created_on',
             array
@@ -49,7 +49,7 @@ $this->menu=array(
             'product_sku',
             array(
                 'name'=>Yii::t('common', 'Published'),
-                'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+                'value'=>'boolean($data)',
             ),
             'created_on',
             array

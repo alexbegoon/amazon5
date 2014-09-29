@@ -28,7 +28,7 @@ $this->menu=array(
         'manufacturer_url',
         array(
             'name'=>'published',
-            'value'=>'$data->published==1?Yii::t("yii", "Yes"):Yii::t("yii", "No")',
+            'value'=>'boolean($data)',
         ),
         ),
 )); ?>

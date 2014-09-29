@@ -37,7 +37,7 @@ $this->menu=array(
                 array(
                     'name'=>'offline',
                     'type'=>'raw',
-                    'value'=>toggle($model,'offline',array("No","Yes")),
+                    'value'=>toggle($model,'offline',array("Online","Offline")),
                 ),
 		'email',
 		'email_header',
@@ -54,7 +54,5 @@ $this->menu=array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> modified_by($model),
                 ),
-		'locked_on',
-		'locked_by',
 	),
 )); ?>
