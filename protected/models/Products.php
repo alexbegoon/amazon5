@@ -101,7 +101,7 @@ class Products extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'ID'),
-			'product_parent_id' => Yii::t('common', 'Parent Product'),
+			'product_parent_id' => Yii::t('common', 'Parent Product ID'),
 			'product_sku' => Yii::t('common', 'Product SKU'),
 			'product_name' => Yii::t('common', 'Product Name'),
 			'manufacturer_id' => Yii::t('common', 'Manufacturer'),
@@ -206,7 +206,10 @@ class Products extends CActiveRecord
          */
         public static function getSKUbyPk($product_id)
         {
-            return self::model()->findByPk($product_id)->product_sku;
+            $model=self::model()->findByPk($product_id);
+            if($model===null)
+                return null;
+            return $model->product_sku;
         }
         
         public static function findBySKU($product_sku)
@@ -262,6 +265,7 @@ class Products extends CActiveRecord
         
         public static function sync()
         {
+            ProductImages::updateImagesFromProviders();
             $result = Yii::t('common', 'Products synchronization');
             return  $result.' - <span class="green">OK</span>';
         }

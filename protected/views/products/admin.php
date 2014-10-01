@@ -10,6 +10,8 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Products'), 'url'=>array('index')),
 	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Products'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','Batch Upload Images'), 'url'=>array('batchUploadImages')),
+	array('label'=>Yii::t('common','Statistic'), 'url'=>array('statistic')),
 );
 
 ?>

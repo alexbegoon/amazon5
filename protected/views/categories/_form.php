@@ -128,7 +128,11 @@
 	</div>
 
 <?php $this->endWidget(); ?>
-
+<?php $this->widget('TinyMCE',array(
+    'options'=>array(
+        'selector'=>'#CategoryTranslations_category_desc',
+    ),
+));?>
 </div>
 </div>
 </div>

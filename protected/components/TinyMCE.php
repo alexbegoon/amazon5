@@ -14,11 +14,13 @@
 class TinyMCE extends CWidget 
 {
     public $options;
+    public $defaults;
     
-    public function run()
+    public function init() 
     {
+        parent::init();
         // Defaults
-        $this->options = array(
+        $this->defaults = array(
             'selector'=>'textarea',
             'schema'=>'html5',
             'language'=>Yii::app()->language,
@@ -32,7 +34,10 @@ class TinyMCE extends CWidget
             'image_advtab'=>true,
             'browser_spellcheck'=>true,
         );
-        
+    }
+    
+    public function run()
+    {
         $baseUrl = Yii::app()->baseUrl;
         $tinymceOptions = '';
         $cs = Yii::app()->getClientScript();  
@@ -40,7 +45,7 @@ class TinyMCE extends CWidget
         if(empty($this->options))
             return FALSE;
         
-        $tinymceOptions=CJavaScript::encode($this->options);
+        $tinymceOptions=CJavaScript::encode(array_merge($this->defaults,$this->options));
         $cs->registerScript("_init_TinyMCE","tinymce.init($tinymceOptions);");
     }
 }

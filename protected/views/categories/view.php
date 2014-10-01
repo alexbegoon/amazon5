@@ -96,7 +96,10 @@ $this->menu=array(
                     'value'=>  'Languages::getNameByPk($data->language_code)',
                     'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('category_id'=>$model->id))),
                 ),
-                'category_desc',
+                array(
+                    'name'=> 'category_desc',
+                    'type'=> 'raw',
+                ),
                 'category_s_desc',
 		'created_on',
                 array(

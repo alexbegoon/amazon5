@@ -144,7 +144,7 @@ class CategoriesController extends Controller
             {
                 $model->attributes=$_POST['CategoryImages'];
 
-                if(self::saveCategoryImage($model,$category_name))
+                if($model->save())
                 {
                     // form inputs are valid, do something here
                     $this->redirect(array('view','id'=>$model->category_id));
@@ -356,8 +356,8 @@ class CategoriesController extends Controller
                     
                     if($categoryTranslations->validate() &&
                        $categoryCategories->validate() &&
-                       self::saveCategoryImage($categoryImages, $categoryTranslations->category_name) && $valid 
-                            )
+                       $categoryImages->save() && $valid 
+                        )
                     {
                         $categoryTranslations->save();
                         $categoryCategories->save();
@@ -537,49 +537,6 @@ class CategoriesController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        private static function saveCategoryImage($categoryImages, $categoryName)
-        {
-            // generate random string
-            $rnd  = str_random(10);
-            $rnd2 = str_random(10);  
-            $categoryName = url_slug($categoryName,array('limit'=>20));
-            $uploadedFile=CUploadedFile::getInstance($categoryImages,'image');
-
-            if($uploadedFile)
-            {
-                $fileName = "{$categoryName}-{$rnd}.".$uploadedFile->getExtensionName();  // random number + file name
-                $thumbFileName = "{$categoryName}-{$rnd2}-t.".$uploadedFile->getExtensionName();  // random number + file name
-                $categoryImages->image = $fileName;
-                $categoryImages->image_url = $fileName;
-                $categoryImages->image_url_thumb = $thumbFileName;
-                $imagePath=$categoryImages->imagespath.$fileName;
-                $thumbImagePath=$categoryImages->imagespath.$thumbFileName;
-            }
-
-            if($categoryImages->validate())
-            {
-                $uploadedFile->saveAs($imagePath);
-                $uploadedFile->saveAs($thumbImagePath);
-
-                $image = Yii::app()->image->load($imagePath);
-                $image->resize($categoryImages->thumb_width, $categoryImages->thumb_height)
-                      ->quality($categoryImages->thumb_quality);
-                $image->save($thumbImagePath);
-
-                // check if file not exists
-                if(!Yii::app()->file->set($imagePath)->isFile || 
-                   !Yii::app()->file->set($thumbImagePath)->isFile )
-                {
-                    throw new CHttpException(500,'Can\'t store the product images');
-                }
-                
-                if($categoryImages->save())
-                return true;
-            }
-            
-            return false;
-        }
         
         public function actionCategoryTreeOptions()
         {

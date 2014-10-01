@@ -40,15 +40,16 @@
 		<?php echo $form->error($productTranslations,'product_name',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
-		<?php echo $form->labelEx($productTranslations,'product_desc',array('class'=>'control-label')); ?>
-		<?php echo $form->textArea($productTranslations,'product_desc',array('class'=>'form-control')); ?>
-		<?php echo $form->error($productTranslations,'product_desc',array('class'=>'label label-danger')); ?>
-	</div>
-        <div class="row form-group">
 		<?php echo $form->labelEx($productTranslations,'product_s_desc',array('class'=>'control-label')); ?>
 		<?php echo $form->textArea($productTranslations,'product_s_desc',array('class'=>'form-control')); ?>
 		<?php echo $form->error($productTranslations,'product_s_desc',array('class'=>'label label-danger')); ?>
 	</div>
+        <div class="row form-group">
+		<?php echo $form->labelEx($productTranslations,'product_desc',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($productTranslations,'product_desc',array('class'=>'form-control')); ?>
+		<?php echo $form->error($productTranslations,'product_desc',array('class'=>'label label-danger')); ?>
+	</div>
+        <hr>
         <div class="row form-group">
 		<?php echo $form->labelEx($productTranslations,'meta_desc',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($productTranslations,'meta_desc',array('size'=>32,'maxlength'=>255,'class'=>'form-control')); ?>
@@ -136,7 +137,11 @@
 	</div>
 
 <?php $this->endWidget(); ?>
-
+<?php $this->widget('TinyMCE',array(
+    'options'=>array(
+        'selector'=>'#ProductTranslations_product_desc',
+    ),
+));?>
 </div>
 </div>
 </div>

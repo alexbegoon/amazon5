@@ -6,12 +6,16 @@
  * The followings are the available columns in table '{{product_images}}':
  * @property string $id
  * @property string $product_id
- * @property string $image_url
- * @property string $image_url_thumb
+ * @property string $image_name
+ * @property string $image_name_thumb
  * @property integer $width
  * @property integer $height
  * @property integer $thumb_width
  * @property integer $thumb_height
+ * @property integer $size
+ * @property integer $thumb_size
+ * @property string $extension
+ * @property string $thumb_extension
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -30,7 +34,12 @@ class ProductImages extends CActiveRecord
 {               
         public $image;
         public $image_archive;
+        public $image_url;
         
+        private $_image_path;
+        private $_thumb_image_path;
+
+
         public $thumb_width;
         public $thumb_height;
         public $thumb_quality;
@@ -58,22 +67,21 @@ class ProductImages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, image_url, image', 'required'),
+			array('product_id, image_name, image_name_thumb, image, width, height, thumb_width, thumb_height, size, thumb_size', 'required'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
-			array('thumb_width, thumb_height, thumb_quality', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false),
-			array('width, height', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                        array('thumb_width, thumb_height, thumb_quality','compare','compareValue'=>'0',
-                                                                                'operator'=>'>',
-                                                                                'allowEmpty'=>false , 
-                                                                                'message'=>Yii::t('common', '{attribute} must be greater than zero')),
-                        array('image', 'file','types'=>'jpg, gif, png', 'allowEmpty'=>true),
+			array('width, height, thumb_width, thumb_height, size, thumb_size, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),			
+                        array('thumb_width, thumb_height, thumb_quality','numerical','min'=>5),
+                        array('image', 'file','types'=>'jpg, gif, png'),
                         array('image_archive', 'file','types'=>'zip', 'allowEmpty'=>true),
 			array('product_id', 'length', 'max'=>11),
-			array('image_url, image_url_thumb', 'length', 'max'=>255),
+			array('image_name, image_name_thumb', 'length', 'max'=>255),
+			array('image_url', 'url'),
+			array('image_url', 'length', 'max'=>255),
+                        array('extension, thumb_extension', 'length', 'max'=>12),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, product_id, image_url, image_url_thumb, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, product_id, image_name, width, height, thumb_width, thumb_height, size, thumb_size, extension, thumb_extension, image_name_thumb, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -98,14 +106,19 @@ class ProductImages extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'product_id' => Yii::t('common', 'Product'),
 			'image' => Yii::t('common', 'Product Image'),
+			'image_url' => Yii::t('common', 'Image URL'),
 			'image_archive' => Yii::t('common', 'Image archive (.zip)'),
-			'image_url' => Yii::t('common', 'Image Url'),
+			'image_name' => Yii::t('common', 'Image Name'),
                         'width' => Yii::t('common', 'Width'),
 			'height' => Yii::t('common', 'Height'),
+			'size' => Yii::t('common', 'Image Size'),
+			'thumb_size' => Yii::t('common', 'Thumb Image Size'),
+                        'extension' => Yii::t('common', 'File Extension'),                        
+			'thumb_extension' => Yii::t('common', 'Thumb Extension'),
 			'thumb_width' => Yii::t('common', 'Thumb Width'),
 			'thumb_height' => Yii::t('common', 'Thumb Height'),
 			'thumb_quality' => Yii::t('common', 'Thumb Quality'),
-			'image_url_thumb' => Yii::t('common', 'Image Url Thumb'),
+			'image_name_thumb' => Yii::t('common', 'Thumb Image Name'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -135,8 +148,8 @@ class ProductImages extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('product_id',$this->product_id,true);
-		$criteria->compare('image_url',$this->image_url,true);
-		$criteria->compare('image_url_thumb',$this->image_url_thumb,true);
+		$criteria->compare('image_name',$this->image_name,true);
+		$criteria->compare('image_name_thumb',$this->image_name_thumb,true);
                 $criteria->compare('width',$this->width);
 		$criteria->compare('height',$this->height);
 		$criteria->compare('thumb_width',$this->thumb_width);
@@ -181,55 +194,55 @@ class ProductImages extends CActiveRecord
             return Yii::app()->params['noImageFilename'];
         }
 
-        public function getImagesUrlPrefix()
+        public function getImagesURLPrefix()
         {
             return Yii::app()->params['shopImagesURL'];
         }
         
-        public function getImagesUrl()
+        public function getImagesURL()
         {
-            return Yii::app()->request->baseUrl.$this->getImagesUrlPrefix();
+            return Yii::app()->request->baseURL.$this->getImagesURLPrefix();
         }
         
-        public function getImageUrl()
+        public function getImageURL()
         {
-            if(empty($this->image_url))
-                return $this->NoImageUrl;
+            if(empty($this->image_name))
+                return $this->NoImageURL;
                 
-            return $this->imagesUrl.$this->image_url;
+            return $this->imagesURL.$this->image_name;
         }
         
-        public function getThumbImageUrl()
+        public function getThumbImageURL()
         {
-            if(empty($this->image_url_thumb))
-                return $this->NoImageUrl;
+            if(empty($this->image_name_thumb))
+                return $this->NoImageURL;
             
-            return $this->imagesUrl.$this->image_url_thumb;
+            return $this->imagesURL.$this->image_name_thumb;
         }
         
-        public function getNoImageUrl()
+        public function getNoImageURL()
         {
-            return $this->imagesUrl.$this->noImageFilename;
+            return $this->imagesURL.$this->noImageFilename;
         }
         
         public function getImageTag()
         {
-            return CHtml::image($this->ImageUrl,'image for product id '.$this->product_id);
+            return CHtml::image($this->ImageURL,'image for product id '.$this->product_id);
         }
         
         public function getImagePath()
         {
-            return $this->imagesPath.$this->image_url;
+            return $this->imagesPath.$this->image_name;
         }
         
         public function getImageThumbPath()
         {
-            return $this->imagesPath.$this->image_url_thumb;
+            return $this->imagesPath.$this->image_name_thumb;
         }
 
         public function getThumbImageTag()
         {
-            return CHtml::image($this->ThumbImageUrl,'thumb image for product id '.$this->product_id);
+            return CHtml::image($this->ThumbImageURL,'thumb image for product id '.$this->product_id);
         }
         
         public static function listQualities()
@@ -253,20 +266,96 @@ class ProductImages extends CActiveRecord
            );
         }
         
-        public function getPopUpImage()
-        {        
-            return  CHtml::link($this->thumbImageTag, $this->imageUrl, array('class' => 'fancybox-image'));
+        public static function getProviderImages($productId)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->condition='product_id=:product_id AND (provider_image_name<>\'\' OR provider_thumb_image_name)';
+            $criteria->params=array(':product_id'=>$productId);
+            return ProviderProducts::model()->findAll($criteria);            
         }
         
-        public function afterSave() 
+        public function updateImagesFromProviders()
         {
-            parent::afterSave();
-            if ($this->isNewRecord) 
+            $model=self::getProviderImages($productId);
+            CVarDumper::dump($model,10,true);
+        }
+
+        public function getPopUpImage()
+        {        
+            return  CHtml::link($this->thumbImageTag, $this->imageURL, array('class' => 'fancybox-image'));
+        }
+                
+        public function beforeValidate() 
+        {   
+            // generate random string
+            $rnd  = str_random(10);
+            $rnd2 = str_random(10); 
+            $prefix = url_slug(Products::getSKUbyPk($this->product_id),array('limit'=>20)) or $this->product_id;
+                        
+            // Saves the name, size, type and data of the uploaded file
+            if($file=CUploadedFile::getInstance($this,'image'))
             {
-                list($this->width, $this->height) = getimagesize($this->imagePath);
-                list($this->thumb_width, $this->thumb_height) = getimagesize($this->imageThumbPath);
-                $this->isNewRecord = false;
-                $this->saveAttributes(array('width','height','thumb_width','thumb_height'));
+                $this->image_name = "{$prefix}-{$rnd}.".$file->extensionName;  // random number + file name
+                $this->image_name_thumb = "{$prefix}-{$rnd2}-t.".$file->extensionName;  // random number + file name
+                $this->extension = $file->extensionName;
+                $this->thumb_extension = $file->extensionName;
+                $this->size = $file->size;
+                if(Yii::app()->file->set($file->tempName)->isFile)
+                    $this->image=file_get_contents($file->tempName);
+                else
+                    $this->image=file_get_contents($this->image_name);
+                
+                $this->_image_path       =$this->imagespath.$this->image_name;
+                $this->_thumb_image_path =$this->imagespath.$this->image_name_thumb;
+                
+                $file->saveAs($this->_image_path); 
+                $file->saveAs($this->_thumb_image_path);
+                if(!getimagesize($this->_image_path))
+                {
+                    $this->addError('image', Yii::t('common', 'File `{filename}` is not an image',array('{filename}'=>$file->name)));
+                    $this->removeFiles();
+                    return false;
+                }
+                list($this->width, $this->height) = getimagesize($this->_image_path);
+                $image = Yii::app()->image->load($this->_image_path);
+                $image->resize($this->thumb_width, $this->thumb_height)
+                      ->quality($this->thumb_quality);
+                $image->save($this->_thumb_image_path);
+                
+                // check if file not exists
+                if(!Yii::app()->file->set($this->_image_path)->isFile || 
+                   !Yii::app()->file->set($this->_thumb_image_path)->isFile )
+                {
+                    $this->addError('image', Yii::t('common', 'Can\'t store the product images'));
+                    $this->removeFiles();
+                    return false;
+                }
+                list($this->thumb_width, $this->thumb_height) = getimagesize($this->_thumb_image_path);
+                $this->thumb_size=filesize($this->_thumb_image_path);
             }
+
+            return parent::beforeValidate();
+        }
+        
+        public function beforeDelete() 
+        {
+            if(Yii::app()->file->set($this->imagepath)->isFile)
+                unlink ($this->imagepath);
+            if(Yii::app()->file->set($this->imagethumbpath)->isFile)
+                unlink ($this->imagethumbpath);
+            
+            return parent::beforeDelete();
+        }
+
+        /**
+         * If something went wrong, you can remove files of images saved.
+         * May be it is not images, or not files :)
+         */
+        private function removeFiles()
+        {
+            if(Yii::app()->file->set($this->_image_path)->isFile)
+                unlink ($this->_image_path);
+            if(Yii::app()->file->set($this->_thumb_image_path)->isFile)
+                unlink ($this->_thumb_image_path);
         }
 }

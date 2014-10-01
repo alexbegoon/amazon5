@@ -46,6 +46,7 @@ class ProviderProducts extends CActiveRecord
 			array('provider_id, product_id, currency_id, quantity_in_stock, provider_price, provider_product_name', 'required'),
 			array('provider_id, quantity_in_stock, currency_id, blocked, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_id', 'length', 'max'=>11),
+			array('blocked', 'boolean'),
                         array('product_id', 'unique', 'criteria'=>array(
                               'condition'=>'`provider_id`=:provider_id',
                               'params'=>array(
@@ -61,6 +62,7 @@ class ProviderProducts extends CActiveRecord
 			array('quantity_in_stock', 'numerical', 'integerOnly'=>true, 'min'=>0),
 			array('provider_product_name, provider_brand, provider_category, provider_sex, provider_image_url, provider_thumb_image_url', 'length', 'max'=>255),
 			array('provider_price', 'length', 'max'=>15),
+			array('provider_image_url, provider_thumb_image_url', 'url'),
                         array('provider_price','compare','compareValue'=>'0.00001',
                                     'operator'=>'>',
                                     'allowEmpty'=>true , 

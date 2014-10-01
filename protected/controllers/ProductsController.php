@@ -107,7 +107,7 @@ class ProductsController extends Controller
                 
                 if($productTranslations->validate() &&
                    $productPrices->validate() && 
-                   self::saveProductImage($productImages,$model->product_sku) && 
+                   $productImages->save() && 
                    $valid )
                 {
                     $productTranslations->save();
@@ -137,36 +137,6 @@ class ProductsController extends Controller
                     'productImages'=>$productImages,
             ));
 	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-//	public function actionUpdate($id)
-//	{
-//		$model=$this->loadModel($id);
-//                
-//                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-//                $model->updateByPk($id,array(
-//                    'locked_by'=>Yii::app()->user->getId(),
-//                    'locked_on'=>date('Y-m-d H:i:s',time()),
-//                ));
-//                
-//		// Uncomment the following line if AJAX validation is needed
-//		$this->performAjaxValidation($model);
-//
-//		if(isset($_POST['Products']))
-//		{
-//			$model->attributes=$_POST['Products'];
-//			if($model->save())
-//				$this->redirect(array('view','id'=>$model->id));
-//		}
-//
-//		$this->render('update',array(
-//			'model'=>$model,
-//		));
-//	}
         
         public function actionFind()
         {
@@ -331,7 +301,6 @@ class ProductsController extends Controller
             $model=new ProductImages;
             
             $model->setAttribute('product_id', Yii::app()->request->getParam('product_id'));
-            $sku = Products::getSKUbyPk(Yii::app()->request->getParam('product_id'));
             
             //  enable ajax-based validation
             
@@ -345,7 +314,7 @@ class ProductsController extends Controller
             {
                 $model->attributes=$_POST['ProductImages'];
 
-                if(self::saveProductImage($model,$sku))
+                if($model->save())
                 {
                     // form inputs are valid, do something here
                     $this->redirect(array('view','id'=>$model->product_id));
@@ -550,9 +519,7 @@ class ProductsController extends Controller
                         $images = CFileHelper::findFiles(Yii::app()->params['uploadsPath'].'batch_product_images');
                         
                         foreach($images as $uploadedImagePath) 
-                        {                              
-                            $contents = file_get_contents($uploadedImagePath);
-                            
+                        {
                             if(preg_match('/^[^_].*\.(bmp|jpeg|gif|png|jpg)$/i', basename($uploadedImagePath))===1)
                             {
                                 $sku = file_ext_strip(basename($uploadedImagePath));
@@ -568,26 +535,12 @@ class ProductsController extends Controller
                             {
                                 $this->setWarningMsg(Yii::t('common', 'Product with SKU: {sku} not found',array('{sku}'=>$sku)));
                                 continue;
-                            } 
+                            }
 
                             $image=new ProductImages;
-
-                            // generate random string
-                            $rnd  = str_random(10);
-                            $rnd2 = str_random(10); 
-
-                            // random number + file name
-                            $fileName = "{$sku}-{$rnd}.".file_ext(basename($uploadedImagePath));  
-                            $thumbFileName = "{$sku}-{$rnd2}-t.".file_ext(basename($uploadedImagePath));
+                            
                             $image->product_id = $product->id;
-                            $image->image = $fileName;
-                            $image->image_url = $fileName;
-                            $image->image_url_thumb = $thumbFileName;
-                            $image->thumb_width = $model->thumb_width;
-                            $image->thumb_height = $model->thumb_height;
-                            $image->thumb_quality = $model->thumb_quality;
-                            $imagePath=$model->imagespath.$fileName;
-                            $thumbImagePath=$model->imagespath.$thumbFileName;
+                            $image->image = file_get_contents($uploadedImagePath);
                             
                             if(!$image->save())
                             {
@@ -602,21 +555,7 @@ class ProductsController extends Controller
                                 continue;
                             }
                             else
-                            {                                                            
-                                $сimage = Yii::app()->image->load($uploadedImagePath);
-                                $сimage->resize($model->thumb_width, $model->thumb_height)
-                                       ->quality($model->thumb_quality);
-                                $сimage->save($thumbImagePath);
-                                $сimage = Yii::app()->image->load($uploadedImagePath);                                
-                                $сimage->save($imagePath);
-                                
-                                // check if file not exists
-                                if(!Yii::app()->file->set($imagePath)->isFile || 
-                                   !Yii::app()->file->set($thumbImagePath)->isFile )
-                                {
-                                    throw new CHttpException(500,'Can\'t store the product images');
-                                }
-                                
+                            {                                
                                 $this->setSuccessMsg(Yii::t('common', 'Product image for the product SKU: {sku}, successfully saved.', array('{sku}'=>$sku)));                                
                             }
                         }
@@ -652,16 +591,16 @@ class ProductsController extends Controller
             
             $totalImageFiles = count($shopImagesNames);
             
-            $dbImages = ProductImages::model()->findAll(array('select'=>'image_url'));
-            $dbImagesThumb = ProductImages::model()->findAll(array('select'=>'image_url_thumb'));
+            $dbImages = ProductImages::model()->findAll(array('select'=>'image_name'));
+            $dbImagesThumb = ProductImages::model()->findAll(array('select'=>'image_name_thumb'));
             
             foreach ($dbImages as $img)
             {
-                $dbImagesNames[] = $img->image_url;
+                $dbImagesNames[] = $img->image_name;
             }
             foreach ($dbImagesThumb as $img)
             {
-                $dbImagesThumbNames[] = $img->image_url_thumb;
+                $dbImagesThumbNames[] = $img->image_name_thumb;
             }
             
             $notAssignedImages = array_diff($shopImagesNames, $dbImagesNames, $dbImagesThumbNames);
@@ -805,48 +744,5 @@ class ProductsController extends Controller
                 'productsWithoutShortDescription'=>$productsWithoutShortDescription,
                 'language_name'=>$language_name,
             ));
-        }
-
-        private static function saveProductImage($model,$sku)
-        {
-            // generate random string
-            $rnd  = str_random(10);
-            $rnd2 = str_random(10);  
-            
-            $uploadedFile=CUploadedFile::getInstance($model,'image');
-
-            if($uploadedFile)
-            {
-                $fileName = "{$sku}-{$rnd}.".$uploadedFile->getExtensionName();  // random number + file name
-                $thumbFileName = "{$sku}-{$rnd2}-t.".$uploadedFile->getExtensionName();  // random number + file name
-                $model->image = $fileName;
-                $model->image_url = $fileName;
-                $model->image_url_thumb = $thumbFileName;
-                $imagePath=$model->imagespath.$fileName;
-                $thumbImagePath=$model->imagespath.$thumbFileName;
-            }
-
-            if($model->validate())
-            {
-                $uploadedFile->saveAs($imagePath);
-                $uploadedFile->saveAs($thumbImagePath);
-
-                $image = Yii::app()->image->load($imagePath);
-                $image->resize($model->thumb_width, $model->thumb_height)
-                      ->quality($model->thumb_quality);
-                $image->save($thumbImagePath);
-
-                // check if file not exists
-                if(!Yii::app()->file->set($imagePath)->isFile || 
-                   !Yii::app()->file->set($thumbImagePath)->isFile )
-                {
-                    throw new CHttpException(500,'Can\'t store the product images');
-                }
-                
-                if($model->save())
-                return true;
-            }
-            
-            return false;
         }
 }
