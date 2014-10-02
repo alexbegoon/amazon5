@@ -102,3 +102,6 @@ optgroup[disabled="disabled"] option{
 {
 	height: 22px;
 }
+th{
+    white-space: nowrap!important;
+}
