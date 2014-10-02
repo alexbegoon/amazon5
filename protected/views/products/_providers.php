@@ -30,7 +30,7 @@
         
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_product_name',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_product_name',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_product_name',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_product_name',array('class'=>'label label-danger')); ?>
 	</div>
         
@@ -54,39 +54,39 @@
         <hr>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_brand',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_brand',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_brand',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_brand',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_category',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_category',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_category',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_category',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_sex',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_sex',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_sex',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_sex',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_image_url',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_image_url',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_image_url',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_image_url',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_thumb_image_url',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'provider_thumb_image_url',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'provider_thumb_image_url',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'provider_thumb_image_url',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'inner_id',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'inner_id',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'inner_id',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'inner_id',array('class'=>'label label-danger')); ?>
 	</div>
         
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'inner_sku',array('class'=>'control-label')); ?>
-		<?php echo $form->textField($model,'inner_sku',array('class'=>'form-control')); ?>
+		<?php echo $form->textField($model,'inner_sku',array('class'=>'form-control','readonly'=>'readonly','disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'inner_sku',array('class'=>'label label-danger')); ?>
 	</div>       
         <hr>
