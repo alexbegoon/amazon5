@@ -301,7 +301,7 @@ class ProductImages extends CActiveRecord
                 if(is_url_exists($this->image_url))
                 {
                     $_FILES[__CLASS__]['name']['image'] = basename($this->image_url);
-                    $_FILES[__CLASS__]['type']['image'] = getMimeType(basename($this->image_url));
+                    $_FILES[__CLASS__]['type']['image'] = getMimeType($_FILES[__CLASS__]['name']['image']);
                     $handle = tmpfile();
                     $meta = stream_get_meta_data($handle);
                     $_FILES[__CLASS__]['size']['image'] = fwrite($handle, file_get_contents($this->image_url));
