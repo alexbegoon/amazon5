@@ -371,6 +371,12 @@ class ProductImages extends CActiveRecord
                         array('{attribute}'=>$this->attributeLabels()['image'])));
                 return false;
             }
+            
+            if(isset($handle))
+                fclose($handle);
+            
+            if(isset($_FILES[__CLASS__]))
+                unset($_FILES[__CLASS__]);
 
             return parent::beforeValidate();
         }
