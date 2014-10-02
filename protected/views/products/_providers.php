@@ -24,7 +24,7 @@
 
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'provider_id',array('class'=>'control-label')); ?>
-		<?php echo $form->dropDownList($model,'provider_id',Providers::listData(),array('class'=>'form-control')); ?>
+		<?php echo $form->dropDownList($model,'provider_id',Providers::listData(),array('class'=>'form-control','readonly'=>'readonly')); ?>
 		<?php echo $form->error($model,'provider_id',array('class'=>'label label-danger')); ?>
 	</div>
         
