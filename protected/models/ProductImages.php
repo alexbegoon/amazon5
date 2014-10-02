@@ -275,7 +275,7 @@ class ProductImages extends CActiveRecord
         public static function updateImagesFromVirtuemart()
         {
             $imgsPath='http://www.cosmetiquesonline.net/components/com_virtuemart/shop_image/product/';
-            $dsn='mysql:host=87.106.216.120:3306;dbname=cosmetiques';
+            $dsn='mysql:host=87.106.216.120;dbname=cosmetiques';
             $username='cosmetiques';
             $password='base1985';
             $tablePrefix='jos_';
