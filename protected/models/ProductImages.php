@@ -274,20 +274,22 @@ class ProductImages extends CActiveRecord
          */
         public static function updateImagesFromProviders()
         {
-            return true;
             $criteria=new CDbCriteria;
             $criteria->condition='productImages.id IS NULL AND (providerProducts.provider_image_url<>\'\')';
             $criteria->group='t.id';
             $criteria->together=true;
-            $criteria->limit=10;
             $models=Products::model()->with('providerProducts','productImages')->findAll($criteria);
-//            CVarDumper::dump($models,10,true);die;
             foreach ($models as $model)
             {
                 $productImage = new ProductImages;
                 $productImage->product_id=$model->id;
                 $productImage->image_url=$model->providerProducts[0]->provider_image_url;
-                $productImage->save();                
+                if(!$productImage->save())
+                {
+                    $providerProduct=ProviderProducts::model()->findByPk($model->providerProducts[0]->getPrimaryKey());
+                    $providerProduct->provider_image_url=null;
+                    $providerProduct->save();
+                }
             }
             
             return true;
@@ -322,6 +324,8 @@ class ProductImages extends CActiveRecord
                 }
                 else 
                 {
+                    if(isset($handle))
+                        fclose($handle);                    
                     $this->addError('image_url', Yii::t('common', 
                             'Check <a href="{url}" target="_blank">this URL</a> please.', 
                             array('{url}'=>$this->image_url)));
@@ -368,6 +372,7 @@ class ProductImages extends CActiveRecord
                 $image->save($this->_thumb_image_path);
                 list($this->thumb_width, $this->thumb_height) = getimagesize($this->_thumb_image_path);
                 $this->thumb_size=filesize($this->_thumb_image_path);
+                $file->reset();
             }
             else 
             {
@@ -376,21 +381,18 @@ class ProductImages extends CActiveRecord
                 return false;
             }
             
-//            if(isset($handle))
-//                fclose($handle);
-            
-//            if(isset($_FILES[__CLASS__]))
-//                unset($_FILES[__CLASS__]);
+            if(isset($handle))
+                fclose($handle);
             
             return parent::beforeValidate();
         }
         
         public function beforeDelete() 
         {
-            if(Yii::app()->file->set($this->imagepath)->isFile)
-                unlink ($this->imagepath);
-            if(Yii::app()->file->set($this->imagethumbpath)->isFile)
-                unlink ($this->imagethumbpath);
+            if(Yii::app()->file->set($this->imagePath)->isFile)
+                unlink ($this->imagePath);
+            if(Yii::app()->file->set($this->imageThumbPath)->isFile)
+                unlink ($this->imageThumbPath);
             
             return parent::beforeDelete();
         }
