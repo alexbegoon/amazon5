@@ -1194,8 +1194,9 @@ function getMimeType($filename) {
         "zoo"	=> "application/octet-stream",
         "zsh"	=> "text/x-script.zsh",
     );
-
-    $extension = end(explode('.', $filename));
+    
+    $filenameArr = explode('.', $filename);
+    $extension = end($filenameArr);
     if(isset($mimeTypes[$extension]))
     return $mimeTypes[$extension]; // return the array value
     
