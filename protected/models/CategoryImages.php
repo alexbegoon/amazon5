@@ -286,7 +286,7 @@ class CategoryImages extends CActiveRecord
                 {
                     $_FILES[__CLASS__]['name']['image'] = basename($this->image_url);
                     $_FILES[__CLASS__]['type']['image'] = getMimeType($_FILES[__CLASS__]['name']['image']);
-                    $filename = tempnam(sys_get_temp_dir(),'img');
+                    $filename = tempnam(sys_get_temp_dir(),__CLASS__);
                     $handle = fopen($filename,'w');
                     $_FILES[__CLASS__]['size']['image'] = fwrite($handle, file_get_contents($this->image_url));
                     $_FILES[__CLASS__]['tmp_name']['image'] = $filename;
