@@ -378,9 +378,6 @@ class ProductImages extends CActiveRecord
             if(isset($_FILES[__CLASS__]))
                 unset($_FILES[__CLASS__]);
             
-            if(isset($filename))
-                unlink($filename);
-
             return parent::beforeValidate();
         }
         
