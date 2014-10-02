@@ -294,6 +294,8 @@ class CategoryImages extends CActiveRecord
                 }
                 else 
                 {
+                    if(isset($handle))
+                        fclose($handle);                    
                     $this->addError('image_url', Yii::t('common', 
                             'Check <a href="{url}" target="_blank">this URL</a> please.', 
                             array('{url}'=>$this->image_url)));
@@ -340,6 +342,7 @@ class CategoryImages extends CActiveRecord
                 $image->save($this->_thumb_image_path);
                 list($this->thumb_width, $this->thumb_height) = getimagesize($this->_thumb_image_path);
                 $this->thumb_size=filesize($this->_thumb_image_path);
+                $file->reset();
             }
             else 
                 {
@@ -351,18 +354,15 @@ class CategoryImages extends CActiveRecord
             if(isset($handle))
                 fclose($handle);
             
-            if(isset($_FILES[__CLASS__]))
-                unset($_FILES[__CLASS__]);
-            
             return parent::beforeValidate();
         }
         
         public function beforeDelete() 
         {
-            if(Yii::app()->file->set($this->imagepath)->isFile)
-                unlink ($this->imagepath);
-            if(Yii::app()->file->set($this->imagethumbpath)->isFile)
-                unlink ($this->imagethumbpath);
+            if(Yii::app()->file->set($this->imagePath)->isFile)
+                unlink ($this->imagePath);
+            if(Yii::app()->file->set($this->imageThumbPath)->isFile)
+                unlink ($this->imageThumbPath);
             
             return parent::beforeDelete();
         }
