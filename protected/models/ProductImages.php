@@ -311,8 +311,6 @@ class ProductImages extends CActiveRecord
                 $productImage=new ProductImages;
                 $productImage->product_id=$model->id;
                 $productImage->image_url=$imageUrl;
-                
-                CVarDumper::dump($productImage,10,true);die;
                 $productImage->save();
             }
             
