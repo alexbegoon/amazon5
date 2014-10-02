@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $product_id
  * @property string $image_name
+ * @property string $image_url Alternative way to upload an Image
  * @property string $image_name_thumb
  * @property integer $width
  * @property integer $height
@@ -291,7 +292,30 @@ class ProductImages extends CActiveRecord
             $rnd  = str_random(10);
             $rnd2 = str_random(10); 
             $prefix = url_slug(Products::getSKUbyPk($this->product_id),array('limit'=>20)) or $this->product_id;
-                        
+            
+            if(empty($prefix))
+                return false;
+            
+            if(!empty($this->image_url))
+            {
+                if(is_url_exists($this->image_url))
+                {
+                    $_FILES[__CLASS__]['name']['image'] = basename($this->image_url);
+                    $_FILES[__CLASS__]['type']['image'] = getMimeType(basename($this->image_url));
+                    $handle = tmpfile();
+                    $meta = stream_get_meta_data($handle);
+                    $_FILES[__CLASS__]['size']['image'] = fwrite($handle, file_get_contents($this->image_url));
+                    $_FILES[__CLASS__]['tmp_name']['image'] = $meta['uri'];
+                    $_FILES[__CLASS__]['error']['image'] = 0;
+                }
+                else 
+                {
+                    $this->addError('image_url', Yii::t('common', 
+                            'Check <a href="{url}" target="_blank">this URL</a> please.', 
+                            array('{url}'=>$this->image_url)));
+                    return false;
+                }
+            }
             // Saves the name, size, type and data of the uploaded file
             if($file=CUploadedFile::getInstance($this,'image'))
             {
@@ -306,10 +330,19 @@ class ProductImages extends CActiveRecord
                     $this->image=file_get_contents($this->image_name);
                 
                 $this->_image_path       =$this->imagespath.$this->image_name;
-                $this->_thumb_image_path =$this->imagespath.$this->image_name_thumb;
-                
-                $file->saveAs($this->_image_path); 
-                $file->saveAs($this->_thumb_image_path);
+                $this->_thumb_image_path =$this->imagespath.$this->image_name_thumb;                
+                if(!$file->saveAs($this->_image_path,false))
+                    copy($file->tempName,$this->_image_path); 
+                if(!$file->saveAs($this->_thumb_image_path,false))
+                    copy($file->tempName,$this->_thumb_image_path);
+                // check if file not exists
+                if(!Yii::app()->file->set($this->_image_path)->isFile || 
+                   !Yii::app()->file->set($this->_thumb_image_path)->isFile )
+                {
+                    $this->addError('image', Yii::t('common', 'Can\'t store the product images'));
+                    $this->removeFiles();
+                    return false;
+                }
                 if(!getimagesize($this->_image_path))
                 {
                     $this->addError('image', Yii::t('common', 'File `{filename}` is not an image',array('{filename}'=>$file->name)));
@@ -321,17 +354,14 @@ class ProductImages extends CActiveRecord
                 $image->resize($this->thumb_width, $this->thumb_height)
                       ->quality($this->thumb_quality);
                 $image->save($this->_thumb_image_path);
-                
-                // check if file not exists
-                if(!Yii::app()->file->set($this->_image_path)->isFile || 
-                   !Yii::app()->file->set($this->_thumb_image_path)->isFile )
-                {
-                    $this->addError('image', Yii::t('common', 'Can\'t store the product images'));
-                    $this->removeFiles();
-                    return false;
-                }
                 list($this->thumb_width, $this->thumb_height) = getimagesize($this->_thumb_image_path);
                 $this->thumb_size=filesize($this->_thumb_image_path);
+            }
+            else 
+            {
+                $this->addError('image', Yii::t('yii','{attribute} cannot be blank.',
+                        array('{attribute}'=>$this->attributeLabels()['image'])));
+                return false;
             }
 
             return parent::beforeValidate();

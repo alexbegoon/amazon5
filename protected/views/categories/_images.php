@@ -32,6 +32,11 @@
 	</div>
 
 	<div class="row form-group">
+		<?php echo $form->labelEx($model,'image_url',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'image_url',array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'image_url',array('class'=>'label label-danger')); ?>
+	</div>
+	<div class="row form-group">
 		<?php echo $form->labelEx($model,'thumb_width',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'thumb_width',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'thumb_width',array('class'=>'label label-danger')); ?>

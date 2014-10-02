@@ -86,6 +86,12 @@
 		<?php echo $form->error($categoryImages,'image',array('class'=>'label label-danger')); ?>
 	</div>
         <div class="row form-group">
+		<?php echo $form->labelEx($categoryImages,'image_url',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($categoryImages,'image_url',array('class'=>'form-control')); ?>
+		<?php echo $form->error($categoryImages,'image_url',array('class'=>'label label-danger')); ?>
+	</div>
+	</div>
+        <div class="row form-group">
 		<?php echo $form->labelEx($categoryImages,'thumb_width',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($categoryImages,'thumb_width',array('class'=>'form-control')); ?>
 		<?php echo $form->error($categoryImages,'thumb_width',array('class'=>'label label-danger')); ?>

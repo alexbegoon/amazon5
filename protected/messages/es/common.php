@@ -343,6 +343,11 @@ return array(
     'You Cannot edit this. Record locked by {username}.'=>'No se puede editar este. Registro bloqueado por {username}.',
     'Available translations for this item.'=>'Traducciones disponibles de este material.',
     'This feature at the development stage. If you have any questions, please ask support.'=>'Esta característica en fase de desarrollo. Si tiene alguna duda, consulte a apoyo.',
-    
+    'Check <a href="{url}" target="_blank">this URL</a> please.'=>'Marque <a href="{url}" target="_blank">esta URL</a> favor.',
+    'File `{filename}` is not an image'=>'Archivo `{filename}` no es una imagen',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
 );
 ?>

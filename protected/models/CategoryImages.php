@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $category_id
  * @property string $image_name
+ * @property string $image_url Alternative way to upload an Image
  * @property string $image_name_thumb
  * @property integer $width
  * @property integer $height
@@ -33,6 +34,7 @@
 class CategoryImages extends CActiveRecord
 {
         public $image;
+        public $image_url;
         
         private $_image_path;
         private $_thumb_image_path;
@@ -72,6 +74,8 @@ class CategoryImages extends CActiveRecord
                         array('image', 'file','types'=>'jpg, gif, png'),
 			array('category_id', 'length', 'max'=>11),
 			array('image_name, image_name_thumb', 'length', 'max'=>255),
+			array('image_url', 'url'),
+			array('image_url', 'length', 'max'=>255),
                         array('extension, thumb_extension', 'length', 'max'=>12),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
@@ -101,7 +105,8 @@ class CategoryImages extends CActiveRecord
 			'id' => Yii::t('common', 'ID'),
 			'category_id' => Yii::t('common', 'Category'),
 			'image' => Yii::t('common', 'Category Image'),
-			'image_archive' => Yii::t('common', 'Image archive (.zip)'),
+			'image_url' => Yii::t('common', 'Image URL'),
+                        'image_archive' => Yii::t('common', 'Image archive (.zip)'),
 			'image_name' => Yii::t('common', 'Image Name'),
                         'width' => Yii::t('common', 'Width'),
 			'height' => Yii::t('common', 'Height'),
@@ -188,40 +193,40 @@ class CategoryImages extends CActiveRecord
             return Yii::app()->params['noImageFilename'];
         }
         
-        public function getImagesUrlPrefix()
+        public function getImagesURLPrefix()
         {
             return Yii::app()->params['categoryImagesURL'];
         }
         
-        public function getImagesUrl()
+        public function getImagesURL()
         {
-            return Yii::app()->request->baseUrl.$this->getImagesUrlPrefix();
+            return Yii::app()->request->baseURL.$this->getImagesURLPrefix();
         }
         
-        public function getImageUrl()
+        public function getImageURL()
         {
             if(empty($this->image_name))
-                return $this->NoImageUrl;
+                return $this->NoImageURL;
                 
-            return $this->imagesUrl.$this->image_name;
+            return $this->imagesURL.$this->image_name;
         }
         
-        public function getThumbImageUrl()
+        public function getThumbImageURL()
         {
             if(empty($this->image_name_thumb))
-                return $this->NoImageUrl;
+                return $this->NoImageURL;
             
-            return $this->imagesUrl.$this->image_name_thumb;
+            return $this->imagesURL.$this->image_name_thumb;
         }
         
-        public function getNoImageUrl()
+        public function getNoImageURL()
         {
-            return $this->imagesUrl.$this->noImageFilename;
+            return $this->imagesURL.$this->noImageFilename;
         }
         
         public function getImageTag()
         {
-            return CHtml::image($this->ImageUrl,'image for category id '.$this->category_id);
+            return CHtml::image($this->ImageURL,'image for category id '.$this->category_id);
         }
         
         public function getImagePath()
@@ -236,7 +241,7 @@ class CategoryImages extends CActiveRecord
 
         public function getThumbImageTag()
         {
-            return CHtml::image($this->ThumbImageUrl,'thumb image for product id '.$this->category_id);
+            return CHtml::image($this->ThumbImageURL,'thumb image for product id '.$this->category_id);
         }
         
         public static function listQualities()
@@ -272,6 +277,29 @@ class CategoryImages extends CActiveRecord
             $rnd2 = str_random(10);
             $prefix = $this->category_id;
                         
+            if(empty($prefix))
+                return false;
+            
+            if(!empty($this->image_url))
+            {
+                if(is_url_exists($this->image_url))
+                {
+                    $_FILES[__CLASS__]['name']['image'] = basename($this->image_url);
+                    $_FILES[__CLASS__]['type']['image'] = getMimeType(basename($this->image_url));
+                    $handle = tmpfile();
+                    $meta = stream_get_meta_data($handle);
+                    $_FILES[__CLASS__]['size']['image'] = fwrite($handle, file_get_contents($this->image_url));
+                    $_FILES[__CLASS__]['tmp_name']['image'] = $meta['uri'];
+                    $_FILES[__CLASS__]['error']['image'] = 0;
+                }
+                else 
+                {
+                    $this->addError('image_url', Yii::t('common', 
+                            'Check <a href="{url}" target="_blank">this URL</a> please.', 
+                            array('{url}'=>$this->image_url)));
+                    return false;
+                }
+            }
             // Saves the name, size, type and data of the uploaded file
             if($file=CUploadedFile::getInstance($this,'image'))
             {
@@ -287,9 +315,18 @@ class CategoryImages extends CActiveRecord
                 
                 $this->_image_path       =$this->imagespath.$this->image_name;
                 $this->_thumb_image_path =$this->imagespath.$this->image_name_thumb;
-                
-                $file->saveAs($this->_image_path); 
-                $file->saveAs($this->_thumb_image_path);
+                if(!$file->saveAs($this->_image_path,false))
+                    copy($file->tempName,$this->_image_path); 
+                if(!$file->saveAs($this->_thumb_image_path,false))
+                    copy($file->tempName,$this->_thumb_image_path);
+                // check if file not exists
+                if(!Yii::app()->file->set($this->_image_path)->isFile || 
+                   !Yii::app()->file->set($this->_thumb_image_path)->isFile )
+                {
+                    $this->addError('image', Yii::t('common', 'Can\'t store the category images'));
+                    $this->removeFiles();
+                    return false;
+                }
                 if(!getimagesize($this->_image_path))
                 {
                     $this->addError('image', Yii::t('common', 'File `{filename}` is not an image',array('{filename}'=>$file->name)));
@@ -301,18 +338,15 @@ class CategoryImages extends CActiveRecord
                 $image->resize($this->thumb_width, $this->thumb_height)
                       ->quality($this->thumb_quality);
                 $image->save($this->_thumb_image_path);
-                
-                // check if file not exists
-                if(!Yii::app()->file->set($this->_image_path)->isFile || 
-                   !Yii::app()->file->set($this->_thumb_image_path)->isFile )
-                {
-                    $this->addError('image', Yii::t('common', 'Can\'t store the category images'));
-                    $this->removeFiles();
-                    return false;
-                }
                 list($this->thumb_width, $this->thumb_height) = getimagesize($this->_thumb_image_path);
                 $this->thumb_size=filesize($this->_thumb_image_path);
             }
+            else 
+                {
+                $this->addError('image', Yii::t('yii','{attribute} cannot be blank.',
+                        array('{attribute}'=>$this->attributeLabels()['image'])));
+                    return false;
+                }
 
             return parent::beforeValidate();
         }
