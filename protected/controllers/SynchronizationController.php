@@ -25,7 +25,7 @@ class SynchronizationController extends CController
 	public function actionIndex()
 	{
             ini_set ('memory_limit', "1024M");
-            ini_set('max_execution_time', 3600);
+            ini_set('max_execution_time', 1000);
             $items=array();
             
             $items[] = Products::sync();

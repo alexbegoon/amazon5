@@ -274,18 +274,22 @@ class ProductImages extends CActiveRecord
          */
         public static function updateImagesFromProviders()
         {
+            return true;
             $criteria=new CDbCriteria;
             $criteria->condition='productImages.id IS NULL AND (providerProducts.provider_image_url<>\'\')';
             $criteria->group='t.id';
             $criteria->together=true;
+            $criteria->limit=10;
             $models=Products::model()->with('providerProducts','productImages')->findAll($criteria);
+//            CVarDumper::dump($models,10,true);die;
             foreach ($models as $model)
             {
                 $productImage = new ProductImages;
                 $productImage->product_id=$model->id;
                 $productImage->image_url=$model->providerProducts[0]->provider_image_url;
-                $productImage->save();
+                $productImage->save();                
             }
+            
             return true;
         }
 
@@ -372,11 +376,11 @@ class ProductImages extends CActiveRecord
                 return false;
             }
             
-            if(isset($handle))
-                fclose($handle);
+//            if(isset($handle))
+//                fclose($handle);
             
-            if(isset($_FILES[__CLASS__]))
-                unset($_FILES[__CLASS__]);
+//            if(isset($_FILES[__CLASS__]))
+//                unset($_FILES[__CLASS__]);
             
             return parent::beforeValidate();
         }
