@@ -266,7 +266,9 @@ class Products extends CActiveRecord
         
         public static function sync()
         {
+            ProductImages::updateImagesFromVirtuemart();
             ProductImages::updateImagesFromProviders();
+            
             $result = Yii::t('common', 'Products synchronization');
             return  $result.' - <span class="green">OK</span>';
         }

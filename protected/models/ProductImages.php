@@ -268,6 +268,60 @@ class ProductImages extends CActiveRecord
         }
         
         /**
+         * Try to update product images from old virtuemart.
+         * @deprecated since version 0 This is not joke. We can use it only once.
+         * @return boolean
+         */
+        public static function updateImagesFromVirtuemart()
+        {
+            $imgsPath='http://www.cosmetiquesonline.net/components/com_virtuemart/shop_image/product/';
+            $dsn='mysql:host=87.106.216.120:3306;dbname=cosmetiques';
+            $username='cosmetiques';
+            $password='base1985';
+            $tablePrefix='jos_';
+            $skuPrefix='#';
+            
+            // Connect to remote DB
+            $connection=new CDbConnection($dsn,$username,$password);
+            $connection->tablePrefix=$tablePrefix;
+            // establish connection. You may try...catch possible exceptions
+            $connection->active=true;
+            
+            $sql='SELECT product_sku, product_full_image FROM {{vm_product}}';
+            $command=$connection->createCommand($sql);
+            $data=array();
+            foreach($command->queryAll() as $row)
+            {
+                $data[$row['product_sku']]=$row['product_full_image'];
+            }
+            
+            // Get products without images
+            $criteria=new CDbCriteria;
+            $criteria->condition='productImages.id IS NULL';
+            $criteria->group='t.id';
+            $criteria->together=true;
+            $models=Products::model()->with('productImages')->findAll($criteria);
+            foreach ($models as $model)
+            {
+                if(!isset($data[$skuPrefix.$model->product_sku]))
+                    continue;
+                
+                $imageUrl=$imgsPath.$data[$skuPrefix.$model->product_sku];
+                
+                $productImage=new ProductImages;
+                $productImage->product_id=$model->id;
+                $productImage->image_url=$imageUrl;
+                
+                CVarDumper::dump($productImage,10,true);die;
+                $productImage->save();
+            }
+            
+            $connection->active=false;  // close connection
+            Yii::app()->end();
+            return true;
+        }
+        
+        /**
          * This method try to put image from provider's DB.
          * If product have no images, than system will try to get image from Provider DB.
          * @return boolean
