@@ -89,6 +89,7 @@ class Products extends CActiveRecord
 			'productLanguages' => array(self::MANY_MANY, 'Languages', '{{product_translations}}(product_id, language_code)'),
 			'providerOrderItems' => array(self::HAS_MANY, 'ProviderOrderItems', 'product_id'),
 			'productProviders' => array(self::MANY_MANY, 'Providers', '{{provider_products}}(product_id, provider_id)'),
+			'providerProducts' => array(self::HAS_MANY, 'ProviderProducts', 'product_id'),
 			'providerProductsHistories' => array(self::HAS_MANY, 'ProviderProductsHistories', 'product_id'),
 			'warehouses' => array(self::HAS_MANY, 'Warehouse', 'product_id'),
 		);

@@ -267,18 +267,21 @@ class ProductImages extends CActiveRecord
            );
         }
         
-        public static function getProviderImages($productId)
+        public static function updateImagesFromProviders()
         {
             $criteria=new CDbCriteria;
-            $criteria->condition='product_id=:product_id AND (provider_image_name<>\'\' OR provider_thumb_image_name)';
-            $criteria->params=array(':product_id'=>$productId);
-            return ProviderProducts::model()->findAll($criteria);            
-        }
-        
-        public function updateImagesFromProviders()
-        {
-            $model=self::getProviderImages($productId);
-            CVarDumper::dump($model,10,true);
+            $criteria->condition='productImages.id IS NULL AND (providerProducts.provider_image_url<>\'\')';
+            $criteria->group='t.id';
+            $criteria->limit=1;
+            $criteria->together=true;
+            $models=Products::model()->with('providerProducts','productImages')->findAll($criteria);
+            foreach ($models as $model)
+            {
+                $productImage = new ProductImages;
+                $productImage->product_id=$model->id;
+                $productImage->image_url=$model->providerProducts[0]->provider_image_url;
+                $productImage->save();
+            }
         }
 
         public function getPopUpImage()
