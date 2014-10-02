@@ -285,11 +285,11 @@ class CategoryImages extends CActiveRecord
                 if(is_url_exists($this->image_url))
                 {
                     $_FILES[__CLASS__]['name']['image'] = basename($this->image_url);
-                    $_FILES[__CLASS__]['type']['image'] = getMimeType(basename($this->image_url));
-                    $handle = tmpfile();
-                    $meta = stream_get_meta_data($handle);
+                    $_FILES[__CLASS__]['type']['image'] = getMimeType($_FILES[__CLASS__]['name']['image']);
+                    $filename = tempnam(sys_get_temp_dir(),'img');
+                    $handle = fopen($filename,'w');
                     $_FILES[__CLASS__]['size']['image'] = fwrite($handle, file_get_contents($this->image_url));
-                    $_FILES[__CLASS__]['tmp_name']['image'] = $meta['uri'];
+                    $_FILES[__CLASS__]['tmp_name']['image'] = $filename;
                     $_FILES[__CLASS__]['error']['image'] = 0;
                 }
                 else 
@@ -347,6 +347,15 @@ class CategoryImages extends CActiveRecord
                         array('{attribute}'=>$this->attributeLabels()['image'])));
                     return false;
                 }
+
+            if(isset($handle))
+                fclose($handle);
+            
+            if(isset($_FILES[__CLASS__]))
+                unset($_FILES[__CLASS__]);
+            
+            if(isset($filename))
+                unlink($filename);
 
             return parent::beforeValidate();
         }
