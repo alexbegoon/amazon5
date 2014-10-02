@@ -267,12 +267,16 @@ class ProductImages extends CActiveRecord
            );
         }
         
+        /**
+         * This method try to put image from provider's DB.
+         * If product have no images, than system will try to get image from Provider DB.
+         * @return boolean
+         */
         public static function updateImagesFromProviders()
         {
             $criteria=new CDbCriteria;
             $criteria->condition='productImages.id IS NULL AND (providerProducts.provider_image_url<>\'\')';
             $criteria->group='t.id';
-            $criteria->limit=1;
             $criteria->together=true;
             $models=Products::model()->with('providerProducts','productImages')->findAll($criteria);
             foreach ($models as $model)
@@ -282,6 +286,7 @@ class ProductImages extends CActiveRecord
                 $productImage->image_url=$model->providerProducts[0]->provider_image_url;
                 $productImage->save();
             }
+            return true;
         }
 
         public function getPopUpImage()
