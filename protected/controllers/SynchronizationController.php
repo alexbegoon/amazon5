@@ -28,6 +28,10 @@ class SynchronizationController extends CController
             ini_set('max_execution_time', 3600);
             $items=array();
             
+            //Clean logs
+            $this->cleanLogs();
+            
+            // Launch sync hooks.
             $items[] = Products::sync();
             $items[] = Categories::sync();
             $items[] = Manufacturers::sync();
@@ -38,6 +42,19 @@ class SynchronizationController extends CController
             $this->render('index',array('items'=>$items));
 	}
         
+        private function cleanLogs()
+        {
+            // Clean providers logs
+            $criteria = new CDbCriteria;
+            $criteria->condition='created_on < :date';
+            $criteria->params=array(':date'=>date('Y-m-d H:i:s',time()-3600*24*Yii::app()->params['logsLifetime']));
+            ProviderSyncLogs::model()->deleteAll($criteria);
+        }
+        
+        /**
+         * @deprecated since version 0
+         * @throws CHttpException
+         */
         public function actionImportTranslations()
         {
             ini_set ('memory_limit', "1024M");
