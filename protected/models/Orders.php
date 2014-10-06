@@ -74,7 +74,7 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total', 'required'),
+			array('user_id, order_pass, order_number, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total, ip_address, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'required'),
 			array('currency_id, payment_method_id, shipping_method_id, web_shop_id, magnet_msg_sent, created_by, modified_by, locked_by, deleted, deleted_by', 'numerical', 'integerOnly'=>true),
 			array('order_number, order_tracking_number', 'length', 'max'=>64),
 			array('order_number', 'unique'),
@@ -150,19 +150,50 @@ class Orders extends CActiveRecord
         
         public function validateCoupon($attribute,$params)
         {
-            $valid=(float)$this->{$attribute} === ((float)$this->order_subtotal
-                                                 + (float)$this->order_tax
-                                                 + (float)$this->order_payment
-                                                 + (float)$this->order_shipment
-                                                 - (float)$this->order_discount
-                                                 - (float)$this->order_coupon);
-            if(!$valid)
+            if(empty($this->order_coupon_code))
+                return true;
+            
+            if(empty($this->order_coupon_id))
             {
-                $this->addError($attribute, Yii::t('common', 
-                        '{attribute} is wrong', 
+                $this->addError($attribute, 
+                        Yii::t('common', '{attribute} not exists',
                         array('{attribute}'=>$this->attributeLabels()[$attribute])));
                 return false;
             }
+            
+            $coupon = Coupons::model()->findByPk($this->order_coupon_id);
+            
+            if($coupon===null)
+            {
+                $this->addError($attribute, 
+                        Yii::t('common', '{attribute} not exists',
+                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                return false;
+            }
+            
+            if($coupon->published!='1')
+            {
+                $this->addError($attribute, 
+                        Yii::t('common', '{attribute} not exists',
+                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                return false;
+            }
+            
+            if($coupon->isExpired())
+            {
+                $this->addError($attribute, 
+                        Yii::t('common', 'This coupon code is invalid or has expired',
+                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                return false;
+            }
+            if($coupon->hasBeenUsed())
+            {
+                $this->addError($attribute, 
+                        Yii::t('common', 'This coupon code is invalid or has expired',
+                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                return false;
+            }
+            
             return true;
         }        
 
@@ -195,7 +226,7 @@ class Orders extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('common', 'Order ID'),
-			'user_id' => Yii::t('common', 'Customerg'),
+			'user_id' => Yii::t('common', 'Customer'),
 			'order_number' => Yii::t('common', 'Order Number'),
 			'order_pass' => Yii::t('common', 'Order Password'),
 			'order_total' => Yii::t('common', 'Order Total'),
@@ -313,5 +344,29 @@ class Orders extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        public function beforeValidate() 
+        {
+            if(!empty($this->order_coupon_code))
+            {
+                $coupon=Coupons::findByCode($this->order_coupon_code);
+                if($coupon!==null)
+                {
+                    $this->order_coupon_id=$coupon->id;
+                }
+            }
+            
+            if(empty($this->w3c_order_date))
+            {
+                $this->w3c_order_date=date(DATE_W3C);
+            }
+            if(empty($this->ip_address))
+            {
+                $this->ip_address=Yii::app()->request->userHostAddress;
+            }
+            $this->order_pass=str_random(8);
+            
+            return parent::beforeValidate();
         }
 }

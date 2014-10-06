@@ -177,6 +177,59 @@ class Coupons extends CActiveRecord
               ));
         }
         
+        /**
+         * Check whether coupon expired.
+         * @return boolean true if expired or false
+         */
+        public function isExpired()
+        {
+            if( ($this->coupon_expiry_date=='0000-00-00 00:00:00' || $this->coupon_expiry_date === null)
+                &&
+                ($this->coupon_start_date=='0000-00-00 00:00:00' || $this->coupon_start_date === null) )
+            return false;
+            
+            if( ($this->coupon_expiry_date=='0000-00-00 00:00:00' || $this->coupon_expiry_date === null) )
+                return date('Y-m-d H:i:s') < $this->coupon_start_date;
+            
+            if( ($this->coupon_start_date=='0000-00-00 00:00:00' || $this->coupon_start_date === null) )
+                return date('Y-m-d H:i:s') > $this->coupon_expiry_date;
+            
+            return (date('Y-m-d H:i:s') > $this->coupon_expiry_date) || (date('Y-m-d H:i:s') < $this->coupon_start_date);
+        }
+        
+        /**
+         * Check that coupon has been used.
+         * @return boolean true if coupon has been used OR false
+         */
+        public function hasBeenUsed()
+        {
+            if($this->coupon_type=='permanent')
+                return false;
+            
+            $criteria=new CDbCriteria;
+            $criteria->condition='order_coupon_id=:order_coupon_id';
+            $criteria->params=array('order_coupon_id'=>$this->id);
+            
+            if(Orders::model()->exists($criteria))
+            {
+                return true;
+            }
+                
+            return false;
+        }
+        
+        public static function findByCode($code=null) 
+        {
+            if(empty($code))
+                return;
+            
+            $criteria=new CDbCriteria;
+            $criteria->condition='coupon_code=:coupon_code';
+            $criteria->params=array('coupon_code'=>$code);
+            
+            return self::model()->find($criteria);
+        }
+        
         public static function itemAlias($type,$code=NULL) 
         {
             $_items = array(

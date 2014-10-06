@@ -347,7 +347,7 @@ return array(
     'File `{filename}` is not an image'=>'Archivo `{filename}` no es una imagen',
     '{attribute} not exists'=>'{attribute} no existe',
     '{attribute} is wrong'=>'{attribute} es incorrecto',
-    ''=>'',
+    'This coupon code is invalid or has expired'=>'Este código promocional es válido o ha expirado',
     ''=>'',
     ''=>'',
 );

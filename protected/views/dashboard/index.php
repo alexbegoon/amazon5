@@ -91,6 +91,11 @@ $this->breadcrumbs=array(
                         'label'=>Yii::t('common','Order Statuses'),
                         ),
                     array(
+                        'url'=>'coupons',
+                        'glyphicon'=>'glyphicon-gift',
+                        'label'=>Yii::t('common','Coupons'),
+                        ),
+                    array(
                         'url'=>'synchronization',
                         'fa'=>'fa-refresh fa-spin',
                         'label'=>Yii::t('common','Synchronization'),
