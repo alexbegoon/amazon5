@@ -48,7 +48,5 @@ $this->menu=array(
                     'name'=>  Yii::t('common', 'Modified By'),
                     'value'=> modified_by($model),
                 ),
-		'locked_on',
-		'locked_by',
 	),
 )); ?>
