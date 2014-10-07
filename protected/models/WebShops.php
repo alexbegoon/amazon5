@@ -231,4 +231,9 @@ class WebShops extends CActiveRecord
             $result = Yii::t('common', 'Web Shops synchronization');
             return  $result.' - <span class="green">OK</span>';
         }
+        
+        public static function range()
+        {
+            return CHtml::listData(self::listWebShops(), 'id', 'id');
+        }
 }

@@ -58,6 +58,15 @@
  */
 class Orders extends CActiveRecord
 {
+        const USE_EXISTING_CUSTOMER = 0;
+        const REGISTER_THE_NEW_CUSTOMER = 1;
+    
+        /**
+         * 
+         * @var bool
+         */
+        public $register_new_customer;
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -74,17 +83,21 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, order_pass, order_number, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total, ip_address, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'required'),
+			array('user_id, user_profile_data, order_pass, order_number, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total, ip_address, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'required'),
 			array('currency_id, payment_method_id, shipping_method_id, web_shop_id, magnet_msg_sent, created_by, modified_by, locked_by, deleted, deleted_by', 'numerical', 'integerOnly'=>true),
 			array('order_number, order_tracking_number', 'length', 'max'=>64),
 			array('order_number', 'unique'),
-			array('deleted, magnet_msg_sent', 'boolean'),
+			array('deleted, magnet_msg_sent, register_new_customer', 'boolean'),
 			array('order_pass', 'length', 'max'=>8),
 			array('order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon, ip_address', 'length', 'max'=>15),
 			array('order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'numerical'),
 			array('order_coupon_code', 'length', 'max'=>32),
 			array('order_coupon_id', 'length', 'max'=>10),
 			array('order_outer_status, order_inner_status', 'length', 'max'=>2),
+			array('order_outer_status, order_inner_status', 'in', 'range'=>OrderStatuses::range()),
+			array('currency_id', 'in', 'range'=>Currencies::range()),
+			array('web_shop_id', 'in', 'range'=>WebShops::range()),
+			array('language_code', 'in', 'range'=>Languages::range()),
 			array('language_code', 'length', 'max'=>5),
 			array('w3c_order_date', 'length', 'max'=>45),
                         // Additional checks
@@ -111,6 +124,7 @@ class Orders extends CActiveRecord
 // * @property string $w3c_order_date
                     
                     
+			array('created_on, modified_on, locked_on, deleted_on','date','format'=>array('yyyy-MM-dd HH:mm:ss','0000-00-00 00:00:00')),
 			array('customer_note, manager_note, user_profile_data, created_on, modified_on, locked_on, deleted_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -263,6 +277,7 @@ class Orders extends CActiveRecord
 			'deleted' => Yii::t('common', 'Order Deleted'),
 			'deleted_on' => Yii::t('common', 'Deleted On'),
 			'deleted_by' => Yii::t('common', 'Deleted By'),
+			'register_new_customer' => Yii::t('common', 'Register the New Customer'),
 		);
 	}
 
@@ -346,7 +361,20 @@ class Orders extends CActiveRecord
               ));
         }
         
-        public function beforeValidate() 
+        private function storeUserProfile()
+        {
+            $user=Yii::app()->getModule("user")->user($this->user_id);
+            
+            if($user!==null)
+            {
+                $data=array();
+                $data['user']=$user->attributes;
+                $data['profile']=$user->profile->attributes;
+                $this->user_profile_data = serialize($data);
+            }
+            return true;
+        }
+        private function storeCoupon()
         {
             if(!empty($this->order_coupon_code))
             {
@@ -356,16 +384,47 @@ class Orders extends CActiveRecord
                     $this->order_coupon_id=$coupon->id;
                 }
             }
-            
+            return true;
+        }
+        private function storeW3Cdate()
+        {
             if(empty($this->w3c_order_date))
             {
                 $this->w3c_order_date=date(DATE_W3C);
             }
+            return true;
+        }
+        private function storeIPaddress()
+        {
             if(empty($this->ip_address))
             {
                 $this->ip_address=Yii::app()->request->userHostAddress;
             }
-            $this->order_pass=str_random(8);
+            return true;
+        }
+        private function generateOrderPassword()
+        {
+            if($this->isNewRecord)
+                $this->order_pass=str_random(8);
+            return true;
+        }
+        private function processUser()
+        {
+            if($this->register_new_customer=='1')
+            {
+                // Create the new Customer
+            }
+            return true;
+        }
+        
+        public function beforeValidate() 
+        {
+            $this->processUser();
+            $this->storeUserProfile();
+            $this->storeCoupon();
+            $this->storeW3Cdate();            
+            $this->storeIPaddress();           
+            $this->generateOrderPassword();
             
             return parent::beforeValidate();
         }

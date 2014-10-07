@@ -5,7 +5,7 @@
 ?>
 <div class="container">
 <div class="form">
-<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
+<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'categories-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -89,7 +89,6 @@
 		<?php echo $form->labelEx($categoryImages,'image_url',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($categoryImages,'image_url',array('class'=>'form-control')); ?>
 		<?php echo $form->error($categoryImages,'image_url',array('class'=>'label label-danger')); ?>
-	</div>
 	</div>
         <div class="row form-group">
 		<?php echo $form->labelEx($categoryImages,'thumb_width',array('class'=>'control-label')); ?>

@@ -9,14 +9,14 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('common','List') .' '. Yii::t('common','Orders'), 'url'=>array('index')),
-	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Orders'), 'url'=>array('create')),
-        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Orders'), 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Orders'), 'url'=>'#', 'linkOptions'=>array('csrf'=>true,'submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('common','Create') .' '. Yii::t('common','Order'), 'url'=>array('create')),
+        array('label'=>Yii::t('common','Update') .' '. Yii::t('common','Order'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('common','Delete') .' '. Yii::t('common','Order'), 'url'=>'#', 'linkOptions'=>array('csrf'=>true,'submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('zii','Are you sure you want to delete this item?'))),
 	array('label'=>Yii::t('common','Manage') .' '. Yii::t('common','Orders'), 'url'=>array('admin')),
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'View')?> <?php echo Yii::t('common', 'Orders')?> #<?php echo $model->id; ?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'View')?> <?php echo Yii::t('common', 'Order')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

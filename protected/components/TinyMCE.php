@@ -14,7 +14,7 @@
 class TinyMCE extends CWidget 
 {
     public $options;
-    public $defaults;
+    private $defaults;
     
     public function init() 
     {

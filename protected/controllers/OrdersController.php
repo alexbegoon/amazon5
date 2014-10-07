@@ -57,6 +57,58 @@ class OrdersController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+        
+        public function actionUpdateFields()
+        {
+            $order=array();
+            $data=array();
+            if(isset($_POST['Orders']))
+            {
+                $order=$_POST['Orders'];
+            }
+            
+            if(empty($order))
+                return;
+            
+            $pmId=null;
+            if(isset($order['payment_method_id']))
+                $pmId=$order['payment_method_id'];
+                
+            $data['Orders']['payment_method_id']=PaymentMethods::listOptions($order['web_shop_id'],$pmId);
+            
+            echo CJavaScript::jsonEncode($data);
+            Yii::app()->end();
+        }
+        
+        public function actionFindUser()
+        {
+            $phrase=Yii::app()->request->getParam('term');
+            $criteria = new CDbCriteria();
+            $criteria->compare('user.username',$phrase,true,'OR');
+            $criteria->compare('user.email',$phrase,true,'OR');
+            $criteria->compare('profile.lastname',$phrase,true,'OR');
+            $criteria->compare('profile.firstname',$phrase,true,'OR');
+            $criteria->with = array( 'profile' );
+            $criteria->group = 'user.id';
+            $criteria->together = true;
+            $dataProvider = new CActiveDataProvider('User', array(
+            'criteria'=>$criteria,
+        	'pagination'=>array(
+                    'pageSize'=>'10',
+                ),
+            ));
+            $res=array();
+            foreach ($dataProvider->getData() as $user)
+            {
+                $res[] = array(
+                    'label'=>$user->getFullName() .' - <'.$user->email.'>',
+                    'value'=>$user->id,
+                );
+            }
+            
+            echo CJSON::encode($res);
+            Yii::app()->end();
+        }
 
 	/**
 	 * Creates a new model.
@@ -67,7 +119,7 @@ class OrdersController extends Controller
 		$model=new Orders;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Orders']))
 		{
@@ -97,7 +149,7 @@ class OrdersController extends Controller
                 ));
                 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Orders']))
 		{

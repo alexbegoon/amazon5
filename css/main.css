@@ -105,3 +105,7 @@ optgroup[disabled="disabled"] option{
 th{
     white-space: nowrap!important;
 }
+.ui-autocomplete-loading
+{
+   background: #fff url(../imgs/ajax-loader.gif) no-repeat 95%;  
+}

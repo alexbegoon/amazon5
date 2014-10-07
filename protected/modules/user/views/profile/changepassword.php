@@ -17,7 +17,7 @@ $this->menu=array(
 <h1 class="text-center"><?php echo UserModule::t("Change password"); ?></h1>
 
 <div class="container">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'changepassword-form',
 	'enableAjaxValidation'=>true,

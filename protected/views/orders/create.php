@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Orders');?></h1>
+<h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Order');?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

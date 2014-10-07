@@ -267,4 +267,32 @@ class OrderStatuses extends CActiveRecord
             }
             return $data;
         }
+        
+        public static function listPublicData()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $statuses=self::model()->findAll(array('condition'=>'t.published=1 AND t.public=1'));
+                $data = CHtml::listData($statuses,'status_code',function($status) {
+                        return $status->getName();
+                });
+                asort($data);
+            }
+            return $data;
+        }
+        
+        public static function listSystemData()
+        {
+            static $data=array();
+            if(empty($data))
+            {
+                $statuses=self::model()->findAll(array('condition'=>'t.published=1 AND t.public=0'));
+                $data = CHtml::listData($statuses,'status_code',function($status) {
+                        return $status->getName();
+                });
+                asort($data);
+            }
+            return $data;
+        }
 }

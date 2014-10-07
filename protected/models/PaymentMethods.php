@@ -209,23 +209,37 @@ class PaymentMethods extends CActiveRecord
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
         
-        public static function listMethods()
+        public static function listMethods($webShopId=null)
         {
             static $data=array();
             if(empty($data))
             {
                 $data=self::model()->findAll(array('condition'=>'t.published=1'));
             }
+            
+            if($webShopId)
+            {
+                if(WebShops::model()->findByPk($webShopId)!==null)
+                {
+                    return self::model()->findAll(
+                            array('condition'=>'t.published=1 AND t.web_shop_id=:web_shop_id',
+                                  'params'=>array(':web_shop_id'=>$webShopId)));
+                }
+                else 
+                {
+                    return array();
+                }
+            }
             return $data;
         }
         
-        public static function listData($methodId=null)
+        public static function listData($methodId=null,$webShopId=null)
         {
             static $data=array();
                         
             if(empty($data))
             {
-                $methods = self::listMethods();
+                $methods = self::listMethods($webShopId);
                 $data = CHtml::listData($methods,'id',function($method) {
                     return $method->getName();
                 });
@@ -234,7 +248,7 @@ class PaymentMethods extends CActiveRecord
             
             if(!empty($methodId))
             {
-                $methods = self::listMethods();
+                $methods = self::listMethods($webShopId);
                 $data = CHtml::listData($methods,'id',function($method) {
                     return $method->getName();
                 });
@@ -252,5 +266,24 @@ class PaymentMethods extends CActiveRecord
                 Yii::app()->params['encryptionKey']));
             }
             return parent::beforeValidate();
+        }
+        
+        public static function listOptions($webShopId,$selected=null)
+        {
+            $str='';
+            $methods = self::listMethods($webShopId);
+            $data = CHtml::listData($methods,'id',function($method) {
+                return $method->getName();
+            });
+            asort($data);
+            foreach($data as $k=>$method)
+            {
+                $htmlOptions=array();
+                $htmlOptions['value']=$k;
+                if($selected==$k && $selected!==null)
+                    $htmlOptions['selected']='selected';
+                $str .= CHtml::tag('option',$htmlOptions,$method,true);
+            }
+            return $str;
         }
 }
