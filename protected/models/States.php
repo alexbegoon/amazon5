@@ -177,14 +177,7 @@ class States extends CActiveRecord
             $states = self::listStates(false,$countryCode);
             $data = CHtml::listData($states,'id','state_name');
             asort($data);
-            foreach($data as $k=>$state)
-            {
-                $htmlOptions=array();
-                $htmlOptions['value']=$k;
-                if($selected==$k && $selected!==null)
-                    $htmlOptions['selected']='selected';
-                $str .= CHtml::tag('option',$htmlOptions,$state,true);
-            }
+            $str = CHtml::listOptions($selected, $data, $htmlOptions);
             return $str;
         }
 }

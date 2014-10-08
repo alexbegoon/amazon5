@@ -36,6 +36,12 @@
 		<?php echo $form->textField($model,'company_website',array('size'=>60,'maxlength'=>255,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'company_website',array('class'=>'label label-danger')); ?>
 	</div>
+    
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'tracking_number_format',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'tracking_number_format',array('maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'tracking_number_format',array('class'=>'label label-danger')); ?>
+	</div>
 
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>

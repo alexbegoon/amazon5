@@ -26,6 +26,7 @@ $this->menu=array(
 		'company_name',
 		'company_desc',
 		'company_website',
+                'tracking_number_format',
 		'created_on',
 		array(
                     'name'=>  Yii::t('common', 'Created By'),

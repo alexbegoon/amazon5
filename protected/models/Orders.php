@@ -105,25 +105,12 @@ class Orders extends CActiveRecord
                         array('user_id','validateUser'),
                         array('order_total','validateTotal'),
                         array('order_coupon_code','validateCoupon'),
-// * @property string $order_coupon_code
-// * @property string $order_coupon_id
-// * @property string $order_coupon
-// * @property integer $currency_id
-// * @property integer $payment_method_id
-// * @property integer $shipping_method_id
-// * @property string $order_outer_status
-// * @property string $order_inner_status
-// * @property string $order_tracking_number
-// * @property string $customer_note
-// * @property string $manager_note
-// * @property string $ip_address
-// * @property integer $web_shop_id
-// * @property string $user_profile_data
-// * @property string $language_code
-// * @property integer $magnet_msg_sent
-// * @property string $w3c_order_date
-                    
-                    
+                        array('payment_method_id','validatePaymentMethod'),
+                        array('shipping_method_id','validateShippingMethod'),
+                        array('order_outer_status','validateStatus'),
+                        array('order_inner_status','validateStatus'),
+                        array('order_tracking_number','validateTracking'),
+                        array('user_profile_data','validateProfile'),                    
 			array('created_on, modified_on, locked_on, deleted_on','date','format'=>array('yyyy-MM-dd HH:mm:ss','0000-00-00 00:00:00')),
 			array('customer_note, manager_note, user_profile_data, created_on, modified_on, locked_on, deleted_on', 'safe'),
 			// The following rule is used by search().
@@ -132,6 +119,105 @@ class Orders extends CActiveRecord
 		);
 	}
         
+        public function getUserData()
+        {
+            $userData = array();
+            
+            if(!empty($this->user_profile_data))
+                $userData=unserialize($this->user_profile_data);
+            
+            return $userData;
+        }
+        
+        public function validateProfile($attribute,$params)
+        {   
+            if(!isset($this->userData['profile']))
+            {
+                $this->addError($attribute, Yii::t('yii','{attribute} is invalid.', 
+                array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                return false;
+            }
+                
+            $profile=new Profile;
+            $profile->attributes=$this->userData['profile'];
+            $profile->user_id=0;
+            
+            if(!$profile->validate())
+            {
+                $this->addError($attribute, Yii::t('yii','{attribute} is invalid.', 
+                array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                
+                $this->addErrors($profile->getErrors());
+                
+                return false;
+            }
+                
+            return true;
+        }
+        
+        public function validateTracking($attribute,$params)
+        {
+            // Validate tracking here
+            if(!empty($this->{$attribute})&&!empty($this->shipping_method_id))
+                if(!ShippingCompanies::validateTrackingNumber(
+                        $this->{$attribute},$this->shipping_method_id))
+                {
+                    $this->addError($attribute, Yii::t('yii','{attribute} is invalid.', 
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                    return false;
+                }
+        }
+        
+        public function validateStatus($attribute,$params)
+        {
+            $model=OrderStatuses::model()->findByPk(
+                        $this->{$attribute}
+                    );
+            if($model===null)
+            {
+                $this->addError($attribute, Yii::t('common', '{attribute} not exists', 
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                return false;
+            }
+            
+            if( ($model->public=='1' && $attribute=='order_inner_status') || 
+                ($model->public!='1' && $attribute=='order_outer_status') )
+            {
+                $this->addError($attribute, Yii::t('common', '{attribute} is wrong', 
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                return false;
+            }
+            return true;
+        }
+        
+        public function validatePaymentMethod($attribute,$params)
+        {
+            $model=PaymentMethods::model()->findByPk(
+                        $this->{$attribute}
+                    );
+            if($model===null || $model->web_shop_id!=$this->web_shop_id)
+            {
+                $this->addError($attribute, Yii::t('common', '{attribute} not exists', 
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                return false;
+            }
+            return true;
+        }
+        
+        public function validateShippingMethod($attribute,$params)
+        {
+            $model=ShippingMethods::model()->findByPk(
+                        $this->{$attribute}
+                    );
+            if($model===null)
+            {
+                $this->addError($attribute, Yii::t('common', '{attribute} not exists', 
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
+                return false;
+            }
+            return true;
+        }
+        
         public function validateUser($attribute,$params)
         {
             $user=Yii::app()->getModule("user")->user($this->{$attribute});
@@ -139,9 +225,10 @@ class Orders extends CActiveRecord
             if(!$user || empty($this->{$attribute}) || $user->status!='1')
             {
                 $this->addError($attribute, Yii::t('common', '{attribute} not exists', 
-                    array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                    array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
+            return true;
         }
         
         public function validateTotal($attribute,$params)
@@ -155,9 +242,8 @@ class Orders extends CActiveRecord
             && (float)$this->{$attribute}>0;
             if(!$valid)
             {
-                $this->addError($attribute, Yii::t('common', 
-                        '{attribute} is wrong', 
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                $this->addError($attribute, Yii::t('yii','{attribute} is invalid.', 
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             return true;
@@ -172,7 +258,7 @@ class Orders extends CActiveRecord
             {
                 $this->addError($attribute, 
                         Yii::t('common', '{attribute} not exists',
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             
@@ -182,7 +268,7 @@ class Orders extends CActiveRecord
             {
                 $this->addError($attribute, 
                         Yii::t('common', '{attribute} not exists',
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             
@@ -190,7 +276,7 @@ class Orders extends CActiveRecord
             {
                 $this->addError($attribute, 
                         Yii::t('common', '{attribute} not exists',
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             
@@ -198,14 +284,14 @@ class Orders extends CActiveRecord
             {
                 $this->addError($attribute, 
                         Yii::t('common', 'This coupon code is invalid or has expired',
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             if($coupon->hasBeenUsed())
             {
                 $this->addError($attribute, 
                         Yii::t('common', 'This coupon code is invalid or has expired',
-                        array('{attribute}'=>$this->attributeLabels()[$attribute])));
+                        array('{attribute}'=>$this->getAttributeLabel($attribute))));
                 return false;
             }
             
@@ -409,18 +495,9 @@ class Orders extends CActiveRecord
                 $this->order_pass=str_random(8);
             return true;
         }
-        private function processUser()
-        {
-            if($this->register_new_customer=='1')
-            {
-                // Create the new Customer
-            }
-            return true;
-        }
         
         public function beforeValidate() 
         {
-            $this->processUser();
             $this->storeUserProfile();
             $this->storeCoupon();
             $this->storeIPaddress();           

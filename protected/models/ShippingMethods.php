@@ -161,6 +161,24 @@ class ShippingMethods extends CActiveRecord
             return $model->shipping_method_name;
         }
         
+        /**
+         * List of available countries to ship using this method
+         * @return array
+         */
+        public function getAvailableCountries()
+        {
+            $availableCountries=array();
+            $models=ShippingCosts::model()->findAll(array(
+                'select'=>'t.country_code',
+                'group'=>'t.country_code',
+                'distinct'=>true,
+                'condition'=>'t.shipping_method_id=:shipping_method_id',
+                'params'=>array(':shipping_method_id'=>$this->id),
+            ));
+            $availableCountries=CHtml::listData($models, 'country_code', 'country_code');
+            return $availableCountries;
+        }
+        
         public static function itemAlias($type,$code=NULL) 
         {
 		$_items = array(

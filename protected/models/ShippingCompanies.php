@@ -8,6 +8,7 @@
  * @property string $company_name
  * @property string $company_desc
  * @property string $company_website
+ * @property string $tracking_number_format
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -40,11 +41,11 @@ class ShippingCompanies extends CActiveRecord
                         array('company_name','unique'),
 			array('created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('company_name', 'length', 'max'=>128, 'min'=>3),
-			array('company_desc, company_website', 'length', 'max'=>255),
+			array('company_desc, company_website, tracking_number_format', 'length', 'max'=>255),
 			array('created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, company_name, company_desc, company_website, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('id, company_name, tracking_number_format, company_desc, company_website, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +71,7 @@ class ShippingCompanies extends CActiveRecord
 			'company_name' => Yii::t('common', 'Company Name'),
 			'company_desc' => Yii::t('common', 'Company Description'),
 			'company_website' => Yii::t('common', 'Company Website'),
+                        'tracking_number_format' => Yii::t('common', 'Tracking Number Format (RegExp)'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -101,6 +103,7 @@ class ShippingCompanies extends CActiveRecord
 		$criteria->compare('company_name',$this->company_name,true);
 		$criteria->compare('company_desc',$this->company_desc,true);
 		$criteria->compare('company_website',$this->company_website,true);
+                $criteria->compare('tracking_number_format',$this->tracking_number_format,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);
@@ -162,5 +165,34 @@ class ShippingCompanies extends CActiveRecord
                 return $data[$companyId];
             }
             return $data;
+        }
+        
+        /**
+         * Validate tracking number format.
+         * @param mixed $trackingNumber
+         * @param int $shippingMethodID
+         * @return boolean True if valid or false
+         */
+        public static function validateTrackingNumber($trackingNumber,$shippingMethodID)
+        {
+            $shippingMethod=ShippingMethods::model()->findByPk($shippingMethodID);
+            if($shippingMethod===null)
+                return false;
+            
+            $shippingCompany=self::model()->findByPk($shippingMethod->shipping_company_id);
+            if($shippingCompany===null)
+                return false;
+            
+            if(empty($shippingCompany->tracking_number_format))
+                return true;
+            
+        if( is_array($trackingNumber) || 
+            is_object($trackingNumber) || 
+            !preg_match($shippingCompany->tracking_number_format, $trackingNumber))
+        {
+            return false;
+        }
+            
+            return true;
         }
 }
