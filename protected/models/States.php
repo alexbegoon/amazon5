@@ -136,4 +136,55 @@ class States extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
+        
+        public static function listStates($all=false,$countryCode=null)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->order='t.state_name, countryCode.name';
+            $criteria->with='countryCode';
+            if($all)
+                return self::model()->findAll($criteria);
+            
+            $criteria->condition='t.published=1 AND countryCode.published=1';
+            
+            if($countryCode)
+            {
+                $criteria->condition='t.published=1 AND countryCode.published=1 AND country_code=:country_code';
+                $criteria->params=array(':country_code'=>$countryCode);
+            }
+            
+            return self::model()->findAll($criteria);
+        }
+        
+        public static function listData($stateId=null,$countryCode=null)
+        {
+            static $data=array();
+            
+            if(empty($data))
+            {
+                $data = CHtml::listData(self::listStates(false,$countryCode), 'id', 'state_name', 'countryCode.name');
+            }
+            
+            if(!empty($stateId))
+                return CHtml::listData(self::listStates(true,$countryCode), 'id', 'state_name')[$stateId];
+            
+            return $data;
+        }
+        
+        public static function listOptions($countryCode,$selected=null)
+        {
+            $str='';
+            $states = self::listStates(false,$countryCode);
+            $data = CHtml::listData($states,'id','state_name');
+            asort($data);
+            foreach($data as $k=>$state)
+            {
+                $htmlOptions=array();
+                $htmlOptions['value']=$k;
+                if($selected==$k && $selected!==null)
+                    $htmlOptions['selected']='selected';
+                $str .= CHtml::tag('option',$htmlOptions,$state,true);
+            }
+            return $str;
+        }
 }

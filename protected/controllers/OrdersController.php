@@ -79,36 +79,6 @@ class OrdersController extends Controller
             echo CJavaScript::jsonEncode($data);
             Yii::app()->end();
         }
-        
-        public function actionFindUser()
-        {
-            $phrase=Yii::app()->request->getParam('term');
-            $criteria = new CDbCriteria();
-            $criteria->compare('user.username',$phrase,true,'OR');
-            $criteria->compare('user.email',$phrase,true,'OR');
-            $criteria->compare('profile.lastname',$phrase,true,'OR');
-            $criteria->compare('profile.firstname',$phrase,true,'OR');
-            $criteria->with = array( 'profile' );
-            $criteria->group = 'user.id';
-            $criteria->together = true;
-            $dataProvider = new CActiveDataProvider('User', array(
-            'criteria'=>$criteria,
-        	'pagination'=>array(
-                    'pageSize'=>'10',
-                ),
-            ));
-            $res=array();
-            foreach ($dataProvider->getData() as $user)
-            {
-                $res[] = array(
-                    'label'=>$user->getFullName() .' - <'.$user->email.'>',
-                    'value'=>$user->id,
-                );
-            }
-            
-            echo CJSON::encode($res);
-            Yii::app()->end();
-        }
 
 	/**
 	 * Creates a new model.
@@ -117,19 +87,44 @@ class OrdersController extends Controller
 	public function actionCreate()
 	{
 		$model=new Orders;
+                $user=new User;
+                $profile=new Profile;
 
 		// Uncomment the following line if AJAX validation is needed
-		 $this->performAjaxValidation($model);
-
+		$this->performAjaxValidation(array($model,$user,$profile));
+                 
 		if(isset($_POST['Orders']))
 		{
-			$model->attributes=$_POST['Orders'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                    $model->attributes=$_POST['Orders'];
+                    // Register User if need
+                    if(isset($_POST['User']) && $model->register_new_customer=='1')
+                    {
+                            $user->attributes=$_POST['User'];
+                            $user->password=Yii::app()->getModule("user")->encrypting(microtime().$user->email);
+                            $user->superuser=0;
+                            $user->status=$user::STATUS_ACTIVE;
+                            $user->activkey=Yii::app()->getModule("user")->encrypting(microtime().$user->password);
+                            $profile->attributes=$_POST['Profile'];
+                            $profile->user_id=0;
+                            if($user->validate()&&$profile->validate()) {
+                                    $user->password=Yii::app()->getModule("user")->encrypting(microtime().$user->email);
+                                    if($user->save()) {
+                                            $profile->user_id=$user->id;
+                                            $profile->save();
+                                    }
+                                    $model->user_id=$user->id;
+                                    $model->register_new_customer=0;
+                            } else $profile->validate();
+                    }
+                    
+                    if($model->save())
+                            $this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+			'user'=>$user,
+			'profile'=>$profile,
 		));
 	}
 

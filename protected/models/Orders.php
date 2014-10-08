@@ -151,7 +151,8 @@ class Orders extends CActiveRecord
                                                  + (float)$this->order_payment
                                                  + (float)$this->order_shipment
                                                  - (float)$this->order_discount
-                                                 - (float)$this->order_coupon);
+                                                 - (float)$this->order_coupon) 
+            && (float)$this->{$attribute}>0;
             if(!$valid)
             {
                 $this->addError($attribute, Yii::t('common', 
@@ -422,9 +423,9 @@ class Orders extends CActiveRecord
             $this->processUser();
             $this->storeUserProfile();
             $this->storeCoupon();
-            $this->storeW3Cdate();            
             $this->storeIPaddress();           
             $this->generateOrderPassword();
+            $this->storeW3Cdate();
             
             return parent::beforeValidate();
         }

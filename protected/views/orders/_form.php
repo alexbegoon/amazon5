@@ -29,13 +29,36 @@ function updateFields(data){
 }
 ");
 Yii::app()->clientScript->registerScript('radioGroup', "
-$( '#radiogroup_reg' ).buttonset();
+    $( '#radiogroup_reg' ).buttonset();
+    var initUserForm = function (){
+        var registerNewCustomer = $('#radiogroup_reg :radio:checked').val();
+        if(registerNewCustomer==1)
+        {
+            $('#user_id_form').hide('slow');
+            $('#register_user_form').show('slow');
+            $('#Orders_register_new_customer_0').attr('checked',false);
+            $('#Orders_register_new_customer_1').attr('checked',true);
+        }
+        else
+        {
+            $('#user_id_form').show('slow');
+            $('#register_user_form').hide('slow');
+            $('#Orders_register_new_customer_1').attr('checked',false);
+            $('#Orders_register_new_customer_0').attr('checked',true);
+        }
+        $('#user_id_form').css('overflow','');
+        $('#register_user_form').css('overflow','');
+    };
+    initUserForm();
+    $('#radiogroup_reg input[type=radio]').click(function () {
+        initUserForm();
+    });
 ");
 
 ?>
     <p class="note alert alert-warning"><?php echo Yii::t('common','Fields with <span class="required">*</span> are required.');?></p>
 
-	<?php echo $form->errorSummary($model, null, null, array('class'=>'alert alert-danger')); ?>
+	<?php echo $form->errorSummary(array($model,$user,$profile), null, null, array('class'=>'alert alert-danger')); ?>
 
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'web_shop_id',array('class'=>'control-label')); ?>
@@ -76,22 +99,16 @@ $( '#radiogroup_reg' ).buttonset();
                     array(
                         'uncheckValue'=>NULL,
                         'separator'=>'',
-                        'ajax' => array(
-                            'type'=>'POST', //request type
-                            'url'=>CController::createUrl($this->id.'/updateFields'), //url to call.
-                            'success'=>'updateFields',   
-                            'dataType'=>'json',
-                        ),
                     )
                     );?>
         </div>
-	<div class="row form-group">
+	<div class="row form-group" id="user_id_form">
 		<?php echo $form->labelEx($model,'user_id',array('class'=>'control-label')); ?>
                 <?php echo $form->hiddenField($model, 'user_id'); ?>
                 <?php 
                 $this->widget('zii.widgets.jui.CJuiAutoComplete',array(
                         'name'=>'user_label',
-                        'source'=>Yii::app()->createUrl($this->id.'/findUser'),
+                        'source'=>Yii::app()->createUrl('ajax/findUser'),
                         'value' => !$model->user_id ? '': Yii::app()->getModule("user")->user($model->user_id)->getFullName().' - <'.Yii::app()->getModule("user")->user($model->user_id)->email.'>',
                         // additional javascript options for the autocomplete plugin
                         'options'=>array(
@@ -121,6 +138,9 @@ $( '#radiogroup_reg' ).buttonset();
                 ?>
 		<?php echo $form->error($model,'user_id',array('class'=>'label label-danger')); ?>
 	</div>
+        <div id="register_user_form" style="display: none;">
+            <?php echo $this->renderPartial('_register_user',array('model'=>$user,'profile'=>$profile,'form'=>$form));?>
+        </div>
         <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'order_number',array('class'=>'control-label')); ?>
@@ -181,7 +201,44 @@ $( '#radiogroup_reg' ).buttonset();
 		<?php echo $form->checkBox($model,'deleted'); ?>
 		<?php echo $form->error($model,'deleted',array('class'=>'label label-danger')); ?>
 	</div>
-
+        <p class="note"><?php echo Yii::t('common','Order items');?></p>
+        <div id="order_items_container">
+            <table class="table table-bordered">
+            <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Model</th>
+                <th>SKU</th>
+                <th>Unit price</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </table>
+        </div>
+        <hr>
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>
