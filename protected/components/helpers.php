@@ -13,9 +13,7 @@
  */
 function enumItem($model,$attribute)
 {
-        $attr=$attribute;
-//        self::resolveName($model,$attr);
-        preg_match('/\((.*)\)/',$model->tableSchema->columns[$attr]->dbType,$matches);
+        preg_match('/\((.*)\)/',$model->tableSchema->columns[$attribute]->dbType,$matches);
         foreach(explode(',', $matches[1]) as $value)
         {
                 $value=str_replace("'",null,$value);
@@ -23,6 +21,30 @@ function enumItem($model,$attribute)
         }
         asort($values);
         return $values;
+}
+
+function dialog($model,$attribute)
+{
+    static $i=0;
+    if(!$model->hasAttribute($attribute))
+        return null;
+    
+    if(empty($model->{$attribute}))
+        return null;
+    
+    $id=CHtml::activeId($model, $attribute).'_'.$i++;
+    Yii::app()->session['GridCell'.$id]=$model->{$attribute};
+    
+    return CHtml::ajaxLink(
+    Yii::t('zii', 'View'), 
+    Yii::app()->createUrl('ajax/gridCell'), 
+    array (
+        'type'=>'POST',
+        'beforeSend'=>'function(html){ $("#mainDialog").dialog("open");$("#mainDialogContent").addClass("fa fa-spin fa-spinner fa-lg"); }',
+        'success'=>'function(html){ $("#mainDialogContent").html(html).removeClass("fa fa-spin fa-spinner fa-lg"); }',
+        'data'=>array('var'=>$id,Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken),
+        )
+    );
 }
 
 /**

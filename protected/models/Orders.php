@@ -389,7 +389,7 @@ class Orders extends CActiveRecord
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('order_number',$this->order_number,true);
-		$criteria->compare('order_pass',$this->order_pass,true);
+		$criteria->compare('order_pass',$this->order_pass);
 		$criteria->compare('order_total',$this->order_total,true);
 		$criteria->compare('order_subtotal',$this->order_subtotal,true);
 		$criteria->compare('order_tax',$this->order_tax,true);
@@ -421,7 +421,7 @@ class Orders extends CActiveRecord
 		$criteria->compare('modified_by',$this->modified_by);
 		$criteria->compare('locked_on',$this->locked_on,true);
 		$criteria->compare('locked_by',$this->locked_by);
-		$criteria->compare('deleted',$this->deleted);
+		$criteria->compare('deleted',0);
 		$criteria->compare('deleted_on',$this->deleted_on,true);
 		$criteria->compare('deleted_by',$this->deleted_by);
 

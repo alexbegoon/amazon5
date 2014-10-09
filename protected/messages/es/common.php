@@ -348,6 +348,9 @@ return array(
     '{attribute} not exists'=>'{attribute} no existe',
     '{attribute} is wrong'=>'{attribute} es incorrecto',
     'This coupon code is invalid or has expired'=>'Este código promocional es válido o ha expirado',
+    'Order with ID: {id}, successfully deleted.'=>'Orden con ID: {id}, eliminado correctamente.',
+    'Available the next aliases: {aliases}'=>'Disponibles los siguientes alias: {aliases}',
+    'E-mail Templates'=>'Plantillas de correo electrónico',
     ''=>'',
     ''=>'',
 );

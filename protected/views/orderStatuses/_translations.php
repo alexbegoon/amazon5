@@ -39,12 +39,39 @@
 		<?php echo $form->textArea($model,'status_desc',array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'status_desc',array('class'=>'label label-danger')); ?>
 	</div>
+        <hr>
+        <div class="note alert alert-warning">
+            <?php echo Yii::t('common', 'Available the next aliases: {aliases}',
+                    array('{aliases}'=>'<ul>'
+                        . '<li>{customer_name}</li>'
+                        . '<li>{order_number}</li>'
+                        . '<li>{order_link}</li>'
+                        . '<li>{status_name}</li>'
+                        . '<li>{tracking_number}</li>'
+                        . '<li>{support_email}</li>'
+                        . '<li>{webshop_url}</li>'
+                        . '</ul>'));?>
+        </div>
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'email_subject_template',array('class'=>'control-label')); ?>
+		<?php echo $form->textField($model,'email_subject_template',array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'email_subject_template',array('class'=>'label label-danger')); ?>
+	</div>
+        
+        <div class="row form-group">
+		<?php echo $form->labelEx($model,'email_body_template',array('class'=>'control-label')); ?>
+		<?php echo $form->textArea($model,'email_body_template',array('class'=>'form-control')); ?>
+		<?php echo $form->error($model,'email_body_template',array('class'=>'label label-danger')); ?>
+	</div>
 
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
+<?php $this->widget('TinyMCE',array('options'=>array(
+    'selector'=>'#'.CHtml::activeId($model, 'email_body_template'),
+))); ?>
 </div>
 </div>
 </div><!-- form -->

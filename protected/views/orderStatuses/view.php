@@ -87,3 +87,47 @@ $this->menu=array(
                 )
 	),
 ));
+?>
+<hr>
+<h3 class="text-center"><?php echo Yii::t('common', 'E-mail Templates');?></h3>
+
+<?php 
+    $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$orderStatusTranslations,
+	'columns'=>array(
+                array(
+                    'name'=>'language_code',
+                    'value'=>  'Languages::getNameByPk($data->language_code)',
+                    'footer'=>  CHtml::link(Yii::t('common', 'Add'),Yii::app()->createUrl(Yii::app()->controller->id."/createTranslation",array('status_code'=>$model->status_code))),
+                ),
+                'email_subject_template',
+                array(
+                    'name'=>'email_body_template',
+                    'value'=>'dialog($data,"email_body_template")',
+                    'type'=>'raw',
+                ),
+		'created_on',
+                array(
+                    'name'=>  Yii::t('common', 'Created By'),
+                    'value'=> 'created_by($data)',
+                ),
+		'modified_on',
+		array(
+                    'name'=>  Yii::t('common', 'Modified By'),
+                    'value'=> 'modified_by($data)',
+                ),
+                array
+                (
+                    'class'=>'CButtonColumn',
+                    'template'=>'{update}',
+                    'buttons'=>array
+                    (
+                        'update' => array
+                        (
+                            'url'=>'Yii::app()->createUrl(Yii::app()->controller->id."/updateTranslation",$data->getPrimaryKey())',
+                        )
+                    ),
+                )
+	),
+));
+?>

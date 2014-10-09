@@ -50,4 +50,15 @@ class AjaxController extends Controller
             
             $this->render('string',array('data'=>$data));
         }
+        
+        public function actionGridCell()
+        {
+            if(!isset($_POST['var']))
+                return;
+            
+            if(isset(Yii::app()->session['GridCell'.$_POST['var']]))
+                $data=Yii::app()->session['GridCell'.$_POST['var']];
+            
+            $this->render('string',array('data'=>$data));
+        }
 }

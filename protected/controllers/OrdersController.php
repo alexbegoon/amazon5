@@ -136,25 +136,47 @@ class OrdersController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-                
-                if((int)$model->locked_by===0 || (int)$model->locked_by===(int)Yii::app()->user->getId())
-                $model->updateByPk($id,array(
-                    'locked_by'=>Yii::app()->user->getId(),
-                    'locked_on'=>date('Y-m-d H:i:s',time()),
-                ));
+                $user=User::model()->notsafe()->findbyPk($model->user_id);
+                $profile=$user->profile;
                 
 		// Uncomment the following line if AJAX validation is needed
-		 $this->performAjaxValidation($model);
+		$this->performAjaxValidation(array($model,$user,$profile));
 
 		if(isset($_POST['Orders']))
 		{
-			$model->attributes=$_POST['Orders'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                    $model->attributes=$_POST['Orders'];
+
+                    // Register User if need
+                    if(isset($_POST['User']) && $model->register_new_customer=='1')
+                    {
+                        $user=new User;
+                        $profile=new Profile;
+                        $user->attributes=$_POST['User'];
+                        $user->password=Yii::app()->getModule("user")->encrypting(microtime().$user->email);
+                        $user->superuser=0;
+                        $user->status=$user::STATUS_ACTIVE;
+                        $user->activkey=Yii::app()->getModule("user")->encrypting(microtime().$user->password);
+                        $profile->attributes=$_POST['Profile'];
+                        $profile->user_id=0;
+                        if($user->validate()&&$profile->validate()) {
+                                $user->password=Yii::app()->getModule("user")->encrypting(microtime().$user->email);
+                                if($user->save()) {
+                                        $profile->user_id=$user->id;
+                                        $profile->save();
+                                }
+                                $model->user_id=$user->id;
+                                $model->register_new_customer=0;
+                        } else $profile->validate();
+                    }
+
+                    if($model->save())
+                            $this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+                        'user'=>$user,
+			'profile'=>$profile,
 		));
 	}
         
@@ -180,13 +202,47 @@ class OrdersController extends Controller
         }
 
 	/**
-	 * Deletes a particular model.
+	 * Deletes Permanently a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionPermanentlyDelete($id)
+	{
+		$this->loadModel($id)->delete();
+
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	/**
+	 * Mark model as deleted. Not remove from DB.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$model=$this->loadModel($id);
+                $model->deleted=1;
+                $model->deleted_by=Yii::app()->user->getId();
+                $model->deleted_on=date('Y-m-d H:i:s');
+                
+                if(!$model->validate(array('deleted','deleted_by','deleted_on')))
+                {
+                    $this->setWarningMsg($model->getErrors());
+                }
+                else
+                {
+                    if($model->saveAttributes(array('deleted','deleted_by','deleted_on')))
+                    {
+                        $this->setSuccessMsg(Yii::t('common', 
+                                'Order with ID: {id}, successfully deleted.', 
+                                array('{id}'=>$id)));
+                    }
+                    else
+                    {
+                        $this->setWarningMsg($model->getErrors());
+                    }
+                }
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
@@ -198,7 +254,14 @@ class OrdersController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Orders');
+		$dataProvider=new CActiveDataProvider('Orders',array(
+                        'criteria'=>array(
+                            'condition'=>'deleted=0',
+                        ),
+                        'pagination'=>array(
+                            'pageSize'=>20,
+                        ),
+                ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

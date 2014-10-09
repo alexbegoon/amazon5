@@ -8,6 +8,8 @@
  * @property string $language_code
  * @property string $status_name
  * @property string $status_desc
+ * @property string $email_subject_template
+ * @property string $email_body_template
  * @property string $created_on
  * @property integer $created_by
  * @property string $modified_on
@@ -46,11 +48,11 @@ class OrderStatusTranslations extends CActiveRecord
                             )
                         )),
 			array('status_name', 'length', 'max'=>64, 'min'=>5),
-			array('status_desc', 'length', 'max'=>255),
-			array('created_on, modified_on, locked_on', 'safe'),
+			array('status_desc,email_subject_template', 'length', 'max'=>255),
+			array('email_body_template, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('status_code, language_code, status_name, status_desc, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
+			array('status_code, email_subject_template, email_body_template, language_code, status_name, status_desc, created_on, created_by, modified_on, modified_by, locked_on, locked_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,6 +77,8 @@ class OrderStatusTranslations extends CActiveRecord
 			'language_code' => Yii::t('common', 'Language Code'),
 			'status_name' => Yii::t('common', 'Status Name'),
 			'status_desc' => Yii::t('common', 'Status Description'),
+                        'email_subject_template' => Yii::t('common', 'Email Subject Template'),
+			'email_body_template' => Yii::t('common', 'Email Body Template'),
 			'created_on' => Yii::t('common', 'Created On'),
 			'created_by' => Yii::t('common', 'Created By'),
 			'modified_on' => Yii::t('common', 'Modified On'),
@@ -106,6 +110,8 @@ class OrderStatusTranslations extends CActiveRecord
 		$criteria->compare('language_code',$this->language_code,true);
 		$criteria->compare('status_name',$this->status_name,true);
 		$criteria->compare('status_desc',$this->status_desc,true);
+                $criteria->compare('email_subject_template',$this->email_subject_template,true);
+		$criteria->compare('email_body_template',$this->email_body_template,true);
 		$criteria->compare('created_on',$this->created_on,true);
 		$criteria->compare('created_by',$this->created_by);
 		$criteria->compare('modified_on',$this->modified_on,true);

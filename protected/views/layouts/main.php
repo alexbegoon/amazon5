@@ -96,6 +96,28 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 <?php 
 
 $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+    'id'=>'mainDialog',
+    // additional javascript options for the dialog plugin
+    'options'=>array(
+        'title'=>Yii::t('zii','View'),
+        'autoOpen'=>false,
+        'width'=>650,
+        'height'=>800,
+        'modal'=>'true'
+    ),
+));
+echo CHtml::tag('div',array('id'=>'mainDialogContent'));
+$this->endWidget('zii.widgets.jui.CJuiDialog');
+
+Yii::app()->clientScript->registerScript('mainDialog', "
+        $( '#mainDialog' ).dialog({
+            close: function( event, ui ) {
+                $( '#mainDialogContent' ).html(null);
+            }
+          });
+    ");
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'id'=>'langWindow',
     // additional javascript options for the dialog plugin
     'options'=>array(

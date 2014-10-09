@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	Yii::t('common','Orders')=>array('index'),
-	$model->id,
+	'#'.$model->id,
 );
 
 $this->menu=array(
