@@ -21,4 +21,5 @@ $this->menu=array(
 <?php $this->renderPartial('_form', array(
                         'model'=>$model,
                         'user'=>$user,
-			'profile'=>$profile,)); ?>
+			'profile'=>$profile,
+                        'orderItems'=>$orderItems,)); ?>

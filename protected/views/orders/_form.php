@@ -179,6 +179,18 @@ Yii::app()->clientScript->registerScript('radioGroup', "
 		<?php echo $form->error($model,'order_tracking_number',array('class'=>'label label-danger')); ?>
 	</div>
         <hr>
+        <p class="note"><?php echo Yii::t('common','Order items');?></p>
+        <div class="row form-group">
+            <?php $this->widget('zii.widgets.grid.CGridView', array(
+                    'dataProvider'=>$orderItems,
+                    'columns'=>array(
+                        'product_sku',
+                        'product_quantity',
+                        'total',
+                    ),
+            )); ?>
+        </div>
+        <hr>
         <div class="row form-group">
 		<?php echo $form->labelEx($model,'order_coupon_code',array('class'=>'control-label')); ?>
 		<?php echo $form->textField($model,'order_coupon_code',array('size'=>32,'maxlength'=>32,'class'=>'form-control')); ?>
@@ -201,43 +213,6 @@ Yii::app()->clientScript->registerScript('radioGroup', "
 		<?php echo $form->checkBox($model,'deleted'); ?>
 		<?php echo $form->error($model,'deleted',array('class'=>'label label-danger')); ?>
 	</div>
-        <p class="note"><?php echo Yii::t('common','Order items');?></p>
-        <div id="order_items_container">
-            <table class="table table-bordered">
-            <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Model</th>
-                <th>SKU</th>
-                <th>Unit price</th>
-                <th>Total</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </table>
-        </div>
         <hr>
 	<div class="row form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Save'),array('class'=>'btn btn-primary')); ?>

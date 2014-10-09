@@ -51,8 +51,13 @@ class OrderItems extends CActiveRecord
 		return array(
 			array('order_id, product_id, currency_id', 'required'),
 			array('product_quantity, currency_id, returned, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('product_quantity', 'numerical', 'min'=>1),
+			array('returned', 'boolean', 'min'=>1),
+                        array('currency_id', 'in', 'range'=>Currencies::range()),
 			array('order_id, product_id', 'length', 'max'=>11),
 			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'length', 'max'=>15),
+			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'numerical'),
+			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'required'),
 			array('product_attribute, created_on, modified_on, locked_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

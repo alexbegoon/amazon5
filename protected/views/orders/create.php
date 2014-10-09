@@ -15,4 +15,8 @@ $this->menu=array(
 
 <h1 class="text-center"><?php echo Yii::t('common', 'Create');?> <?php echo Yii::t('common', 'Order');?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'user'=>$user,'profile'=>$profile)); ?>
+<?php $this->renderPartial('_form', array(
+              'model'=>$model,
+              'user'=>$user,
+              'profile'=>$profile,
+              'orderItems'=>$orderItems,)); ?>
