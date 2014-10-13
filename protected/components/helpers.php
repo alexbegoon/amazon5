@@ -23,6 +23,17 @@ function enumItem($model,$attribute)
         return $values;
 }
 
+function add_product()
+{
+    return CHtml::link(
+        Yii::t('common', 'Add'),
+        '#',
+        array(
+            'onclick'=>'$("#add_product_form").show("slow").css("overflow","");return false;',
+        )
+    );
+}
+
 function dialog($model,$attribute)
 {
     static $i=0;
@@ -42,6 +53,7 @@ function dialog($model,$attribute)
         'type'=>'POST',
         'beforeSend'=>'function(html){ $("#mainDialog").dialog("open");$("#mainDialogContent").addClass("fa fa-spin fa-spinner fa-lg"); }',
         'success'=>'function(html){ $("#mainDialogContent").html(html).removeClass("fa fa-spin fa-spinner fa-lg"); }',
+        'error'=>'function(jqXHR, textStatus, errorThrown){ $("#mainDialogContent").html(textStatus+": "+errorThrown).removeClass("fa fa-spin fa-spinner fa-lg"); }',
         'data'=>array('var'=>$id,Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken),
         )
     );

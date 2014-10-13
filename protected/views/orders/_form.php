@@ -183,12 +183,95 @@ Yii::app()->clientScript->registerScript('radioGroup', "
         <div class="row form-group">
             <?php $this->widget('zii.widgets.grid.CGridView', array(
                     'dataProvider'=>$orderItems,
+                    'id'=>'orderItems_list',
                     'columns'=>array(
-                        'product_sku',
-                        'product_quantity',
-                        'total',
+                        array(
+                            'name'=>Yii::t('common', 'Product SKU'),
+                            'value'=>'$data->product_sku',
+                            'footer'=>add_product(),
+                        ),
+                        array(
+                            'name'=>Yii::t('common', 'Product Quantity'),
+                            'value'=>'$data->product_quantity',
+                        ),
+                        array(
+                            'name'=>Yii::t('common', 'Total'),
+                            'value'=>'$data->product_final_price',
+                        ),
+                        array
+                        (
+                            'class'=>'CButtonColumn',
+                            'template'=>'{delete}',
+                            'buttons'=>array
+                            (
+                                'delete' => array
+                                (
+                                    'url'=>'Yii::app()->createUrl("ajax/removeItemFromCart",array("itemId"=>$data->temp_id))',
+                                )
+                            ),
+                        )
                     ),
             )); ?>
+        </div>
+        <div class="row form-group">
+            <div class="label label-danger" id="add_product_errors"></div>
+        </div>
+        <div id="add_product_form" style="display: none;">
+            <div class="row form-group">
+                <?php echo $form->labelEx($orderItem,'product_id',array('class'=>'control-label')); ?>
+                <?php echo $form->hiddenField($orderItem,'product_id'); ?>
+                <?php 
+                $this->widget('zii.widgets.jui.CJuiAutoComplete',array(
+                        'name'=>'product_label',
+                        'source'=>Yii::app()->createUrl('ajax/findProduct'),
+                        'value' =>null,
+                        // additional javascript options for the autocomplete plugin
+                        'options'=>array(
+                            'minLength'=>'3',
+                            'autoFill'=>false,
+                            'select'=>'js:function( event, ui ) {
+                                $("#'.CHtml::activeId($orderItem,'product_id').'")
+                                .val(ui.item.value);
+                                $( "#product_label" ).val( ui.item.label );
+                                return false;
+                            }',
+                            'change'=>'js:function( event, ui ) {
+                                if(!$( "#product_label" ).val())
+                                {
+                                    $("#'.CHtml::activeId($orderItem,'product_id').'")
+                                    .val(null);
+                                }
+                                return false;
+                            }',
+                        ),
+                        'htmlOptions'=>array(
+                            'class'=>'form-control',
+                            'autocomplete'=>'off',
+                            'placeholder'=>Yii::t('common', 'Please, type SKU or Product Name here...'),
+                        ),
+                    ));
+                ?>
+                <?php echo $form->error($orderItem,'product_id',array('class'=>'label label-danger')); ?>
+            </div>
+            <div class="row form-group">
+                    <?php echo $form->labelEx($orderItem,'product_quantity',array('class'=>'control-label')); ?>
+                    <?php echo $form->textField($orderItem,'product_quantity',array('class'=>'form-control')); ?>
+                    <?php echo $form->error($orderItem,'product_quantity',array('class'=>'label label-danger')); ?>
+            </div>
+            <div class="row form-group buttons">
+		<?php echo CHtml::ajaxSubmitButton(Yii::t('common', 'Add'),
+                        Yii::app()->createUrl('ajax/addProductToCart'),
+                        array(
+                            'success'=>'function(html){$("#add_product_form").hide("slow"); '
+                                                . '$.fn.yiiGridView.update("orderItems_list");'
+                            . '$("#add_product_errors").hide().html("");'
+                            . 'if (html.indexOf("{")==0) {
+                                    var e = $.parseJSON(html);
+                                    $.each(e, function(key, value) {
+                                    $("#add_product_errors").show("slow").append(value.toString()+"<br>").attr("style","");
+                                    });}}'),
+                        array('class'=>'btn btn-primary')); ?>
+            </div>
         </div>
         <hr>
         <div class="row form-group">

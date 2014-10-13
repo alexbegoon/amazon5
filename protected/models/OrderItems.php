@@ -33,6 +33,28 @@
  */
 class OrderItems extends CActiveRecord
 {
+        /**
+         * Product name.
+         * @var string
+         */
+        public $product_name;
+        /**
+         * Product name.
+         * @var string
+         */
+        public $product_sku;
+        /**
+         * Temporary ID for Cart navigation.
+         * It may be useful when you want to remove this Item from the Shopping cart.
+         * @var int
+         */
+        public $temp_id;
+    
+        public function init()
+        {
+            $this->initProductData();
+        }
+        
 	/**
 	 * @return string the associated database table name
 	 */
@@ -49,10 +71,10 @@ class OrderItems extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, product_id, currency_id', 'required'),
-			array('product_quantity, currency_id, returned, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
+			array('order_id, product_id, currency_id, product_quantity', 'required'),
+			array('product_quantity, temp_id, currency_id, returned, created_by, modified_by, locked_by', 'numerical', 'integerOnly'=>true),
 			array('product_quantity', 'numerical', 'min'=>1),
-			array('returned', 'boolean', 'min'=>1),
+			array('returned', 'boolean'),
                         array('currency_id', 'in', 'range'=>Currencies::range()),
 			array('order_id, product_id', 'length', 'max'=>11),
 			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'length', 'max'=>15),
@@ -89,6 +111,7 @@ class OrderItems extends CActiveRecord
 		return array(
 			'id' => Yii::t('common', 'ID'),
 			'order_id' => Yii::t('common', 'Order'),
+			'temp_id' => Yii::t('common', 'Temporaray ID'),
 			'product_id' => Yii::t('common', 'Product'),
 			'product_quantity' => Yii::t('common', 'Product Quantity'),
 			'product_item_price' => Yii::t('common', 'Product Item Price'),
@@ -168,5 +191,30 @@ class OrderItems extends CActiveRecord
           return array( 'CBuyinArBehavior' => array(
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
+        }
+        
+        /**
+         * This method prepare product data for a View.
+         * Such as Product name, product SKU, and other related data.
+         * @return boolean
+         */
+        private function initProductData()
+        {
+            if(isset($this->product_id) && !empty($this->product_id))
+            {
+                $product=Products::model()->findByPk($this->product_id);
+                if($product!==null)
+                {
+                    $this->product_name=$product->getName();
+                    $this->product_sku=$product->product_sku;
+                }
+            }
+            return true;
+        }
+        
+        public function beforeValidate() 
+        {
+            $this->initProductData();
+            return parent::beforeValidate();
         }
 }

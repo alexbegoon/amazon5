@@ -19,4 +19,6 @@ $this->menu=array(
               'model'=>$model,
               'user'=>$user,
               'profile'=>$profile,
-              'orderItems'=>$orderItems,)); ?>
+              'orderItems'=>$orderItems,
+              'orderItem'=>$orderItem,
+    )); ?>

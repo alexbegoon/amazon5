@@ -89,18 +89,12 @@ class OrdersController extends Controller
 		$model=new Orders;
                 $user=new User;
                 $profile=new Profile;
-                $orderItems=new CActiveDataProvider('OrderItems',array(
-                        'criteria'=>array(
-                            'with'=>array('product'),
-                            'together'=>true,
-                        ),
-                        'pagination'=>array(
-                            'pageSize'=>30,
-                        ),
-                ));
+                $orderItem=new OrderItems;
+                $cart=Shop::getCart();
+                $orderItems=$cart->getOrderItems();
 
 		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation(array($model,$user,$profile));
+		$this->performAjaxValidation(array($model,$user,$profile,$orderItem));
                  
 		if(isset($_POST['Orders']))
 		{
@@ -135,6 +129,7 @@ class OrdersController extends Controller
 			'user'=>$user,
 			'profile'=>$profile,
                         'orderItems'=>$orderItems,
+                        'orderItem'=>$orderItem,
 		));
 	}
 

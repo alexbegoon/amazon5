@@ -236,4 +236,12 @@ class WebShops extends CActiveRecord
         {
             return CHtml::listData(self::listWebShops(), 'id', 'id');
         }
+        
+        public static function findByCode($shopCode)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->condition='shop_code=:shop_code';
+            $criteria->params=array(':shop_code'=>$shopCode);
+            return self::model()->find($criteria);
+        }
 }
