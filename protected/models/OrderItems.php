@@ -77,6 +77,7 @@ class OrderItems extends CActiveRecord
 			array('returned', 'boolean'),
                         array('currency_id', 'in', 'range'=>Currencies::range()),
 			array('order_id, product_id', 'length', 'max'=>11),
+			array('product_quantity', 'length', 'max'=>9),
 			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'length', 'max'=>15),
 			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'numerical'),
 			array('product_item_price, product_tax, product_base_price_with_tax, product_final_price, product_subtotal_discount, product_subtotal_with_tax', 'required'),
