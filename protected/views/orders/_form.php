@@ -172,6 +172,12 @@ Yii::app()->clientScript->registerScript('radioGroup', "
 		<?php echo $form->dropDownList($model,'order_inner_status',OrderStatuses::listSystemData(),array('class'=>'form-control')); ?>
 		<?php echo $form->error($model,'order_inner_status',array('class'=>'label label-danger')); ?>
 	</div>
+        
+	<div class="row form-group">
+		<?php echo $form->labelEx($model,'order_paid',array('class'=>'control-label')); ?>
+		<?php echo $form->checkBox($model,'order_paid'); ?>
+		<?php echo $form->error($model,'order_paid',array('class'=>'label label-danger')); ?>
+	</div>
         <hr>
 	<div class="row form-group">
 		<?php echo $form->labelEx($model,'order_tracking_number',array('class'=>'control-label')); ?>
@@ -186,16 +192,19 @@ Yii::app()->clientScript->registerScript('radioGroup', "
                     'id'=>'orderItems_list',
                     'columns'=>array(
                         array(
-                            'name'=>Yii::t('common', 'Product SKU'),
-                            'value'=>'$data->product_sku',
+                            'name'=>'product_sku',
+                            'header'=>Yii::t('common', 'Product SKU'),
+                            'value'=>'$data->getProductSKU()',
                             'footer'=>add_product(),
                         ),
                         array(
-                            'name'=>Yii::t('common', 'Product Quantity'),
+                            'name'=>'product_quantity',
+                            'header'=>Yii::t('common', 'Product Quantity'),
                             'value'=>'$data->product_quantity',
                         ),
                         array(
-                            'name'=>Yii::t('common', 'Total'),
+                            'name'=>'product_final_price',
+                            'header'=>Yii::t('common', 'Total'),
                             'value'=>'$data->product_final_price',
                         ),
                         array

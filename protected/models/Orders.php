@@ -24,6 +24,7 @@
  * @property integer $shipping_method_id
  * @property string $order_outer_status
  * @property string $order_inner_status
+ * @property integer $order_paid
  * @property string $order_tracking_number
  * @property string $customer_note
  * @property string $manager_note
@@ -83,11 +84,11 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, user_profile_data, order_pass, order_number, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total, ip_address, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'required'),
+			array('user_id, user_profile_data, order_pass, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, web_shop_id, language_code, order_total, ip_address, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'required'),
 			array('currency_id, payment_method_id, shipping_method_id, web_shop_id, magnet_msg_sent, created_by, modified_by, locked_by, deleted, deleted_by', 'numerical', 'integerOnly'=>true),
 			array('order_number, order_tracking_number', 'length', 'max'=>64),
 			array('order_number', 'unique'),
-			array('deleted, magnet_msg_sent, register_new_customer', 'boolean'),
+			array('deleted, magnet_msg_sent, register_new_customer, order_paid', 'boolean'),
 			array('order_pass', 'length', 'max'=>8),
 			array('order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon, ip_address', 'length', 'max'=>15),
 			array('order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon', 'numerical'),
@@ -103,7 +104,7 @@ class Orders extends CActiveRecord
                         // Additional checks
                         array('user_id','numerical', 'integerOnly'=>true, 'min'=>1),
                         array('user_id','validateUser'),
-                        array('order_total','validateTotal'),
+//                        array('order_total','validateTotal'),
                         array('order_coupon_code','validateCoupon'),
                         array('payment_method_id','validatePaymentMethod'),
                         array('shipping_method_id','validateShippingMethod'),
@@ -115,7 +116,7 @@ class Orders extends CActiveRecord
 			array('customer_note, manager_note, user_profile_data, created_on, modified_on, locked_on, deleted_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, order_number, order_pass, order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon_code, order_coupon_id, order_coupon, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, order_tracking_number, customer_note, manager_note, ip_address, web_shop_id, user_profile_data, language_code, magnet_msg_sent, w3c_order_date, created_on, created_by, modified_on, modified_by, locked_on, locked_by, deleted, deleted_on, deleted_by', 'safe', 'on'=>'search'),
+			array('id, user_id, order_paid, order_number, order_pass, order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon_code, order_coupon_id, order_coupon, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, order_tracking_number, customer_note, manager_note, ip_address, web_shop_id, user_profile_data, language_code, magnet_msg_sent, w3c_order_date, created_on, created_by, modified_on, modified_by, locked_on, locked_by, deleted, deleted_on, deleted_by', 'safe', 'on'=>'search'),
 		);
 	}
         
@@ -346,6 +347,7 @@ class Orders extends CActiveRecord
 			'shipping_method_id' => Yii::t('common', 'Shipping Method'),
 			'order_outer_status' => Yii::t('common', 'Order Public Status'),
 			'order_inner_status' => Yii::t('common', 'Order System Status'),
+			'order_paid' => Yii::t('common', 'Order Paid'),
 			'order_tracking_number' => Yii::t('common', 'Order Tracking Number'),
 			'customer_note' => Yii::t('common', 'Customer Note'),
 			'manager_note' => Yii::t('common', 'Manager Note (Customers not able to view this note)'),
@@ -447,12 +449,15 @@ class Orders extends CActiveRecord
                 'class' => 'application.vendor.alexbassmusic.CBuyinArBehavior', 
               ));
         }
-        
+        /**
+         * Store current user data into order
+         * @return boolean
+         */
         private function storeUserProfile()
         {
             $user=Yii::app()->getModule("user")->user($this->user_id);
             
-            if($user!==null)
+            if($user!==null && $this->isNewRecord)
             {
                 $data=array();
                 $data['user']=$user->attributes;
@@ -461,7 +466,11 @@ class Orders extends CActiveRecord
             }
             return true;
         }
-        private function storeCoupon()
+        /**
+         * Apply coupon if exists
+         * @return boolean
+         */
+        private function applyCoupon()
         {
             if(!empty($this->order_coupon_code))
             {
@@ -473,35 +482,80 @@ class Orders extends CActiveRecord
             }
             return true;
         }
+        /**
+         * Store date in the W3C format
+         * @return boolean
+         */
         private function storeW3Cdate()
         {
-            if(empty($this->w3c_order_date))
+            if(empty($this->w3c_order_date) && $this->isNewRecord)
             {
                 $this->w3c_order_date=date(DATE_W3C);
             }
             return true;
         }
+        /**
+         * Store customer's IP address
+         * @return boolean
+         */
         private function storeIPaddress()
         {
-            if(empty($this->ip_address))
+            if(empty($this->ip_address) && $this->isNewRecord)
             {
                 $this->ip_address=Yii::app()->request->userHostAddress;
             }
             return true;
         }
+        
+        /**
+         * Create 8 chars password for the order
+         * @return boolean
+         */
         private function generateOrderPassword()
         {
-            if($this->isNewRecord)
+            if(empty($this->order_pass) && $this->isNewRecord)
                 $this->order_pass=str_random(8);
             return true;
+        }
+        
+        /**
+         * Create 12 chars unique order number. (If not filled manually)
+         * @return boolean
+         */
+        private function generateOrderNumber()
+        {
+            if($this->isNewRecord && empty($this->order_number))
+            {
+                $unique=false;
+                while ($unique===false)
+                {
+                    $this->order_number=str_random(12);
+                    $unique=self::isOrderNumberUnique($this->order_number);
+                }
+            }
+                
+            return true;
+        }
+        
+        /**
+         * Checks whether order number unique.
+         * @return boolean True if unique or false
+         */
+        public static function isOrderNumberUnique($orderNumber)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->condition='order_number=:order_number';
+            $criteria->params=array(':order_number'=>$orderNumber);
+            return !self::model()->exists($criteria);
         }
         
         public function beforeValidate() 
         {
             $this->storeUserProfile();
-            $this->storeCoupon();
+            $this->applyCoupon();
             $this->storeIPaddress();           
             $this->generateOrderPassword();
+            $this->generateOrderNumber();
             $this->storeW3Cdate();
             
             return parent::beforeValidate();

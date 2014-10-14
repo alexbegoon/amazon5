@@ -98,6 +98,9 @@ class OrdersController extends Controller
                  
 		if(isset($_POST['Orders']))
 		{
+                    // Start the transaction
+                    $transaction = Yii::app()->db->beginTransaction();
+                    $valid = true;
                     $model->attributes=$_POST['Orders'];
                     // Register User if need
                     if(isset($_POST['User']) && $model->register_new_customer=='1')
@@ -120,8 +123,22 @@ class OrdersController extends Controller
                             } else $profile->validate();
                     }
                     
-                    if($model->save())
-                            $this->redirect(array('view','id'=>$model->id));
+                    $valid = $model->save();
+                    if($valid)
+                        $valid = $cart->unloadToOrder($model->id);
+                    if($valid)
+                        $valid = $cart->remove();
+                    
+                    // Order Successfully created 
+                    if($valid)
+                    {
+                        $transaction->commit();
+                        $this->redirect(array('view','id'=>$model->id));
+                    }
+                    else
+                    {
+                        $transaction->rollback();
+                    }
 		}
 
 		$this->render('create',array(
@@ -143,6 +160,10 @@ class OrdersController extends Controller
 		$model=$this->loadModel($id);
                 $user=User::model()->notsafe()->findbyPk($model->user_id);
                 $profile=$user->profile;
+                $orderItem=new OrderItems;
+                $cart=Shop::getCart();
+                $cart->restore($id);
+                $orderItems=$cart->getOrderItems();
                 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation(array($model,$user,$profile));
@@ -182,6 +203,7 @@ class OrdersController extends Controller
 			'model'=>$model,
                         'user'=>$user,
 			'profile'=>$profile,
+                        'orderItem'=>$orderItem,
                         'orderItems'=>$orderItems,
 		));
 	}

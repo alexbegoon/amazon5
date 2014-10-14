@@ -147,6 +147,24 @@ class Cart extends CModel
     }
     
     /**
+     * When order confirmed, 
+     * this method helps to unload all items from cart to order.
+     * Just put order id.
+     * @param int $orderId
+     * @return boolean True on success
+     */
+    public function unloadToOrder($orderId)
+    {
+        foreach ($this->getOrderItemsArr() as $item)
+        {
+            $item->order_id = $orderId;
+            if(!$item->save())
+                return FALSE;
+        }
+        return true;
+    }
+    
+    /**
      * Return order items.
      * @return \CArrayDataProvider object
      */
@@ -154,12 +172,6 @@ class Cart extends CModel
     {
         return new CArrayDataProvider($this->order_items, array(
             'keyField'=>'temp_id',
-            'sort'=>array(
-                'attributes'=>array(
-                     'id', 'product_quantity', 'product_final_price', 
-                     'product_name', 'product_sku'
-                ),
-            ),
             'pagination'=>array(
                 'pageSize'=>20,
             ),
@@ -200,10 +212,42 @@ class Cart extends CModel
         return parent::beforeValidate();
     }
     
+    /**
+     * Just empty the cart.
+     * No items after.
+     * @return boolean True on success
+     */
     public function remove()
     {
         if( Yii::app()->user->hasState('cart') )
             Yii::app()->user->setState('cart',null);
+        
+        return TRUE;
+    }
+    
+    /**
+     * Restore cart of the order.
+     * Useful when you need to edit order.
+     * @param int $orderId
+     * @return boolean True on success
+     */
+    public function restore($orderId)
+    {
+        $criteria=new CDbCriteria;
+        $criteria->condition='order_id=:order_id';
+        $criteria->params=array(':order_id'=>$orderId);
+        $model=OrderItems::model()->findAll($criteria);
+        if( $model!==null && empty($this->order_items) )
+        {
+            foreach($model as $item)
+            {
+                $item->temp_id = $item->id;
+                $this->order_items[$item->id] = $item;
+            }
+            return $this->save();
+        }
+            
+        return true;
     }
     
 }//end class Cart

@@ -114,6 +114,8 @@ class OrderItems extends CActiveRecord
 			'order_id' => Yii::t('common', 'Order'),
 			'temp_id' => Yii::t('common', 'Temporaray ID'),
 			'product_id' => Yii::t('common', 'Product'),
+			'product_sku' => Yii::t('common', 'Product SKU'),
+			'product_name' => Yii::t('common', 'Product Name'),
 			'product_quantity' => Yii::t('common', 'Product Quantity'),
 			'product_item_price' => Yii::t('common', 'Product Item Price'),
 			'product_tax' => Yii::t('common', 'Product Tax'),
@@ -211,6 +213,47 @@ class OrderItems extends CActiveRecord
                 }
             }
             return true;
+        }
+        
+        public function getProductName()
+        {
+            if(isset($this->product_name) && !empty($this->product_name))
+                return $this->product_name;
+            if(isset($this->product_id) && !empty($this->product_id))
+            {
+                $product=Products::model()->findByPk($this->product_id);
+                if($product!==null)
+                {
+                    $this->product_sku=$product->product_sku;
+                    $this->product_name=$product->getName();
+                    return $this->product_name;
+                }
+            }
+        }
+        
+        public function getProductSKU()
+        {
+            if(isset($this->product_sku) && !empty($this->product_sku))
+                return $this->product_sku;
+            if(isset($this->product_id) && !empty($this->product_id))
+            {
+                $product=Products::model()->findByPk($this->product_id);
+                if($product!==null)
+                {
+                    $this->product_sku=$product->product_sku;
+                    $this->product_name=$product->getName();
+                    return $this->product_sku;
+                }
+            }
+        }
+        
+        public function getProduct_name()
+        {
+            return $this->getProductName();
+        }
+        public function getProduct_sku()
+        {
+            return $this->getProductSKU();
         }
         
         public function beforeValidate() 
