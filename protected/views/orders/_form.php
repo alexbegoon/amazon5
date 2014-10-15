@@ -278,7 +278,11 @@ Yii::app()->clientScript->registerScript('radioGroup', "
                                     var e = $.parseJSON(html);
                                     $.each(e, function(key, value) {
                                     $("#add_product_errors").show("slow").append(value.toString()+"<br>").attr("style","");
-                                    });}}'),
+                                    });}}',
+                            'error'=>'function(jqXHR, textStatus, errorThrown){'
+                            . 'alert(textStatus+": "+errorThrown);'
+                            . '}',
+                            ),
                         array('class'=>'btn btn-primary')); ?>
             </div>
         </div>

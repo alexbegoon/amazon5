@@ -170,6 +170,9 @@ class OrdersController extends Controller
 
 		if(isset($_POST['Orders']))
 		{
+                    // Start the transaction
+                    $transaction = Yii::app()->db->beginTransaction();
+                    $valid = true;
                     $model->attributes=$_POST['Orders'];
 
                     // Register User if need
@@ -195,8 +198,22 @@ class OrdersController extends Controller
                         } else $profile->validate();
                     }
 
-                    if($model->save())
-                            $this->redirect(array('view','id'=>$model->id));
+                    $valid = $model->save();
+                    if($valid)
+                        $valid = $cart->unloadToOrder($model->id);
+                    if($valid)
+                        $valid = $cart->remove();
+                    
+                    // Order Successfully created 
+                    if($valid)
+                    {
+                        $transaction->commit();
+                        $this->redirect(array('view','id'=>$model->id));
+                    }
+                    else
+                    {
+                        $transaction->rollback();
+                    }
 		}
 
 		$this->render('update',array(

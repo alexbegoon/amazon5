@@ -142,7 +142,16 @@ class Cart extends CModel
     public function removeItem($itemId)
     {
         if(isset($this->order_items[$itemId]))
+        {
+            if(!$this->order_items[$itemId]->isNewRecord)
+            {
+                // Delete from item DB
+                $this->order_items[$itemId]->delete();
+            }
+                
             unset($this->order_items[$itemId]);
+        }
+           
         return $this->save();
     }
     
