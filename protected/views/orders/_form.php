@@ -109,7 +109,7 @@ Yii::app()->clientScript->registerScript('radioGroup', "
                 $this->widget('zii.widgets.jui.CJuiAutoComplete',array(
                         'name'=>'user_label',
                         'source'=>Yii::app()->createUrl('ajax/findUser'),
-                        'value' => !$model->user_id ? '': Yii::app()->getModule("user")->user($model->user_id)->getFullName().' - <'.Yii::app()->getModule("user")->user($model->user_id)->email.'>',
+                        'value' => !$model->user_id ? '': customer($model->user_id),
                         // additional javascript options for the autocomplete plugin
                         'options'=>array(
                             'minLength'=>'3',

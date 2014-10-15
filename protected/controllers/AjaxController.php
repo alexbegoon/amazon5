@@ -29,7 +29,7 @@ class AjaxController extends Controller
             foreach ($dataProvider->getData() as $user)
             {
                 $data[] = array(
-                    'label'=>$user->getFullName() .' - <'.$user->email.'>',
+                    'label'=>customer($user->id),
                     'value'=>$user->id,
                 );
             }

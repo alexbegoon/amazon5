@@ -123,6 +123,33 @@ function toggle($model, $attribute='published', $titles=null)
     return $str;
 }
 
+function customerProfile($profileData)
+{
+    $profile = new Profile;
+    
+    $profile->attributes = unserialize($profileData)['profile'];
+    
+    $attributes = $profile->attributeNames();
+    
+    foreach ($attributes as $attr)
+    {
+        if(!in_array($attr, array('delivery_country_code','delivery_state_id')))
+        $finalAttributes[] = $attr;
+    }
+    
+    $finalAttributes[] = array(
+        'name'=>'delivery_country_code',
+        'value'=>Countries::listData($profile->delivery_country_code),
+    );
+    $finalAttributes[] = array(
+        'name'=>'delivery_state_id',
+        'value'=>States::listData($profile->delivery_state_id),
+    );
+    
+    return Yii::app()->controller->widget('zii.widgets.CDetailView', array(
+	'data'=>$profile,'attributes'=>$finalAttributes),true);
+}
+
 /**
  * Return "Yes"/"No" for bool field of rhe model $model.
  * Translation included.
@@ -158,6 +185,12 @@ function created_by($model)
     return Yii::app()->getModule("user")->user($model->created_by)->getFullName();
 }
 
+function customer($userId)
+{
+    return Yii::app()->getModule("user")->user($userId)->getFullName() . 
+            ' - <'.Yii::app()->getModule("user")->user($userId)->email.'>';
+}
+
 function modified_by($model)
 {
     if($model===null)
@@ -169,6 +202,24 @@ function modified_by($model)
                         array('{attribute}'=>'modified_by')));
     
     return Yii::app()->getModule("user")->user($model->modified_by)->getFullName();
+}
+
+function deleted_by($model)
+{
+    if($model===null)
+        return '';
+    
+    if(!$model->hasAttribute('deleted_by'))
+        throw new CHttpException(500,  
+                Yii::t('common', 'Unknown attribute {attribute}', 
+                        array('{attribute}'=>'deleted_by')));
+    
+    if($model->deleted_by==0)
+    {
+        return '';
+    }
+    
+    return Yii::app()->getModule("user")->user($model->deleted_by)->getFullName();
 }
 
 /**
