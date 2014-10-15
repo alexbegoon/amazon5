@@ -31,6 +31,13 @@ class Cart extends CModel
      * @var int
      */
     public $currency_id;
+    /**
+     * ID of the order.
+     * NULL if this is cart of the new order.
+     * Restored cart will have order ID.
+     * @var int
+     */
+    public $order_id;
     
     public function __construct()
     {
@@ -46,6 +53,7 @@ class Cart extends CModel
         $this->total        =0;
         $this->subtotal     =0;
         $this->tax          =0;
+        $this->order_id     =NULL;
         $this->currency_id  =Currencies::getCurrencyForDisplay();
         // Set Cart if customer has it.
         if( Yii::app()->user->hasState('cart') )
@@ -59,7 +67,7 @@ class Cart extends CModel
     {
             return array(
                     array('currency_id,total,subtotal,tax', 'required'),                    
-                    array('currency_id', 'numerical', 'integerOnly'=>true),
+                    array('currency_id, order_id', 'numerical', 'integerOnly'=>true),
                     array('total,subtotal,tax', 'numerical','min'=>0),
                     array('total', 'validateTotal'),
                     array('order_items', 'validateItems'),
@@ -99,6 +107,7 @@ class Cart extends CModel
                 'total'=>Yii::t('common', 'Total'),
                 'subtotal'=>Yii::t('common', 'Subtotal'),
                 'tax'=>Yii::t('common', 'Tax'),
+                'order_id'=>Yii::t('common', 'Order ID'),
 //                ''=>Yii::t('common', ''),
 //                ''=>Yii::t('common', ''),
 //                ''=>Yii::t('common', ''),
@@ -117,10 +126,15 @@ class Cart extends CModel
 
     public function save($runValidation=true,$attributes=null)
     {
-            if(!$runValidation || $this->validate($attributes))
-                    return Yii::app()->user->setState('cart', serialize($this->attributes));
-            else
-                    return false;
+        if(!$runValidation || $this->validate($attributes))
+        {
+            Yii::app()->user->setState('cart', serialize($this->attributes));
+            return true;
+        }
+        else
+        {
+            throw new CHttpException(500, Yii::t('common', 'Cart malformed'));
+        }
     }
     
     public function addItem(OrderItems $item)
@@ -131,10 +145,25 @@ class Cart extends CModel
             return false;
         }
         
-        $id=1;
-        if(!empty($this->order_items))
-        $id = max(array_keys($this->order_items)) + 1;
-        $item->temp_id = $id;
+        $id=null;
+        
+        if( !empty($this->order_id) )
+        {
+            $item->order_id=$this->order_id;
+            if($item->save())
+            {
+                $id=$item->id;
+            }
+        }
+        
+        if($id===null)
+        {
+            $id=1;
+            if(!empty($this->order_items))
+                $id = max(array_keys($this->order_items)) + 1;
+            $item->temp_id = $id;
+        }
+        
         $this->order_items[$id] = $item;
         return $this->save();
     }
@@ -231,6 +260,8 @@ class Cart extends CModel
         if( Yii::app()->user->hasState('cart') )
             Yii::app()->user->setState('cart',null);
         
+        $this->init();
+        
         return TRUE;
     }
     
@@ -242,21 +273,27 @@ class Cart extends CModel
      */
     public function restore($orderId)
     {
+        if($this->order_id!=$orderId)
+            $this->remove();
+        
+        if(!empty($this->order_items))
+            return true;
+        
+        $this->order_id=$orderId;
         $criteria=new CDbCriteria;
         $criteria->condition='order_id=:order_id';
         $criteria->params=array(':order_id'=>$orderId);
         $model=OrderItems::model()->findAll($criteria);
-        if( $model!==null && empty($this->order_items) )
+        if( $model!==null )
         {
             foreach($model as $item)
             {
                 $item->temp_id = $item->id;
                 $this->order_items[$item->id] = $item;
             }
-            return $this->save();
         }
             
-        return true;
+        return $this->save();
     }
     
 }//end class Cart
