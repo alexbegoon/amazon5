@@ -104,7 +104,7 @@ class Orders extends CActiveRecord
                         // Additional checks
                         array('user_id','numerical', 'integerOnly'=>true, 'min'=>1),
                         array('user_id','validateUser'),
-//                        array('order_total','validateTotal'),
+                        array('order_total','validateTotal'),
                         array('order_coupon_code','validateCoupon'),
                         array('payment_method_id','validatePaymentMethod'),
                         array('shipping_method_id','validateShippingMethod'),
@@ -119,7 +119,10 @@ class Orders extends CActiveRecord
 			array('id, user_id, order_paid, order_number, order_pass, order_total, order_subtotal, order_tax, order_shipment, order_shipment_tax, order_payment, order_payment_tax, order_discount, order_coupon_code, order_coupon_id, order_coupon, currency_id, payment_method_id, shipping_method_id, order_outer_status, order_inner_status, order_tracking_number, customer_note, manager_note, ip_address, web_shop_id, user_profile_data, language_code, magnet_msg_sent, w3c_order_date, created_on, created_by, modified_on, modified_by, locked_on, locked_by, deleted, deleted_on, deleted_by', 'safe', 'on'=>'search'),
 		);
 	}
-        
+        /**
+         * Return User profile data
+         * @return array
+         */
         public function getUserData()
         {
             $userData = array();
@@ -130,6 +133,12 @@ class Orders extends CActiveRecord
             return $userData;
         }
         
+        /**
+         * Validate User profile
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateProfile($attribute,$params)
         {   
             if(!isset($this->userData['profile']))
@@ -155,7 +164,12 @@ class Orders extends CActiveRecord
                 
             return true;
         }
-        
+        /**
+         * Validate order tracking number
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateTracking($attribute,$params)
         {
             // Validate tracking here
@@ -168,7 +182,12 @@ class Orders extends CActiveRecord
                     return false;
                 }
         }
-        
+        /**
+         * Validate order statuses
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateStatus($attribute,$params)
         {
             $model=OrderStatuses::model()->findByPk(
@@ -190,7 +209,12 @@ class Orders extends CActiveRecord
             }
             return true;
         }
-        
+        /**
+         * Validate Payment method
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validatePaymentMethod($attribute,$params)
         {
             $model=PaymentMethods::model()->findByPk(
@@ -204,7 +228,12 @@ class Orders extends CActiveRecord
             }
             return true;
         }
-        
+        /**
+         * Validate shipping method
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateShippingMethod($attribute,$params)
         {
             $model=ShippingMethods::model()->findByPk(
@@ -218,7 +247,12 @@ class Orders extends CActiveRecord
             }
             return true;
         }
-        
+        /**
+         * Validate Customer
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateUser($attribute,$params)
         {
             $user=Yii::app()->getModule("user")->user($this->{$attribute});
@@ -231,7 +265,12 @@ class Orders extends CActiveRecord
             }
             return true;
         }
-        
+        /**
+         * Validate total of the order
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateTotal($attribute,$params)
         {
             $valid=(float)$this->{$attribute} === ((float)$this->order_subtotal
@@ -249,7 +288,12 @@ class Orders extends CActiveRecord
             }
             return true;
         }        
-        
+        /**
+         * Validate coupon applied
+         * @param string $attribute
+         * @param array $params
+         * @return boolean
+         */
         public function validateCoupon($attribute,$params)
         {
             if(empty($this->order_coupon_code))
