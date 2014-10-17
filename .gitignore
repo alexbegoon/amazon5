@@ -8,3 +8,4 @@ nbproject
 !/uploads/.htaccess
 /protected/runtime/*
 /imgs/categories/*
+/protected/config/*
